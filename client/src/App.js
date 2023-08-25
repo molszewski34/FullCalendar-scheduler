@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import Modal from 'react-modal';
 import Calendar from './Components/Calendar';
 

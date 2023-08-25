@@ -2,7 +2,7 @@ const router = require('express').Router();
 const Event = require('../Models/Event');
 const moment = require('moment');
 
-router.post('/create-event', async () => {
+router.post('/create-event', async (req, res) => {
   const event = Event(req.body);
   await event.save();
   res.sendStatus(200);
