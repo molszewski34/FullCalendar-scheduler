@@ -33,4 +33,29 @@ router.delete('/delete-event/:eventId', async (req, res) => {
   }
 });
 
+router.put('/update-event/:eventId', async (req, res) => {
+  try {
+    const eventId = req.params.eventId;
+    // const updatedEvent = {
+    //   title: req.query.title,
+    //   start: { $gte: moment(req.query.start).toDate() },
+    //   end: { $lte: moment(req.query.end).toDate() },
+    // };
+    const updatedEventData = req.body;
+
+    const event = await Event.findByIdAndUpdate(eventId, updatedEventData, {
+      new: true,
+    });
+    event.title = updatedEventData.title;
+    event.start = new Date(updatedEventData.start);
+    event.end = new Date(updatedEventData.end);
+
+    await event.save();
+
+    res.json(event);
+  } catch (error) {
+    res.status(500).json({ error: 'Błąd serwera' });
+  }
+});
+
 module.exports = router;

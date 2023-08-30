@@ -3,18 +3,32 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import AddEventModal from './AddEventModal';
-import Datetime from 'react-datetime';
+
 import axios from 'axios';
 import moment from 'moment';
+import 'moment/locale/pl';
+import EditEventModal from './EditEventModal';
+import Modal from 'react-modal';
+import DateTime from 'react-datetime';
+import plLocale from '@fullcalendar/core/locales/pl'; // Import paczki językowej
+import { preventDefault } from '@fullcalendar/core/internal';
 
 const Calendar = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState({ start: null, end: null });
   const [selectedEvent, setSelectedEvent] = useState(null);
   const calendarRef = useRef(null);
   const [events, setEvents] = useState([]);
   const [overlay, setOverlay] = useState(false);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editedEvent, setEditedEvent] = useState(null);
+  const [title, setTitle] = useState('');
+  // const [start, setStart] = useState(new Date());
+  const [start, setStart] = useState(null);
+  // const [end, setEnd] = useState(new Date());
+  const [end, setEnd] = useState(null);
 
   const onEventAdded = (event) => {
     let calendarApi = calendarRef.current.getApi();
@@ -24,12 +38,15 @@ const Calendar = () => {
       title: event.title,
     });
   };
-
-  console.log(selectedEvent);
-
+  // console.log(selectedDate);
+  // console.log(start);
+  // console.log(end);
   const handleDateClick = (arg) => {
     setSelectedDate(arg.date);
+    setStart(arg.date);
+    setEnd(arg.date);
     setModalOpen(true);
+    console.log(arg.date);
   };
 
   const handleEventAdd = async (data) => {
@@ -50,19 +67,56 @@ const Calendar = () => {
   };
 
   const handleEventDelete = async () => {
-    if (selectedEvent) {
+    if (editedEvent) {
       await axios.delete(
-        `/api/calendar/delete-event/${selectedEvent._def.extendedProps._id}`
+        `/api/calendar/delete-event/${editedEvent._def.extendedProps._id}`
       );
       setDeleteConfirmationOpen(false);
       setSelectedEvent(null);
     }
   };
 
+  const handleEventUpdate = async (e) => {
+    e.preventDefault();
+    if (editedEvent) {
+      const updatedEventData = {
+        title: title,
+        start: start.toISOString(),
+        end: end.toISOString(),
+      };
+      await axios.put(
+        `/api/calendar/update-event/${editedEvent._def.extendedProps._id}`,
+        updatedEventData
+      );
+      setEditModalOpen(false);
+      // setEditModalOpen(null);
+    }
+  };
+
+  const openEditModal = (event) => {
+    setEditedEvent(event);
+    setEditModalOpen(true);
+  };
+
+  const eventClick = (info) => {
+    setEditedEvent(info.event);
+    // setSelectedDate(info.event);
+    const { start, end } = info.event;
+    setSelectedDate({ start, end });
+    setStart(info.event._instance.range.start);
+    setEnd(info.event._instance.range.end);
+    // setEnd(info.event);
+    setEditModalOpen(true);
+    openEditModal(info.event);
+    // console.log(info.event);
+    // setOverlay(true);
+  };
+
   return (
     <section>
       <div style={{ position: 'relative', zIndex: 0 }}>
         <FullCalendar
+          locale={plLocale}
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           ref={calendarRef}
@@ -70,12 +124,9 @@ const Calendar = () => {
           dateClick={handleDateClick}
           eventAdd={handleEventAdd}
           eventRemove={handleEventDelete}
+          eventChange={handleEventUpdate}
           datesSet={handleDateSet}
-          eventClick={(info) => {
-            setSelectedEvent(info.event);
-            setDeleteConfirmationOpen(true);
-            setOverlay(true);
-          }}
+          eventClick={eventClick}
         />
       </div>
       <AddEventModal
@@ -86,6 +137,14 @@ const Calendar = () => {
           setSelectedDate(null);
         }}
         onEventAdded={onEventAdded}
+        start={start}
+        setStart={setStart}
+        end={end}
+        setEnd={setEnd}
+        // eventClick={(info) => {
+        //   setStart(info.event._instance.range.start);
+        //   setEnd(info.event._instance.range.end);
+        // }}
       />
       {overlay && <div className="overlay"></div>}
       {deleteConfirmationOpen && (
@@ -124,6 +183,44 @@ const Calendar = () => {
               Anuluj
             </button>
           </div>
+        </div>
+      )}
+      {editModalOpen && (
+        <div className="delete-confirmation">
+          <form onSubmit={handleEventUpdate}>
+            <h2>Wydarzenie</h2>
+            <div className="">
+              <label htmlFor="">Tytuł</label>
+              <input
+                placeholder={editedEvent._def.title}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            <div className="">
+              <label htmlFor="">Termin przyjazdu</label>
+              <DateTime
+                locale="pl"
+                value={start}
+                placeholder={editedEvent._instance.range.start}
+                onChange={(date) => setStart(date)}
+              />
+            </div>
+            <div className="">
+              <label htmlFor="">Termin wyjazdu</label>
+              <DateTime
+                value={end}
+                placeholder={editedEvent._instance.range.end}
+                onChange={(date) => setEnd(date)}
+              />
+            </div>
+            <div className="">
+              <button type="submit" onClick={handleEventUpdate}>
+                Zapisz
+              </button>
+              <button>Usuń</button>
+            </div>
+          </form>
         </div>
       )}
     </section>
