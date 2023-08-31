@@ -38,9 +38,9 @@ const Calendar = () => {
       title: event.title,
     });
   };
-  // console.log(selectedDate);
-  // console.log(start);
-  // console.log(end);
+
+  console.log(editedEvent);
+
   const handleDateClick = (arg) => {
     setSelectedDate(arg.date);
     setStart(arg.date);
@@ -59,9 +59,6 @@ const Calendar = () => {
         moment(data.start).toISOString() +
         '&end=' +
         moment(data.end).toISOString()
-      // data.start.format('YYYY-MM-DD') +
-      // '&end=' +
-      // data.end.format('YYYY-MM-DD')
     );
     setEvents(response.data);
   };
@@ -72,7 +69,7 @@ const Calendar = () => {
         `/api/calendar/delete-event/${editedEvent._def.extendedProps._id}`
       );
       setDeleteConfirmationOpen(false);
-      setSelectedEvent(null);
+      setEditedEvent(null);
     }
   };
 
@@ -89,7 +86,6 @@ const Calendar = () => {
         updatedEventData
       );
       setEditModalOpen(false);
-      // setEditModalOpen(null);
     }
   };
 
@@ -149,25 +145,30 @@ const Calendar = () => {
       {overlay && <div className="overlay"></div>}
       {deleteConfirmationOpen && (
         <div className="delete-confirmation">
-          <p>
-            Czy jesteś pewien że chcesz{' '}
-            <span style={{ color: 'red', fontWeight: 'bold' }}>usunać</span>{' '}
-            pobyt {selectedEvent != null && selectedEvent._def.title} w dniach
-            od:{' '}
-            {selectedEvent != null &&
-              moment(selectedEvent._instance.range.start).format(
-                'YYYY-MM-DD'
-              )}{' '}
-            do
-            {selectedEvent != null &&
-              moment(selectedEvent._instance.range.end).format(
-                'YYYY-MM-DD'
-              )}{' '}
-          </p>
+          <div>
+            <p>
+              {` Czy jesteś pewien że chcesz usunać pobyt
+           ${editedEvent != null && editedEvent._def.title} w dniach:`}
+            </p>
+            <p>
+              <b>od:</b>
+              {`  ${
+                editedEvent != null &&
+                moment(editedEvent._instance.range.start).format('YYYY-MM-DD')
+              }`}
+            </p>
+            <p>
+              <b> do:</b>
+              {`     ${
+                editedEvent != null &&
+                moment(editedEvent._instance.range.end).format('YYYY-MM-DD')
+              }`}
+            </p>
+          </div>
           <div className="delete-confirmation_btn_wrapper">
             <button
               className="delete-confirmation_btn"
-              onClick={{ handleEventDelete }}
+              onClick={handleEventDelete}
               style={{ backgroundColor: 'red' }}
             >
               Usuń
@@ -186,19 +187,28 @@ const Calendar = () => {
         </div>
       )}
       {editModalOpen && (
-        <div className="delete-confirmation">
+        <div className="modal-edit">
           <form onSubmit={handleEventUpdate}>
-            <h2>Wydarzenie</h2>
-            <div className="">
-              <label htmlFor="">Tytuł</label>
+            <header>
+              <h2>Wydarzenie</h2>
+              <button
+                className="modal-edit-cancel"
+                style={{ backgroundColor: '#38bdf8' }}
+                onClick={() => setEditModalOpen(false)}
+              >
+                Anuluj
+              </button>
+            </header>
+            <div className="modal-edit_input">
+              <label htmlFor="">Tytuł:</label>
               <input
                 placeholder={editedEvent._def.title}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
             </div>
-            <div className="">
-              <label htmlFor="">Termin przyjazdu</label>
+            <div className="modal-edit_input">
+              <label htmlFor="">Termin przyjazdu:</label>
               <DateTime
                 locale="pl"
                 value={start}
@@ -206,19 +216,31 @@ const Calendar = () => {
                 onChange={(date) => setStart(date)}
               />
             </div>
-            <div className="">
-              <label htmlFor="">Termin wyjazdu</label>
+            <div className="modal-edit_input">
+              <label htmlFor="">Termin wyjazdu:</label>
               <DateTime
                 value={end}
                 placeholder={editedEvent._instance.range.end}
                 onChange={(date) => setEnd(date)}
               />
             </div>
-            <div className="">
-              <button type="submit" onClick={handleEventUpdate}>
+            <div className="modal-edit_btn-wrapper">
+              <button
+                style={{ backgroundColor: '#16a34a' }}
+                type="submit"
+                onClick={handleEventUpdate}
+              >
                 Zapisz
               </button>
-              <button>Usuń</button>
+              <button
+                style={{ backgroundColor: '#ef4444' }}
+                onClick={() => {
+                  setDeleteConfirmationOpen(true);
+                  setEditModalOpen(false);
+                }}
+              >
+                Usuń
+              </button>
             </div>
           </form>
         </div>

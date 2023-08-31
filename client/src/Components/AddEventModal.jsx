@@ -27,7 +27,7 @@ const AddEventModal = ({
     onClose();
   };
 
-  console.log(start);
+  // console.log(start);
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose}>
       <form onSubmit={onSubmit}>
