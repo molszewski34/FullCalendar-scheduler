@@ -84,7 +84,7 @@ code {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.8em;
+  /* gap: 0.8em; */
 }
 .modal-edit label {
   font-weight: bold;
@@ -142,4 +142,20 @@ code {
 
 .fc-event-main-frame {
   padding-left: 1em;
+}
+
+.error {
+  margin: 0;
+  color: red;
+  font-size: 0.7em;
+  /* min-height: 20px; */
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.flex {
+  display: flex;
+  /* min-height: 10px; */
 }

@@ -24,34 +24,73 @@ const Calendar = () => {
 
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editedEvent, setEditedEvent] = useState(null);
-  const [title, setTitle] = useState('');
-  // const [start, setStart] = useState(new Date());
   const [start, setStart] = useState(null);
-  // const [end, setEnd] = useState(new Date());
   const [end, setEnd] = useState(null);
+  const [title, setTitle] = useState('');
+  const [phone, setPhone] = useState('');
+  const [numOfGuests, setNumOfGuests] = useState(2);
+  const [priceOfGuest, setPriceOfGuest] = useState(65);
+  const [price, setPrice] = useState('');
+  const [room, setRoom] = useState('');
+  const [roomColor, setRoomColor] = useState(''); // Stan dla koloru pokoju
 
-  const onEventAdded = (event) => {
-    let calendarApi = calendarRef.current.getApi();
-    calendarApi.addEvent({
+  // const [colors, setColors] = useState(['#FF5733', '#33FF57', '#5733FF']);
+
+  // const onEventAdded = (event) => {
+  //   let calendarApi = calendarRef.current.getApi();
+  //   calendarApi.addEvent({
+  //     start: moment(event.start).toDate(),
+  //     end: moment(event.end).toDate(),
+  //     title: event.title,
+  //     phone: event.phone,
+  //     numOfGuests: event.numOfGuests,
+  //     priceOfGuest: event.priceOfGuest,
+  //     price: event.price,
+  //     room: event.room,
+
+  //   });
+  // };
+  const onEventAdded = async (event) => {
+    const eventData = {
       start: moment(event.start).toDate(),
       end: moment(event.end).toDate(),
-      title: event.title,
-    });
+      title: title,
+      phone: phone,
+      numOfGuests: numOfGuests,
+      priceOfGuest: priceOfGuest,
+      price: price,
+      room: room,
+    };
+
+    try {
+      const response = await axios.post(
+        '/api/calendar/create-event',
+        eventData
+      );
+      const newEvent = response.data;
+
+      // Aktualizuj lokalny stan kalendarza
+      setEvents([...events, newEvent]);
+      setModalOpen(false);
+    } catch (error) {
+      console.error('Błąd podczas dodawania wydarzenia:', error);
+    }
   };
 
-  console.log(editedEvent);
+  console.log(phone);
 
   const handleDateClick = (arg) => {
     setSelectedDate(arg.date);
     setStart(arg.date);
     setEnd(arg.date);
     setModalOpen(true);
-    console.log(arg.date);
+    // console.log(arg.date);
   };
 
-  const handleEventAdd = async (data) => {
-    await axios.post('/api/calendar/create-event', data.event);
-  };
+  // const handleEventAdd = async (data) => {
+  //   await axios.post('/api/calendar/create-event', data.event);
+
+  // };
 
   const handleDateSet = async (data) => {
     const response = await axios.get(
@@ -80,6 +119,7 @@ const Calendar = () => {
         title: title,
         start: start.toISOString(),
         end: end.toISOString(),
+        color: editedEvent.event.backgroundColor,
       };
       await axios.put(
         `/api/calendar/update-event/${editedEvent._def.extendedProps._id}`,
@@ -118,11 +158,30 @@ const Calendar = () => {
           ref={calendarRef}
           events={events}
           dateClick={handleDateClick}
-          eventAdd={handleEventAdd}
+          // eventAdd={handleEventAdd}
+          // eventAdd={onEventAdded}
           eventRemove={handleEventDelete}
           eventChange={handleEventUpdate}
           datesSet={handleDateSet}
           eventClick={eventClick}
+          // eventContent={(eventInfo) => {
+          //   return (
+          //     <div
+          //     className="custom-event"
+          //     style={{ backgroundColor: { roomColor } }}
+          //     style={{
+          //       backgroundColor: (eventInfo.event.backgroundColor = 'red'),
+          //     }}
+          //     >
+          //       <h4>{eventInfo.event.title}</h4>
+          //       <p>Data: {eventInfo.event.start.toLocaleDateString()}</p>
+          //       <p>
+          //         Godzina: {eventInfo.event.start.toLocaleTimeString()}
+          //       </p>{' '}
+          //     </div>
+          //   );
+          // }}
+          // eventBackgroundColor={roomColor}
         />
       </div>
       <AddEventModal
@@ -136,7 +195,23 @@ const Calendar = () => {
         start={start}
         setStart={setStart}
         end={end}
+        // colors={colors}
         setEnd={setEnd}
+        title={title}
+        setTitle={setTitle}
+        phone={phone}
+        setPhone={setPhone}
+        numOfGuests={numOfGuests}
+        setNumOfGuests={setNumOfGuests}
+        priceOfGuest={priceOfGuest}
+        setPriceOfGuest={setPriceOfGuest}
+        price={price}
+        setPrice={setPrice}
+        room={room}
+        setRoom={setRoom}
+        roomColor={roomColor}
+        setRoomColor={setRoomColor}
+
         // eventClick={(info) => {
         //   setStart(info.event._instance.range.start);
         //   setEnd(info.event._instance.range.end);
