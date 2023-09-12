@@ -2,10 +2,24 @@ const router = require('express').Router();
 const Event = require('../Models/Event');
 const moment = require('moment');
 
+// router.post('/create-event', async (req, res) => {
+//   const event = Event(req.body);
+//   await event.save();
+//   res.sendStatus(200);
+// });
+
 router.post('/create-event', async (req, res) => {
-  const event = Event(req.body);
-  await event.save();
-  res.sendStatus(200);
+  try {
+    const { title, start, end, extendedProps } = req.body;
+    const event = new Event({ title, start, end, extendedProps });
+    await event.save();
+    res.status(201).json(event);
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ error: 'Wystąpił błąd podczas zapisywania wydarzenia' });
+  }
 });
 
 router.get('/get-events', async (req, res) => {

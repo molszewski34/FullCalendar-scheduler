@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -12,6 +12,7 @@ import Modal from 'react-modal';
 import DateTime from 'react-datetime';
 import plLocale from '@fullcalendar/core/locales/pl'; // Import paczki językowej
 import { preventDefault } from '@fullcalendar/core/internal';
+import { useForm } from 'react-hook-form';
 
 const Calendar = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -24,42 +25,45 @@ const Calendar = () => {
 
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editedEvent, setEditedEvent] = useState(null);
+  const initialNumOfGuest = editedEvent
+    ? editedEvent._def.extendedProps.numOfGuest
+    : 2;
+  const [editedNumofGuests, setEditedNumOfGuests] = useState(initialNumOfGuest);
+  const initialPriceOfGuest = editedEvent
+    ? editedEvent._def.extendedProps.priceOfGuest
+    : 65;
+  const [editedPriceofGuest, setEditedPriceOfGuest] =
+    useState(initialPriceOfGuest);
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
   const [title, setTitle] = useState('');
-  const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState();
   const [numOfGuests, setNumOfGuests] = useState(2);
   const [priceOfGuest, setPriceOfGuest] = useState(65);
   const [price, setPrice] = useState('');
   const [room, setRoom] = useState('');
-  const [roomColor, setRoomColor] = useState(''); // Stan dla koloru pokoju
+  const [roomColor, setRoomColor] = useState('');
 
-  // const [colors, setColors] = useState(['#FF5733', '#33FF57', '#5733FF']);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
 
-  // const onEventAdded = (event) => {
-  //   let calendarApi = calendarRef.current.getApi();
-  //   calendarApi.addEvent({
-  //     start: moment(event.start).toDate(),
-  //     end: moment(event.end).toDate(),
-  //     title: event.title,
-  //     phone: event.phone,
-  //     numOfGuests: event.numOfGuests,
-  //     priceOfGuest: event.priceOfGuest,
-  //     price: event.price,
-  //     room: event.room,
-
-  //   });
-  // };
   const onEventAdded = async (event) => {
     const eventData = {
-      start: moment(event.start).toDate(),
-      end: moment(event.end).toDate(),
       title: title,
-      phone: phone,
-      numOfGuests: numOfGuests,
-      priceOfGuest: priceOfGuest,
-      price: price,
-      room: room,
+      start: start,
+      end: end,
+      extendedProps: {
+        phone: phone,
+        numOfGuests: numOfGuests,
+        priceOfGuest: priceOfGuest,
+        price: price,
+        room: room,
+        roomColor: roomColor,
+      },
     };
 
     try {
@@ -69,7 +73,6 @@ const Calendar = () => {
       );
       const newEvent = response.data;
 
-      // Aktualizuj lokalny stan kalendarza
       setEvents([...events, newEvent]);
       setModalOpen(false);
     } catch (error) {
@@ -77,20 +80,12 @@ const Calendar = () => {
     }
   };
 
-  console.log(phone);
-
   const handleDateClick = (arg) => {
     setSelectedDate(arg.date);
     setStart(arg.date);
     setEnd(arg.date);
     setModalOpen(true);
-    // console.log(arg.date);
   };
-
-  // const handleEventAdd = async (data) => {
-  //   await axios.post('/api/calendar/create-event', data.event);
-
-  // };
 
   const handleDateSet = async (data) => {
     const response = await axios.get(
@@ -113,13 +108,20 @@ const Calendar = () => {
   };
 
   const handleEventUpdate = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     if (editedEvent) {
       const updatedEventData = {
-        title: title,
         start: start.toISOString(),
         end: end.toISOString(),
-        color: editedEvent.event.backgroundColor,
+        title: title,
+        extendedProps: {
+          phone: phone,
+          numOfGuests: numOfGuests,
+          priceOfGuest: priceOfGuest,
+          price: price,
+          room: room,
+          roomColor: roomColor,
+        },
       };
       await axios.put(
         `/api/calendar/update-event/${editedEvent._def.extendedProps._id}`,
@@ -134,19 +136,64 @@ const Calendar = () => {
     setEditModalOpen(true);
   };
 
+  // console.log(editedEvent);
   const eventClick = (info) => {
-    setEditedEvent(info.event);
-    // setSelectedDate(info.event);
+    // setEditedEvent(info.event);
+    console.log(info);
     const { start, end } = info.event;
     setSelectedDate({ start, end });
     setStart(info.event._instance.range.start);
     setEnd(info.event._instance.range.end);
-    // setEnd(info.event);
+    // setEditedNumOfGuests(info.event._def.extendedProps.numOfGuests);
+    // setEditedPriceOfGuest(info.event._def.extendedProps.priceOfGuest);
+    setPriceOfGuest(info.event._def.extendedProps.priceOfGuest);
+    setNumOfGuests(info.event._def.extendedProps.numOfGuests);
     setEditModalOpen(true);
     openEditModal(info.event);
-    // console.log(info.event);
-    // setOverlay(true);
   };
+
+  const handleEditedNumOfGuestsIncrement = () => {
+    // setEditedNumOfGuests(editedNumofGuests + 1);
+    setNumOfGuests(numOfGuests + 1);
+  };
+
+  const handleEditedNumOfGuestsDecrement = () => {
+    // if (editedNumofGuests > 1) {
+    if (numOfGuests > 1) {
+      // setEditedNumOfGuests(editedNumofGuests - 1);
+      setNumOfGuests(numOfGuests - 1);
+    }
+  };
+
+  const handlEditedPriceOfGuestIncrement = () => {
+    // setEditedPriceOfGuest(editedPriceofGuest + 1);
+    // setEditedPriceOfGuest(priceOfGuest + 1);
+    setPriceOfGuest(priceOfGuest + 1);
+  };
+
+  const handleEditedPriceOfGuestDecrement = () => {
+    if (priceOfGuest > 1) {
+      // setEditedPriceOfGuest(priceOfGuest - 1);
+      setPriceOfGuest(priceOfGuest - 1);
+    }
+  };
+
+  // useEffect(() => {
+  //   const total = editedNumofGuests * editedPriceofGuest;
+  //   setPrice(total);
+  // }, [editedNumofGuests, editedPriceofGuest]);
+  useEffect(() => {
+    const total = numOfGuests * priceOfGuest;
+    setPrice(total);
+  }, [numOfGuests, priceOfGuest]);
+
+  const [selectedRoom, setSelectedRoom] = useState('');
+
+  const roomsList = [
+    { name: 'Sypialnia', numOfGuests: 2, priceOfGuest: 65, color: 'red' },
+    { name: '3 łóżka', numOfGuests: 3, priceOfGuest: 65, color: 'blue' },
+    { name: '2 łóżka', numOfGuests: 2, priceOfGuest: 65, color: 'green' },
+  ];
 
   return (
     <section>
@@ -164,24 +211,18 @@ const Calendar = () => {
           eventChange={handleEventUpdate}
           datesSet={handleDateSet}
           eventClick={eventClick}
-          // eventContent={(eventInfo) => {
-          //   return (
-          //     <div
-          //     className="custom-event"
-          //     style={{ backgroundColor: { roomColor } }}
-          //     style={{
-          //       backgroundColor: (eventInfo.event.backgroundColor = 'red'),
-          //     }}
-          //     >
-          //       <h4>{eventInfo.event.title}</h4>
-          //       <p>Data: {eventInfo.event.start.toLocaleDateString()}</p>
-          //       <p>
-          //         Godzina: {eventInfo.event.start.toLocaleTimeString()}
-          //       </p>{' '}
-          //     </div>
-          //   );
+          // eventContent={({ event }) => {
+          //   const backgroundColor =
+          //     event.extendedProps.room === 'sypialnia'
+          //       ? 'red'
+          //       : event.extendedProps.room === '2 łóżka'
+          //       ? 'green'
+          //       : event.extendedProps.room === '3 łóżka'
+          //       ? 'blue'
+          //       : ''; // Domyślny kolor tła
+
+          //   return <div style={{ backgroundColor }}>{event.title}</div>;
           // }}
-          // eventBackgroundColor={roomColor}
         />
       </div>
       <AddEventModal
@@ -195,7 +236,6 @@ const Calendar = () => {
         start={start}
         setStart={setStart}
         end={end}
-        // colors={colors}
         setEnd={setEnd}
         title={title}
         setTitle={setTitle}
@@ -211,11 +251,6 @@ const Calendar = () => {
         setRoom={setRoom}
         roomColor={roomColor}
         setRoomColor={setRoomColor}
-
-        // eventClick={(info) => {
-        //   setStart(info.event._instance.range.start);
-        //   setEnd(info.event._instance.range.end);
-        // }}
       />
       {overlay && <div className="overlay"></div>}
       {deleteConfirmationOpen && (
@@ -263,9 +298,9 @@ const Calendar = () => {
       )}
       {editModalOpen && (
         <div className="modal-edit">
-          <form onSubmit={handleEventUpdate}>
+          <form onSubmit={handleSubmit(handleEventUpdate)}>
             <header>
-              <h2>Wydarzenie</h2>
+              <h2>Edytuj wydarzenie</h2>
               <button
                 className="modal-edit-cancel"
                 style={{ backgroundColor: '#38bdf8' }}
@@ -278,12 +313,24 @@ const Calendar = () => {
               <label htmlFor="">Tytuł:</label>
               <input
                 placeholder={editedEvent._def.title}
+                {...register(
+                  'title',
+                  { required: true, minLength: 1, maxLength: 20 },
+                  { pattern: /^[A-Za-z]+$/i }
+                )}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
+              {errors.title && <p className="error">Pole jest wymagane</p>}
+              {errors.title && errors.title.type === 'pattern' && (
+                <p className="error">Tytuł nie może zawierać liczb</p>
+              )}
+              {errors.title && errors.title.type === 'minLength' && (
+                <p className="error">Tytuł nie może być pusty</p>
+              )}
             </div>
             <div className="modal-edit_input">
-              <label htmlFor="">Termin przyjazdu:</label>
+              <label htmlFor="">Przyjazd:</label>
               <DateTime
                 locale="pl"
                 value={start}
@@ -292,18 +339,141 @@ const Calendar = () => {
               />
             </div>
             <div className="modal-edit_input">
-              <label htmlFor="">Termin wyjazdu:</label>
+              <label htmlFor="">Wyjazd:</label>
               <DateTime
                 value={end}
                 placeholder={editedEvent._instance.range.end}
                 onChange={(date) => setEnd(date)}
               />
+            </div>{' '}
+            <div className="modal-edit_input">
+              <label htmlFor="">Telefon:</label>
+              <input
+                placeholder={editedEvent._def.extendedProps.phone}
+                {...register('phone', {
+                  required: true,
+                  pattern: /^[0-9]+$/,
+                  minLength: 9, // Minimalna długość numeru
+                  maxLength: 15, // Maksymalna długość numeru
+                })}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+              {errors.phone && errors.phone.type === 'required' && (
+                <p className="error">Pole jest wymagane</p>
+              )}
+              {errors.phone && errors.phone.type === 'pattern' && (
+                <p className="error">Pole może zawierać tylko cyfry</p>
+              )}
+              {errors.phone && errors.phone.type === 'minLength' && (
+                <p className="error">Numer telefonu jest za krótki</p>
+              )}
+              {errors.phone && errors.phone.type === 'maxLength' && (
+                <p className="error">Numer telefonu jest za długi</p>
+              )}
             </div>
+            <div className="">
+              <div className="modal-edit_input">
+                <label htmlFor="">Liczba gości:</label>
+                <div>
+                  <input
+                    {...register('numOfGuests', {
+                      required: true,
+                      min: 1,
+                      max: 6,
+                    })}
+                    // value={editedNumofGuests}
+                    value={numOfGuests}
+                    placeholder={editedEvent._def.extendedProps.numOfGuests}
+                    onChange={(e) => setNumOfGuests(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleEditedNumOfGuestsDecrement}
+                  >
+                    -
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleEditedNumOfGuestsIncrement}
+                  >
+                    +
+                  </button>
+                </div>
+                {errors.numOfGuests && errors.numOfGuests.type === 'min' && (
+                  <p className="error">Minimalnie 1 gość</p>
+                )}
+                {errors.numOfGuests && errors.numOfGuests.type === 'max' && (
+                  <p className="error">Maksymalnie 6 gości</p>
+                )}
+              </div>
+
+              <div className="modal-edit_input">
+                <label htmlFor="">Cena za gościa:</label>
+                <div>
+                  <input
+                    {...register('priceOfGuest', {
+                      required: true,
+                      min: 1,
+                    })}
+                    // value={editedPriceofGuest}
+                    value={priceOfGuest}
+                    onChange={(e) => setPriceOfGuest(e.target.value)}
+                    placeholder={editedEvent._def.extendedProps.priceOfGuest}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleEditedPriceOfGuestDecrement}
+                  >
+                    -
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handlEditedPriceOfGuestIncrement}
+                  >
+                    +
+                  </button>
+                </div>
+                {errors.priceOfGuest &&
+                  errors.priceOfGuest.type === 'required' && (
+                    <p className="error">Pole jest wymagane</p>
+                  )}
+                {errors.priceOfGuest && errors.priceOfGuest.type === 'min' && (
+                  <p className="error">Minimalnie 1 zł</p>
+                )}
+              </div>
+            </div>
+            <div>
+              <header>Wybierz pokój</header>
+              <div className="">
+                {roomsList.map((roomItem, index) => (
+                  <button
+                    type="button"
+                    className={`room-button ${
+                      room === roomItem.name ? 'selected' : ''
+                    }`}
+                    style={{ backgroundColor: roomItem.color }}
+                    key={index}
+                    onClick={() => {
+                      setRoom(roomItem.name);
+                      setRoomColor(roomItem.color);
+                      setNumOfGuests(roomItem.numOfGuests);
+                      setPriceOfGuest(roomItem.priceOfGuest);
+                      setSelectedRoom(roomItem.name);
+                    }}
+                  >
+                    {roomItem.name}
+                  </button>
+                ))}
+              </div>
+              {errors.room && <p className="error">Wybierz jeden z pokoi</p>}
+            </div>
+            <div className="">{`Do zapłaty: ${price} zł`}</div>
             <div className="modal-edit_btn-wrapper">
               <button
                 style={{ backgroundColor: '#16a34a' }}
                 type="submit"
-                onClick={handleEventUpdate}
+                // onClick={handleEventUpdate}
               >
                 Zapisz
               </button>

@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+h2 {
+  margin: 0;
+}
+
 .delete-confirmation {
   position: fixed;
   /* top: 50%; */
@@ -158,4 +162,9 @@ code {
 .flex {
   display: flex;
   /* min-height: 10px; */
+}
+
+/* Add this CSS to your stylesheet or style module */
+.room-button.selected {
+  border: 2px solid #000; /* Adjust the border style as needed */
 }
