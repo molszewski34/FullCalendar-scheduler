@@ -13,6 +13,7 @@ import DateTime from 'react-datetime';
 import plLocale from '@fullcalendar/core/locales/pl'; // Import paczki językowej
 import { preventDefault } from '@fullcalendar/core/internal';
 import { useForm } from 'react-hook-form';
+import DeleteConfirmationModal from './deleteConfirmationModal';
 
 const Calendar = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -253,7 +254,7 @@ const Calendar = () => {
         setRoomColor={setRoomColor}
       />
       {overlay && <div className="overlay"></div>}
-      {deleteConfirmationOpen && (
+      {/* {deleteConfirmationOpen && (
         <div className="delete-confirmation">
           <div>
             <p>
@@ -295,7 +296,14 @@ const Calendar = () => {
             </button>
           </div>
         </div>
-      )}
+      )} */}
+      <DeleteConfirmationModal
+        deleteConfirmationOpen={deleteConfirmationOpen}
+        setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+        editedEvent={editedEvent}
+        setEditedEvent={setEditedEvent}
+        setOverlay={setOverlay}
+      />
       {editModalOpen && (
         <div className="modal-edit">
           <form onSubmit={handleSubmit(handleEventUpdate)}>
