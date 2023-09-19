@@ -10,6 +10,7 @@ const EventSchema = mongoose.Schema({
     priceOfGuest: Number,
     price: Number,
     room: String,
+    color: String,
   },
 });
 

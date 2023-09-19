@@ -23,8 +23,8 @@ const AddEventModal = ({
   setPrice,
   room,
   setRoom,
-  roomColor,
-  setRoomColor,
+  color,
+  setColor,
 }) => {
   const [selectedRoom, setSelectedRoom] = useState('');
 
@@ -71,7 +71,7 @@ const AddEventModal = ({
       priceOfGuest,
       price,
       room,
-      roomColor,
+      color,
     });
     onClose();
   };
@@ -97,15 +97,18 @@ const AddEventModal = ({
             <div className="">
               <input
                 placeholder="Imię Nazwisko"
-                {...register(
-                  'title',
-                  { required: true, minLength: 1, maxLength: 20 },
-                  { pattern: /^[A-Za-z]+$/i }
-                )}
+                {...register('title', {
+                  required: true,
+                  minLength: 1,
+                  maxLength: 20,
+                  pattern: /^[A-Za-z]+$/i,
+                })}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
-              {errors.title && <p className="error">Pole jest wymagane</p>}
+              {errors.title && errors.title.type === 'required' && (
+                <p className="error">Pole jest wymagane</p>
+              )}
               {errors.title && errors.title.type === 'pattern' && (
                 <p className="error">Tytuł nie może zawierać liczb</p>
               )}
@@ -218,7 +221,7 @@ const AddEventModal = ({
                     key={index}
                     onClick={() => {
                       setRoom(roomItem.name);
-                      setRoomColor(roomItem.color);
+                      setColor(roomItem.color);
                       setNumOfGuests(roomItem.numOfGuests);
                       setPriceOfGuest(roomItem.priceOfGuest);
                       setSelectedRoom(roomItem.name);

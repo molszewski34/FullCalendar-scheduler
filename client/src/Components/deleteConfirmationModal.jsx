@@ -8,24 +8,25 @@ const DeleteConfirmationModal = ({
   editedEvent,
   setEditedEvent,
   setOverlay,
+  handleEventDelete,
 }) => {
-  const handleEventDelete = async () => {
-    if (editedEvent) {
-      await axios.delete(
-        `/api/calendar/delete-event/${editedEvent._def.extendedProps._id}`
-      );
-      setDeleteConfirmationOpen(false);
-      setEditedEvent(null);
-    }
-  };
+  //   const handleEventDelete = async () => {
+  //     if (editedEvent) {
+  //       await axios.delete(
+  //         `/api/calendar/delete-event/${editedEvent._def.extendedProps._id}`
+  //       );
+  //       setDeleteConfirmationOpen(false);
+  //       setEditedEvent(null);
+  //     }
+  //   };
   return (
     <>
       {deleteConfirmationOpen && (
         <div className="delete-confirmation">
           <div>
             <p>
-              {` Czy jesteś pewien że chcesz usunać pobyt
-           ${editedEvent != null && editedEvent._def.title} w dniach:`}
+              Czy jesteś pewien że chcesz usunać pobyt
+              <b> {editedEvent != null && editedEvent._def.title}</b> w dniach:
             </p>
             <p>
               <b>od:</b>
