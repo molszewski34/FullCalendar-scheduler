@@ -1,6 +1,5 @@
 import React from 'react';
 import moment from 'moment';
-import axios from 'axios';
 
 const DeleteConfirmationModal = ({
   deleteConfirmationOpen,
@@ -10,15 +9,6 @@ const DeleteConfirmationModal = ({
   setOverlay,
   handleEventDelete,
 }) => {
-  //   const handleEventDelete = async () => {
-  //     if (editedEvent) {
-  //       await axios.delete(
-  //         `/api/calendar/delete-event/${editedEvent._def.extendedProps._id}`
-  //       );
-  //       setDeleteConfirmationOpen(false);
-  //       setEditedEvent(null);
-  //     }
-  //   };
   return (
     <>
       {deleteConfirmationOpen && (

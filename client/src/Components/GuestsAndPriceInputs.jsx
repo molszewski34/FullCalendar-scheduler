@@ -29,8 +29,6 @@ const GuestsAndPriceInputs = ({
 
   const {
     register,
-    handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
   console.log(handleNumOfGuestsDecrement);
@@ -38,7 +36,7 @@ const GuestsAndPriceInputs = ({
     <div className="">
       <div className="modal-edit_input">
         <label htmlFor="">Liczba gości:</label>
-        <div>
+        <div className="guests-and-price-inputs">
           <input
             {...register('numOfGuests', {
               required: true,
@@ -48,12 +46,14 @@ const GuestsAndPriceInputs = ({
             value={numOfGuests}
             onChange={(e) => setNumOfGuests(e.target.value)}
           />
-          <button type="button" onClick={handleNumOfGuestsDecrement}>
-            -
-          </button>
-          <button type="button" onClick={handleNumOfGuestsIncrement}>
-            +
-          </button>
+          <div className="guests-and-price-buttons">
+            <button type="button" onClick={handleNumOfGuestsDecrement}>
+              -
+            </button>
+            <button type="button" onClick={handleNumOfGuestsIncrement}>
+              +
+            </button>
+          </div>
         </div>
         {errors.numOfGuests && errors.numOfGuests.type === 'min' && (
           <p className="error">Minimalnie 1 gość</p>
@@ -65,7 +65,7 @@ const GuestsAndPriceInputs = ({
 
       <div className="modal-edit_input">
         <label htmlFor="">Cena za gościa:</label>
-        <div>
+        <div className="guests-and-price-inputs">
           <input
             {...register('priceOfGuest', {
               required: true,
@@ -74,12 +74,14 @@ const GuestsAndPriceInputs = ({
             value={priceOfGuest}
             onChange={(e) => setPriceOfGuest(e.target.value)}
           />
-          <button type="button" onClick={handlePriceOfGuestDecrement}>
-            -
-          </button>
-          <button type="button" onClick={handlePriceOfGuestIncrement}>
-            +
-          </button>
+          <div className="guests-and-price-buttons">
+            <button type="button" onClick={handlePriceOfGuestDecrement}>
+              -
+            </button>
+            <button type="button" onClick={handlePriceOfGuestIncrement}>
+              +
+            </button>
+          </div>
         </div>
         {errors.priceOfGuest && errors.priceOfGuest.type === 'required' && (
           <p className="error">Pole jest wymagane</p>

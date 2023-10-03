@@ -7,23 +7,17 @@ import AddEventModal from './AddEventModal';
 import axios from 'axios';
 import moment from 'moment';
 import 'moment/locale/pl';
-import Modal from 'react-modal';
-import DateTime from 'react-datetime';
-import plLocale from '@fullcalendar/core/locales/pl'; // Import paczki językowej
-import { preventDefault } from '@fullcalendar/core/internal';
-import { useForm } from 'react-hook-form';
+import plLocale from '@fullcalendar/core/locales/pl';
 import DeleteConfirmationModal from './deleteConfirmationModal';
 import EditEventModal from './EditEventModal';
 
 const Calendar = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState({ start: null, end: null });
-  const [selectedEvent, setSelectedEvent] = useState(null);
   const calendarRef = useRef(null);
   const [events, setEvents] = useState([]);
   const [overlay, setOverlay] = useState(false);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
-
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editedEvent, setEditedEvent] = useState(null);
   const [start, setStart] = useState(null);
@@ -35,6 +29,7 @@ const Calendar = () => {
   const [price, setPrice] = useState('');
   const [room, setRoom] = useState('');
   const [color, setColor] = useState('');
+  const [daysDifference, setDaysDifference] = useState(null);
 
   const onEventAdded = async (event) => {
     const eventData = {
@@ -57,7 +52,6 @@ const Calendar = () => {
         eventData
       );
       const newEvent = response.data;
-
       setEvents([...events, newEvent]);
       setModalOpen(false);
       setOverlay(false);
@@ -67,10 +61,11 @@ const Calendar = () => {
   };
 
   const handleDateClick = (arg) => {
+    setModalOpen(true);
+    setOverlay(true);
     setSelectedDate(arg.date);
     setStart(arg.date);
     setEnd(arg.date);
-    setModalOpen(true);
   };
 
   const handleDateSet = async (data) => {
@@ -95,7 +90,6 @@ const Calendar = () => {
   };
 
   const handleEventUpdate = async (e) => {
-    // e.preventDefault();
     if (editedEvent) {
       const updatedEventData = {
         start: start.toISOString(),
@@ -132,19 +126,16 @@ const Calendar = () => {
     setSelectedDate({ start, end });
     setStart(info.event._instance.range.start);
     setEnd(info.event._instance.range.end);
-    // setEditedNumOfGuests(info.event._def.extendedProps.numOfGuests);
-    // setEditedPriceOfGuest(info.event._def.extendedProps.priceOfGuest);
     setPriceOfGuest(info.event._def.extendedProps.priceOfGuest);
     setNumOfGuests(info.event._def.extendedProps.numOfGuests);
     setEditModalOpen(true);
-    setOverlay(true);
     openEditModal(info.event);
   };
 
   useEffect(() => {
-    const total = numOfGuests * priceOfGuest;
+    const total = numOfGuests * priceOfGuest * daysDifference;
     setPrice(total);
-  }, [numOfGuests, priceOfGuest]);
+  }, [numOfGuests, priceOfGuest, daysDifference]);
 
   const [selectedRoom, setSelectedRoom] = useState('');
 
@@ -152,24 +143,21 @@ const Calendar = () => {
     const backgroundColor = info.event.extendedProps.color || 'gray';
 
     const el = info.el;
-    el.style.backgroundColor = backgroundColor;
-    // el.style.padding = '0.3em .5em .5em .5em';
+    el.style.background = backgroundColor;
     el.style.fontWeight = 'bold';
     const startDate = new Date(info.event.start);
-    const endDate = new Date(info.event.end);
+    // const endDate = new Date(info.event.end);
 
     const formattedStartDate = ` ${startDate.getHours()}:${String(
       startDate.getMinutes()
     ).padStart(2, '0')}`;
     const dateElement = document.createElement('div');
     dateElement.textContent = `Godzina przyjazdu: ${formattedStartDate}`;
-    dateElement.style.color = 'white';
-    dateElement.style.fontWeight = 'normal';
+    dateElement.style.color = '#fff';
+    dateElement.style.fontWeight = 'bold';
+    dateElement.style.marginLeft = '1em';
     info.el.appendChild(dateElement);
   };
-
-  // console.log(events);
-  // console.log(end);
 
   return (
     <section>
@@ -219,8 +207,11 @@ const Calendar = () => {
         setRoom={setRoom}
         color={color}
         setColor={setColor}
+        setDaysDifference={setDaysDifference}
+        setModalOpen={setModalOpen}
+        setOverlay={setOverlay}
       />
-      {overlay && <div className="overlay"></div>}
+
       <DeleteConfirmationModal
         deleteConfirmationOpen={deleteConfirmationOpen}
         setDeleteConfirmationOpen={setDeleteConfirmationOpen}
@@ -254,7 +245,9 @@ const Calendar = () => {
         setPrice={setPrice}
         setDeleteConfirmationOpen={setDeleteConfirmationOpen}
         setOverlay={setOverlay}
+        setDaysDifference={setDaysDifference}
       />
+      {overlay && <div className="overlay"></div>}
     </section>
   );
 };

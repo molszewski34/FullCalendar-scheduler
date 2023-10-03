@@ -16,16 +16,7 @@ h2 {
   margin: 0;
 }
 
-/* .event-styles {
-  font-weight: bold;
-  padding-left: 1em;
-  padding: 0.3em 1em 0.3em 1em;
-  border: none;
-} */
-
-/* Twoje style CSS */
 .event-styles {
-  /* Tutaj możesz dostosować stylizację ogólną dla wydarzeń */
   padding: 4px;
   border-radius: 4px;
   font-size: 14px;
@@ -39,6 +30,7 @@ h2 {
 }
 
 .fc-toolbar-title {
+  /* color: #525252; */
   color: #525252;
 }
 
@@ -51,13 +43,162 @@ h2 {
   gap: 0.5em;
 }
 
+.fc-h-event {
+  border: none;
+}
+
+.fc-sticky {
+  /* color: #f8fafc; */
+  color: #fff;
+}
+/* MODAL */
+form {
+  display: flex;
+  width: 100%;
+
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.3em;
+  /* align-items: center; */
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0.5em;
+  width: 100%;
+}
+
+header button {
+  align-self: end;
+  background-color: #0284c7;
+  color: #fff;
+  border: none;
+  border-radius: 15px;
+  padding: 0.6em 1.2em;
+  font-weight: 500;
+  cursor: pointer;
+  font-weight: 600;
+  /* width: 50%; */
+}
+
+input {
+  display: flex;
+  padding: 0.2em;
+}
+
+.input-title {
+  font-size: 1em;
+}
+
+label {
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.date-time-inputs {
+  padding: 0.5em 0;
+  border-bottom: #cbd5e1 1px solid;
+  border-top: #cbd5e1 1px solid;
+}
+
+.date-time-wrapper {
+  display: flex;
+  gap: 0.2em;
+  flex-direction: column;
+}
+
+.room-selection {
+  display: flex;
+  flex-direction: column;
+}
+
+.room-selection button {
+  padding: 0.7em 0.9em;
+  border: none;
+  border-radius: 25px;
+  color: #fff;
+  font-size: 0.8em;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.room-list {
+  display: flex;
+
+  padding: 0.5em 0;
+  justify-content: space-evenly;
+}
+
+.guests-and-price-inputs {
+  display: flex;
+  justify-content: space-between;
+}
+
+.guests-and-price-inputs input {
+  font-weight: 600;
+}
+
+.guests-and-price-buttons {
+  display: flex;
+  gap: 1em;
+}
+
+.guests-and-price-buttons button {
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border: #0284c7 2px solid;
+  color: #0284c7;
+  font-size: 1.2em;
+  font-weight: 600;
+  background-color: #fff;
+}
+
+.price {
+  display: flex;
+  gap: 1em;
+  align-self: end;
+  align-items: center;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.price span {
+  font-size: 2em;
+  color: #65a30d;
+}
+
+.form-submit {
+  display: flex;
+  bottom: none;
+  align-self: center;
+  font-size: 1.5em;
+  background-color: #0891b2;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.3em 0.7em;
+}
+
+.form-delete {
+  background-color: #dc2626;
+  display: flex;
+  bottom: none;
+  align-self: center;
+  font-size: 1.5em;
+
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.3em 0.7em;
+}
+
 .delete-confirmation {
   position: fixed;
-  /* top: 50%; */
-  /* right: 50%; */
-  /* left: 50%; */
-  /* bottom: 50%; */
-  position: fixed;
+
   z-index: 2;
   top: 50%;
   left: 50%;
@@ -80,9 +221,12 @@ h2 {
 .delete-confirmation_btn {
   padding: 5px;
   border: none;
+  font-size: 1em;
   font-weight: bold;
   color: #fff;
-  /* font-size: 1em; */
+  padding: 0.5em 1em;
+  border-radius: 20px;
+  cursor: pointer;
 }
 
 .modal-edit {
@@ -90,7 +234,8 @@ h2 {
   z-index: 2;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 250px;
+  width: 280px;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -114,55 +259,10 @@ h2 {
   }
 }
 
-.modal-edit header {
-  display: flex;
-  justify-content: space-around;
-}
-
-.modal-edit form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  /* gap: 0.8em; */
-}
-.modal-edit label {
-  font-weight: bold;
-  font-size: 0.9em;
-}
-
-.modal-edit_input {
-  display: flex;
-  flex-direction: column;
-  /* align-items: center; */
-}
-
-.modal-edit form h2 {
-  text-align: center;
-  margin: 0;
-}
-
-.modal-edit-cancel {
-  padding: 0.5em;
-  border: none;
-  border-radius: 2px;
-  font-weight: bold;
-  color: #fff;
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-}
-
 .modal-edit_btn-wrapper {
   display: flex;
   justify-content: space-around;
-}
-
-.modal-edit_btn-wrapper button {
-  padding: 0.5em;
-  border: none;
-  border-radius: 2px;
-  /* background-color: #4ade80; */
-  font-weight: bold;
-  color: #fff;
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  cursor: pointer;
 }
 
 .overlay {
@@ -187,7 +287,6 @@ h2 {
   margin: 0;
   color: red;
   font-size: 0.7em;
-  /* min-height: 20px; */
 }
 
 .hidden {
@@ -196,10 +295,8 @@ h2 {
 
 .flex {
   display: flex;
-  /* min-height: 10px; */
 }
 
-/* Add this CSS to your stylesheet or style module */
 .room-button.selected {
-  border: 2px solid #000; /* Adjust the border style as needed */
+  opacity: 0.5;
 }

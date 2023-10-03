@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Modal from 'react-modal';
-import DateTime from 'react-datetime';
 import { useForm } from 'react-hook-form';
-import UserDataForm from './AddEventModal-components/UserDataForm';
-import RoomSelection from './AddEventModal-components/RoomSelection';
-import TitleInput from './AddEventModal-components/TitleInput';
+import Form from './Form';
+
 import {
   handleNumOfGuestsIncrement,
   handleNumOfGuestsDecrement,
   handlePriceOfGuestIncrement,
   handlePriceOfGuestDecrement,
-} from './eventUtilities';
+} from './utilities/eventUtilities';
 const AddEventModal = ({
   isOpen,
   onClose,
@@ -33,6 +30,9 @@ const AddEventModal = ({
   setRoom,
   color,
   setColor,
+  setModalOpen,
+  setDaysDifference,
+  setOverlay,
 }) => {
   const [selectedRoom, setSelectedRoom] = useState('');
   const roomsList = [
@@ -46,7 +46,6 @@ const AddEventModal = ({
   }, [numOfGuests, priceOfGuest]);
 
   const onSubmit = (event) => {
-    // event.preventDefault();
     onEventAdded({
       start,
       end,
@@ -72,10 +71,18 @@ const AddEventModal = ({
     <>
       {isOpen && (
         <div className="modal-edit" isOpen={isOpen}>
-          <header>
+          <header className="">
+            <button
+              onClick={() => {
+                setModalOpen(false);
+                setOverlay(false);
+              }}
+            >
+              Anuluj
+            </button>
             <h2>Dodaj wydarzenie</h2>
           </header>
-          <UserDataForm
+          <Form
             title={title}
             setTitle={setTitle}
             start={start}
@@ -100,7 +107,8 @@ const AddEventModal = ({
             handlePriceOfGuestDecrement={handlePriceOfGuestDecrement}
             onSubmit={onSubmit}
             errors={errors}
-          ></UserDataForm>
+            setDaysDifference={setDaysDifference}
+          ></Form>
         </div>
       )}
     </>
