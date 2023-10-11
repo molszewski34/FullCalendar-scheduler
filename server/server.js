@@ -8,6 +8,13 @@ const cors = require('cors');
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
+
+app.use(
+  cors({
+    origin: 'https://full-calendar-scheduler-client.vercel.app',
+  })
+);
+
 async function connectToDatabase() {
   try {
     await mongoose.connect(process.env.MONGODB_URI, {
