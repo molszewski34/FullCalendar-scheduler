@@ -1,17 +1,23 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import AddEventModal from './AddEventModal';
+import AddEventModal from '../Components/AddEventModal';
 import axios from 'axios';
 import moment from 'moment';
 import 'moment/locale/pl';
 import plLocale from '@fullcalendar/core/locales/pl';
-import DeleteConfirmationModal from './deleteConfirmationModal';
-import EditEventModal from './EditEventModal';
+import DeleteConfirmationModal from '../Components/deleteConfirmationModal';
+import EditEventModal from '../Components/EditEventModal';
+import { UserContext } from '../contexts/user.context';
+import { Button } from '@mui/material';
 
-const Calendar = () => {
+// import { onAuthStateChanged, signOut } from 'firebase/auth';
+// import { auth } from '../firebase';
+// import { useNavigate } from 'react-router-dom';
+
+const Calendar = ({ user }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState({ start: null, end: null });
   const calendarRef = useRef(null);
@@ -30,6 +36,22 @@ const Calendar = () => {
   const [room, setRoom] = useState('');
   const [color, setColor] = useState('');
   const [daysDifference, setDaysDifference] = useState(null);
+
+  const { logOutUser } = useContext(UserContext);
+
+  const logOut = async () => {
+    try {
+      // Calling the logOutUser function from the user context.
+      const loggedOut = await logOutUser();
+      // Now we will refresh the page, and the user will be logged out and
+      // redirected to the login page because of the <PrivateRoute /> component.
+      if (loggedOut) {
+        window.location.reload(true);
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   const onEventAdded = async (event) => {
     const eventData = {
@@ -161,6 +183,10 @@ const Calendar = () => {
 
   return (
     <section>
+      <Button variant="contained" onClick={logOut}>
+        Wyloguj
+      </Button>
+
       <div style={{ position: 'relative', zIndex: 0 }}>
         <FullCalendar
           locale={plLocale}

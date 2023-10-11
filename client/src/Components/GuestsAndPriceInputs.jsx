@@ -31,7 +31,7 @@ const GuestsAndPriceInputs = ({
     register,
     formState: { errors },
   } = useForm();
-  console.log(handleNumOfGuestsDecrement);
+
   return (
     <div className="">
       <div className="modal-edit_input">
