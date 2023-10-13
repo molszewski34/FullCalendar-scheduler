@@ -15,6 +15,8 @@ app.use(
   })
 );
 
+app.use(express.json());
+
 async function connectToDatabase() {
   try {
     await mongoose.connect(process.env.MONGODB_URI, {
