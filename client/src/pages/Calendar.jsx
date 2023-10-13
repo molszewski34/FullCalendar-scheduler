@@ -70,7 +70,7 @@ const Calendar = ({ user }) => {
 
     try {
       const response = await axios.post(
-        'full-calendar-scheduler-backend.vercel.app/api/calendar/create-event',
+        '/api/calendar/create-event',
         eventData
       );
       const newEvent = response.data;
@@ -90,12 +90,22 @@ const Calendar = ({ user }) => {
     setEnd(arg.date);
   };
 
+  // const handleDateSet = async (data) => {
+  //   const response = await axios.get(
+  //     '/api/calendar/get-events?start=' +
+  //       moment(data.start).toISOString() +
+  //       '&end=' +
+  //       moment(data.end).toISOString()
+  //   );
+  //   setEvents(response.data);
+  // };
+
   const handleDateSet = async (data) => {
     const response = await axios.get(
-      'full-calendar-scheduler-backend.vercel.app/api/calendar/get-events?start=' +
-        moment(data.start).toISOString() +
+      '/api/calendar/get-events?start=' +
+        data.start.toISOString() +
         '&end=' +
-        moment(data.end).toISOString()
+        data.end.toISOString()
     );
     setEvents(response.data);
   };
@@ -103,7 +113,7 @@ const Calendar = ({ user }) => {
   const handleEventDelete = async () => {
     if (editedEvent) {
       await axios.delete(
-        `full-calendar-scheduler-backend.vercel.app/api/calendar/delete-event/${editedEvent._def.extendedProps._id}`
+        `/api/calendar/delete-event/${editedEvent._def.extendedProps._id}`
       );
       setDeleteConfirmationOpen(false);
       setOverlay(false);
@@ -127,7 +137,7 @@ const Calendar = ({ user }) => {
         },
       };
       const response = await axios.put(
-        `full-calendar-scheduler-backend.vercel.app/api/calendar/update-event/${editedEvent._def.extendedProps._id}`,
+        `/api/calendar/update-event/${editedEvent._def.extendedProps._id}`,
         updatedEventData
       );
       const updatedEvent = response.data;

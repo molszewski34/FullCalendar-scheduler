@@ -1,17 +1,15 @@
 const router = require('express').Router();
 const Event = require('../Models/Event');
-const moment = require('moment');
-
-// router.post('/create-event', async (req, res) => {
-//   const event = Event(req.body);
-//   await event.save();
-//   res.sendStatus(200);
-// });
 
 router.post('/create-event', async (req, res) => {
   try {
     const { title, start, end, extendedProps } = req.body;
-    const event = new Event({ title, start, end, extendedProps });
+    const event = new Event({
+      title,
+      start: new Date(start),
+      end: new Date(end),
+      extendedProps,
+    });
     await event.save();
     res.status(201).json(event);
   } catch (err) {
@@ -23,9 +21,9 @@ router.post('/create-event', async (req, res) => {
 });
 
 router.get('/get-events', async (req, res) => {
+  const { start, end } = req.query;
   const events = await Event.find({
-    start: { $gte: moment(req.query.start).toDate() },
-    end: { $lte: moment(req.query.end).toDate() },
+    start: { $gte: new Date(start), $lte: new Date(end) },
   });
   res.send(events);
 });
@@ -50,11 +48,6 @@ router.delete('/delete-event/:eventId', async (req, res) => {
 router.put('/update-event/:eventId', async (req, res) => {
   try {
     const eventId = req.params.eventId;
-    // const updatedEvent = {
-    //   title: req.query.title,
-    //   start: { $gte: moment(req.query.start).toDate() },
-    //   end: { $lte: moment(req.query.end).toDate() },
-    // };
     const updatedEventData = req.body;
 
     const event = await Event.findByIdAndUpdate(eventId, updatedEventData, {

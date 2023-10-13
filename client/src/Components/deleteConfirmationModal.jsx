@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 
 const DeleteConfirmationModal = ({
   deleteConfirmationOpen,
@@ -9,6 +8,22 @@ const DeleteConfirmationModal = ({
   setOverlay,
   handleEventDelete,
 }) => {
+  const formattedStartDate =
+    editedEvent &&
+    new Date(editedEvent._instance.range.start).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+
+  const formattedEndDate =
+    editedEvent &&
+    new Date(editedEvent._instance.range.end).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+
   return (
     <>
       {deleteConfirmationOpen && (
@@ -20,17 +35,11 @@ const DeleteConfirmationModal = ({
             </p>
             <p>
               <b>od:</b>
-              {`  ${
-                editedEvent != null &&
-                moment(editedEvent._instance.range.start).format('YYYY-MM-DD')
-              }`}
+              {`  ${editedEvent != null && formattedStartDate}`}
             </p>
             <p>
               <b> do:</b>
-              {`     ${
-                editedEvent != null &&
-                moment(editedEvent._instance.range.end).format('YYYY-MM-DD')
-              }`}
+              {`     ${editedEvent != null && formattedEndDate}`}
             </p>
           </div>
           <div className="delete-confirmation_btn_wrapper">
