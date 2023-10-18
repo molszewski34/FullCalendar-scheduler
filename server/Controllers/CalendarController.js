@@ -1,33 +1,25 @@
 const router = require('express').Router();
 const Event = require('../Models/Event');
 
-router.post('/create-event', async (req, res) => {
+router.get('/get-events', async (req, res) => {
   try {
-    const { title, start, end, extendedProps } = req.body;
-    const event = new Event({
-      title,
-      start: new Date(start),
-      end: new Date(end),
-      extendedProps,
-    });
-    await event.save();
-    res.status(201).json(event);
+    const events = await Event.find();
+    res.json(events);
   } catch (err) {
-    console.error(err);
-    res
-      .status(500)
-      .json({ error: 'Wystąpił błąd podczas zapisywania wydarzenia' });
+    res.status(500).send(err);
   }
 });
 
-router.get('/get-events', async (req, res) => {
-  const { start, end } = req.query;
-  const events = await Event.find({
-    start: { $gte: new Date(start), $lte: new Date(end) },
-  });
-  res.send(events);
+router.post('/create-event', async (req, res) => {
+  try {
+    const eventData = req.body;
+    const event = new Event(eventData);
+    await event.save();
+    res.json(event);
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
-
 router.delete('/delete-event/:eventId', async (req, res) => {
   try {
     const eventId = req.params.eventId;

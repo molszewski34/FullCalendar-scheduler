@@ -1,10 +1,10 @@
+import { TextField } from '@mui/material';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 
 const PhoneInput = ({ phone, setPhone, editedEvent, control, errors }) => {
   return (
-    <div className="modal-edit_input">
-      <label htmlFor="">Telefon:</label>
+    <div>
       <Controller
         name="phone"
         control={control}
@@ -25,13 +25,15 @@ const PhoneInput = ({ phone, setPhone, editedEvent, control, errors }) => {
           },
         }}
         render={({ field }) => (
-          <input
-            {...field}
-            placeholder={
+          <TextField
+            label={
               editedEvent && editedEvent._def.extendedProps.phone
                 ? editedEvent._def.extendedProps.phone
-                : '500123456'
+                : 'Telefon'
             }
+            variant="filled"
+            size="small"
+            {...field}
             onChange={(event) => {
               field.onChange(event.target.value);
               setPhone(event.target.value);

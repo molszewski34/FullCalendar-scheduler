@@ -1,6 +1,6 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
-
+import { TextField } from '@mui/material';
 const TitleInput = ({
   title,
   setTitle,
@@ -10,7 +10,7 @@ const TitleInput = ({
   editedEvent,
 }) => {
   return (
-    <div className="modal-edit_input">
+    <div>
       <Controller
         name="title"
         control={control}
@@ -31,13 +31,15 @@ const TitleInput = ({
           },
         }}
         render={({ field }) => (
-          <input
-            {...field}
-            placeholder={
+          <TextField
+            label={
               editedEvent && editedEvent._def.title
                 ? editedEvent._def.title
                 : 'Dodaj tytuł'
             }
+            variant="filled"
+            size="small"
+            {...field}
             className="input-title"
             onChange={(event) => {
               field.onChange(event.target.value);

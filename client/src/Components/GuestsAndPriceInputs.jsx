@@ -1,6 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-
+import { Box, TextField } from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 const GuestsAndPriceInputs = ({
   numOfGuests,
   setNumOfGuests,
@@ -33,11 +35,21 @@ const GuestsAndPriceInputs = ({
   } = useForm();
 
   return (
-    <div className="">
-      <div className="modal-edit_input">
-        <label htmlFor="">Liczba gości:</label>
-        <div className="guests-and-price-inputs">
-          <input
+    <Box
+      sx={{ display: 'flex', flexDirection: 'column' }}
+      useFlexGap
+      spacing={2}
+      className=""
+    >
+      <div>
+        <Box
+          sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+          spacing={{ xs: 1, sm: 2 }}
+        >
+          <TextField
+            label="Liczba gości"
+            variant="filled"
+            size="small"
             {...register('numOfGuests', {
               required: true,
               min: 1,
@@ -46,15 +58,20 @@ const GuestsAndPriceInputs = ({
             value={numOfGuests}
             onChange={(e) => setNumOfGuests(e.target.value)}
           />
-          <div className="guests-and-price-buttons">
-            <button type="button" onClick={handleNumOfGuestsDecrement}>
-              -
-            </button>
-            <button type="button" onClick={handleNumOfGuestsIncrement}>
-              +
-            </button>
-          </div>
-        </div>
+          <Box sx={{ display: 'inline-flex' }} spacing={{ xs: 1, sm: 2 }}>
+            <RemoveCircleOutlineIcon
+              fontSize="large"
+              type="button"
+              onClick={handleNumOfGuestsDecrement}
+            />
+
+            <AddCircleOutlineIcon
+              fontSize="large"
+              type="button"
+              onClick={handleNumOfGuestsIncrement}
+            />
+          </Box>
+        </Box>
         {errors.numOfGuests && errors.numOfGuests.type === 'min' && (
           <p className="error">Minimalnie 1 gość</p>
         )}
@@ -64,9 +81,15 @@ const GuestsAndPriceInputs = ({
       </div>
 
       <div className="modal-edit_input">
-        <label htmlFor="">Cena za gościa:</label>
-        <div className="guests-and-price-inputs">
-          <input
+        {/* <label htmlFor="">Cena za gościa:</label> */}
+        <Box
+          sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+          spacing={{ xs: 1, sm: 2 }}
+        >
+          <TextField
+            label="Cena"
+            variant="filled"
+            size="small"
             {...register('priceOfGuest', {
               required: true,
               min: 1,
@@ -74,15 +97,26 @@ const GuestsAndPriceInputs = ({
             value={priceOfGuest}
             onChange={(e) => setPriceOfGuest(e.target.value)}
           />
-          <div className="guests-and-price-buttons">
-            <button type="button" onClick={handlePriceOfGuestDecrement}>
-              -
-            </button>
-            <button type="button" onClick={handlePriceOfGuestIncrement}>
-              +
-            </button>
-          </div>
-        </div>
+          <Box
+            sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+            spacing={{ xs: 1, sm: 2 }}
+          >
+            {/* <button > */}
+            <RemoveCircleOutlineIcon
+              fontSize="large"
+              type="button"
+              onClick={handlePriceOfGuestDecrement}
+            />
+            {/* </button> */}
+            {/* <button type="button" onClick={handlePriceOfGuestIncrement}> */}
+            <AddCircleOutlineIcon
+              fontSize="large"
+              type="button"
+              onClick={handlePriceOfGuestIncrement}
+            />
+            {/* </button> */}
+          </Box>
+        </Box>
         {errors.priceOfGuest && errors.priceOfGuest.type === 'required' && (
           <p className="error">Pole jest wymagane</p>
         )}
@@ -90,7 +124,7 @@ const GuestsAndPriceInputs = ({
           <p className="error">Minimalnie 1 zł</p>
         )}
       </div>
-    </div>
+    </Box>
   );
 };
 

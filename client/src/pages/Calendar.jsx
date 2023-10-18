@@ -12,10 +12,8 @@ import DeleteConfirmationModal from '../Components/deleteConfirmationModal';
 import EditEventModal from '../Components/EditEventModal';
 import { UserContext } from '../contexts/user.context';
 import { Button } from '@mui/material';
-
-// import { onAuthStateChanged, signOut } from 'firebase/auth';
-// import { auth } from '../firebase';
-// import { useNavigate } from 'react-router-dom';
+import { Box } from '@mui/material';
+import Legend from '../Components/Legend';
 
 const Calendar = ({ user }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -23,7 +21,8 @@ const Calendar = ({ user }) => {
   const calendarRef = useRef(null);
   const [events, setEvents] = useState([]);
   const [overlay, setOverlay] = useState(false);
-  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+
+  const [open, setOpen] = React.useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editedEvent, setEditedEvent] = useState(null);
   const [start, setStart] = useState(null);
@@ -41,10 +40,8 @@ const Calendar = ({ user }) => {
 
   const logOut = async () => {
     try {
-      // Calling the logOutUser function from the user context.
       const loggedOut = await logOutUser();
-      // Now we will refresh the page, and the user will be logged out and
-      // redirected to the login page because of the <PrivateRoute /> component.
+
       if (loggedOut) {
         window.location.reload(true);
       }
@@ -90,16 +87,6 @@ const Calendar = ({ user }) => {
     setEnd(arg.date);
   };
 
-  // const handleDateSet = async (data) => {
-  //   const response = await axios.get(
-  //     '/api/calendar/get-events?start=' +
-  //       moment(data.start).toISOString() +
-  //       '&end=' +
-  //       moment(data.end).toISOString()
-  //   );
-  //   setEvents(response.data);
-  // };
-
   const handleDateSet = async (data) => {
     const response = await axios.get(
       '/api/calendar/get-events?start=' +
@@ -112,10 +99,13 @@ const Calendar = ({ user }) => {
 
   const handleEventDelete = async () => {
     if (editedEvent) {
-      await axios.delete(
+      const response = await axios.delete(
         `/api/calendar/delete-event/${editedEvent._def.extendedProps._id}`
       );
-      setDeleteConfirmationOpen(false);
+      const deletedEvent = response.data;
+      setEvents([deletedEvent]);
+
+      setOpen(false);
       setOverlay(false);
       setEditedEvent(null);
     }
@@ -136,14 +126,29 @@ const Calendar = ({ user }) => {
           color: color,
         },
       };
-      const response = await axios.put(
-        `/api/calendar/update-event/${editedEvent._def.extendedProps._id}`,
-        updatedEventData
-      );
-      const updatedEvent = response.data;
-      setEvents([updatedEvent]);
-      setEditModalOpen(false);
-      setOverlay(false);
+
+      try {
+        const response = await axios.put(
+          `/api/calendar/update-event/${editedEvent._def.extendedProps._id}`,
+          updatedEventData
+        );
+
+        if (response.status === 200) {
+          calendarRef.current
+            .getApi()
+            .getEventSourceById(editedEvent.id)
+            .remove();
+
+          const updatedEvent = response.data;
+          setEvents([updatedEvent]);
+          setEditModalOpen(false);
+          setOverlay(false);
+        } else {
+          console.error('Failed to update event');
+        }
+      } catch (error) {
+        console.error('Error updating event:', error);
+      }
     }
   };
 
@@ -178,7 +183,6 @@ const Calendar = ({ user }) => {
     el.style.background = backgroundColor;
     el.style.fontWeight = 'bold';
     const startDate = new Date(info.event.start);
-    // const endDate = new Date(info.event.end);
 
     const formattedStartDate = ` ${startDate.getHours()}:${String(
       startDate.getMinutes()
@@ -193,10 +197,19 @@ const Calendar = ({ user }) => {
 
   return (
     <section>
-      <Button variant="contained" onClick={logOut}>
-        Wyloguj
-      </Button>
-
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Button variant="contained" onClick={logOut}>
+          Wyloguj
+        </Button>
+        <Legend />
+      </Box>
       <div style={{ position: 'relative', zIndex: 0 }}>
         <FullCalendar
           locale={plLocale}
@@ -245,12 +258,13 @@ const Calendar = ({ user }) => {
         setColor={setColor}
         setDaysDifference={setDaysDifference}
         setModalOpen={setModalOpen}
+        setEditModalOpen={setEditModalOpen}
         setOverlay={setOverlay}
       />
 
       <DeleteConfirmationModal
-        deleteConfirmationOpen={deleteConfirmationOpen}
-        setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+        open={open}
+        setOpen={setOpen}
         editedEvent={editedEvent}
         setEditedEvent={setEditedEvent}
         setOverlay={setOverlay}
@@ -279,9 +293,11 @@ const Calendar = ({ user }) => {
         setSelectedRoom={setSelectedRoom}
         price={price}
         setPrice={setPrice}
-        setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+        open={open}
+        setOpen={setOpen}
         setOverlay={setOverlay}
         setDaysDifference={setDaysDifference}
+        setModalOpen={setModalOpen}
       />
       {overlay && <div className="overlay"></div>}
     </section>

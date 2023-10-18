@@ -300,3 +300,8 @@ label {
 .room-button.selected {
   opacity: 0.5;
 }
+
+.form-control {
+  font-size: 1em;
+  padding: 0.3em;
+}

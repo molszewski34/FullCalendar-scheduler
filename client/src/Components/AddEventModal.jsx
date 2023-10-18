@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Form from './Form';
+import { Button } from '@mui/material';
 
 import {
   handleNumOfGuestsIncrement,
@@ -8,6 +9,7 @@ import {
   handlePriceOfGuestIncrement,
   handlePriceOfGuestDecrement,
 } from './utilities/eventUtilities';
+import Header from './Header';
 const AddEventModal = ({
   isOpen,
   onClose,
@@ -33,6 +35,7 @@ const AddEventModal = ({
   setModalOpen,
   setDaysDifference,
   setOverlay,
+  setEditModalOpen,
 }) => {
   const [selectedRoom, setSelectedRoom] = useState('');
   const roomsList = [
@@ -72,16 +75,19 @@ const AddEventModal = ({
       {isOpen && (
         <div className="modal-edit" isOpen={isOpen}>
           <header className="">
-            <button
+            <Button
+              variant="contained"
+              color="info"
               onClick={() => {
                 setModalOpen(false);
                 setOverlay(false);
               }}
             >
               Anuluj
-            </button>
+            </Button>
             <h2>Dodaj wydarzenie</h2>
           </header>
+
           <Form
             title={title}
             setTitle={setTitle}

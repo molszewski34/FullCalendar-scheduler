@@ -1,8 +1,19 @@
 import React from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const DeleteConfirmationModal = ({
   deleteConfirmationOpen,
-  setDeleteConfirmationOpen,
+
+  open,
+  setOpen,
   editedEvent,
   setEditedEvent,
   setOverlay,
@@ -24,45 +35,53 @@ const DeleteConfirmationModal = ({
       day: '2-digit',
     });
 
+  const handleClose = () => setOpen(false);
+
   return (
     <>
-      {deleteConfirmationOpen && (
-        <div className="delete-confirmation">
-          <div>
-            <p>
-              Czy jesteś pewien że chcesz usunać pobyt
-              <b> {editedEvent != null && editedEvent._def.title}</b> w dniach:
-            </p>
-            <p>
-              <b>od:</b>
-              {`  ${editedEvent != null && formattedStartDate}`}
-            </p>
-            <p>
-              <b> do:</b>
-              {`     ${editedEvent != null && formattedEndDate}`}
-            </p>
-          </div>
-          <div className="delete-confirmation_btn_wrapper">
-            <button
-              className="delete-confirmation_btn"
-              onClick={handleEventDelete}
-              style={{ backgroundColor: 'red' }}
-            >
-              Usuń
-            </button>
-            <button
-              className="delete-confirmation_btn"
-              onClick={() => {
-                setDeleteConfirmationOpen(false);
-                setOverlay(false);
-              }}
-              style={{ backgroundColor: 'blue' }}
-            >
-              Anuluj
-            </button>
-          </div>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <div>
+          <Box>
+            <div>
+              <DialogTitle id="modal-modal-title" variant="h6" component="h2">
+                Czy jesteś pewien że chcesz usunać pobyt{' '}
+                <b> {editedEvent != null && editedEvent._def.title}</b>
+              </DialogTitle>
+              <DialogContent>
+                w dniach:
+                <b>od:</b>
+                {`  ${editedEvent != null && formattedStartDate}`}
+                <b> do:</b>
+                {`     ${editedEvent != null && formattedEndDate}`}
+              </DialogContent>
+            </div>
+
+            <DialogActions>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={handleEventDelete}
+              >
+                Usuń
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  setOpen(false);
+                  setOverlay(false);
+                }}
+              >
+                Anuluj
+              </Button>
+            </DialogActions>
+          </Box>
         </div>
-      )}
+      </Dialog>
     </>
   );
 };

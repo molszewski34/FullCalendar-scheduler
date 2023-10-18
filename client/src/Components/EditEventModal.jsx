@@ -6,10 +6,12 @@ import DateTimeInputs from './DateTimeInputs';
 import GuestsAndPriceInputs from './GuestsAndPriceInputs';
 import RoomSelection from './RoomSelection';
 import Header from './Header';
+import { Button } from '@mui/material';
 
 const EditEventModal = ({
   editModalOpen,
   setEditModalOpen,
+
   handleEventUpdate,
   editedEvent,
   title,
@@ -33,6 +35,8 @@ const EditEventModal = ({
   setDeleteConfirmationOpen,
   setOverlay,
   setDaysDifference,
+  setOpen,
+  setModalOpen,
 }) => {
   const {
     handleSubmit,
@@ -43,7 +47,7 @@ const EditEventModal = ({
   useEffect(() => {
     const total = numOfGuests * priceOfGuest;
     setPrice(total);
-  }, [numOfGuests, priceOfGuest]);
+  }, [numOfGuests, priceOfGuest, setPrice]);
 
   return (
     <div>
@@ -71,7 +75,7 @@ const EditEventModal = ({
               start={start}
               setStart={setStart}
               end={end}
-              setEnd={end}
+              setEnd={setEnd}
               editedEvent={editedEvent}
               setDaysDifference={setDaysDifference}
             />
@@ -99,23 +103,25 @@ const EditEventModal = ({
               Do zapłaty: <span>{price}zł </span>
             </div>
             <div className="modal-edit_btn-wrapper">
-              <button
-                className="form-submit"
+              <Button
+                variant="contained"
+                size="large"
                 style={{ backgroundColor: '#16a34a' }}
                 type="submit"
               >
                 Zapisz
-              </button>
-              <button
-                className="form-delete"
-                style={{ backgroundColor: '#ef4444' }}
+              </Button>
+              <Button
+                variant="contained"
+                size="large"
+                color="error"
                 onClick={() => {
-                  setDeleteConfirmationOpen(true);
+                  setOpen(true);
                   setEditModalOpen(false);
                 }}
               >
                 Usuń
-              </button>
+              </Button>
             </div>
           </form>
         </div>

@@ -5,6 +5,7 @@ import PhoneInput from './PhoneInput';
 import GuestsAndPriceInputs from './GuestsAndPriceInputs';
 import RoomSelection from './RoomSelection';
 import DateTimeInputs from './DateTimeInputs';
+import { Button } from '@mui/material';
 const Form = ({
   title,
   setTitle,
@@ -33,10 +34,6 @@ const Form = ({
     formState: { errors },
   } = useForm();
 
-  // const onSubmit = (data) => {
-  //   console.log(data);
-  // };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <TitleInput
@@ -46,8 +43,7 @@ const Form = ({
         control={control}
         errors={errors}
       />
-      {/* <ArrivalDateTimeInput start={start} setStart={setStart} />
-      <DepartureDateTimeInput end={end} setEnd={setEnd} /> */}
+
       <DateTimeInputs
         start={start}
         setStart={setStart}
@@ -85,9 +81,15 @@ const Form = ({
         Do zapłaty: <span>{price}zł </span>
       </div>
 
-      <button className="form-submit" type="submit">
+      <Button
+        variant="contained"
+        color="success"
+        size="large"
+        className="form-submit"
+        type="submit"
+      >
         Zapisz
-      </button>
+      </Button>
     </form>
   );
 };
