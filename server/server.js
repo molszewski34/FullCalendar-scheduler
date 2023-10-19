@@ -7,13 +7,11 @@ const cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors(corsOptions));
 
-app.use(
-  cors({
-    origin: 'https://full-calendar-scheduler-client.vercel.app',
-  })
-);
+const corsOptions = {
+  origin: 'https://kalendarz-pensjonatu-x18c.onrender.com', // frontend URI (ReactJS)
+};
 
 app.use(express.json());
 
