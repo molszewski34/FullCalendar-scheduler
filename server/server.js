@@ -7,11 +7,10 @@ const cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors(corsOptions));
-
 const corsOptions = {
   origin: 'https://kalendarz-pensjonatu-x18c.onrender.com', // frontend URI (ReactJS)
 };
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
