@@ -50,7 +50,7 @@ const Calendar = ({ user }) => {
     }
   };
 
-  const onEventAdded = async (event) => {
+  const onEventAdded = async () => {
     const eventData = {
       title: title,
       start: start,
@@ -87,15 +87,12 @@ const Calendar = ({ user }) => {
     setEnd(arg.date);
   };
 
-  const handleDateSet = async (data) => {
-    const response = await axios.get(
-      '/api/calendar/get-events?start=' +
-        data.start.toISOString() +
-        '&end=' +
-        data.end.toISOString()
-    );
-    setEvents(response.data);
-  };
+  useEffect(() => {
+    // Pobierz dane kalendarza z serwera API
+    axios.get('/api/calendar/get-events').then((response) => {
+      setEvents(response.data);
+    });
+  }, []);
 
   const handleEventDelete = async () => {
     if (editedEvent) {
@@ -222,7 +219,7 @@ const Calendar = ({ user }) => {
           dateClick={handleDateClick}
           eventRemove={handleEventDelete}
           eventChange={handleEventUpdate}
-          datesSet={handleDateSet}
+          // datesSet={handleDateSet}
           eventClick={eventClick}
           eventColor="gray"
           eventDidMount={handleEventDidMount}
