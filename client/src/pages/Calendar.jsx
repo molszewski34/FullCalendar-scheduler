@@ -50,6 +50,10 @@ const Calendar = ({ user }) => {
     }
   };
 
+  const axiosInstance = axios.create({
+    baseURL: process.env.REACT_APP_PUBLIC_API_URL,
+  });
+
   const onEventAdded = async () => {
     const eventData = {
       title: title,
@@ -66,7 +70,7 @@ const Calendar = ({ user }) => {
     };
 
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         '/api/calendar/create-event',
         eventData
       );
@@ -89,14 +93,14 @@ const Calendar = ({ user }) => {
 
   useEffect(() => {
     // Pobierz dane kalendarza z serwera API
-    axios.get('/api/calendar/get-events').then((response) => {
+    axiosInstance.get('/api/calendar/get-events').then((response) => {
       setEvents(response.data);
     });
   }, []);
 
   const handleEventDelete = async () => {
     if (editedEvent) {
-      const response = await axios.delete(
+      const response = await axiosInstance.delete(
         `/api/calendar/delete-event/${editedEvent._def.extendedProps._id}`
       );
       const deletedEvent = response.data;
@@ -125,7 +129,7 @@ const Calendar = ({ user }) => {
       };
 
       try {
-        const response = await axios.put(
+        const response = await axiosInstance.put(
           `/api/calendar/update-event/${editedEvent._def.extendedProps._id}`,
           updatedEventData
         );
