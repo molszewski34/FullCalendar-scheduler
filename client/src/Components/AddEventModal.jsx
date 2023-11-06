@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import Form from './Form';
 import { Button } from '@mui/material';
-
+import { EventContext } from '../contexts/event.context';
 import {
   handleNumOfGuestsIncrement,
   handleNumOfGuestsDecrement,
@@ -10,33 +10,31 @@ import {
   handlePriceOfGuestDecrement,
 } from './utilities/eventUtilities';
 import Header from './Header';
-const AddEventModal = ({
-  isOpen,
-  onClose,
-  onEventAdded,
-  title,
-  setTitle,
-  start,
-  setStart,
-  end,
-  setEnd,
-  phone,
-  setPhone,
-  numOfGuests,
-  setNumOfGuests,
-  priceOfGuest,
-  setPriceOfGuest,
-  price,
-  setPrice,
-  room,
-  setRoom,
-  color,
-  setColor,
-  setModalOpen,
-  setDaysDifference,
-  setOverlay,
-  setEditModalOpen,
-}) => {
+const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
+  const {
+    title,
+    setTitle,
+    start,
+    setStart,
+    end,
+    setEnd,
+    phone,
+    setPhone,
+    numOfGuests,
+    setNumOfGuests,
+    priceOfGuest,
+    setPriceOfGuest,
+    price,
+    setPrice,
+    room,
+    setRoom,
+    color,
+    setColor,
+    setModalOpen,
+    setDaysDifference,
+    setOverlay,
+  } = useContext(EventContext);
+
   const [selectedRoom, setSelectedRoom] = useState('');
   const roomsList = [
     { name: 'Sypialnia', numOfGuests: 2, priceOfGuest: 65, color: 'red' },
@@ -73,7 +71,7 @@ const AddEventModal = ({
   return (
     <>
       {isOpen && (
-        <div className="modal-edit" isOpen={isOpen}>
+        <div className="modal-edit">
           <header className="">
             <Button
               variant="contained"

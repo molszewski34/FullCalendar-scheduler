@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import TitleInput from './TitleInput';
 import PhoneInput from './PhoneInput';
@@ -7,37 +7,38 @@ import GuestsAndPriceInputs from './GuestsAndPriceInputs';
 import RoomSelection from './RoomSelection';
 import Header from './Header';
 import { Button } from '@mui/material';
-
+import { EventContext } from '../contexts/event.context';
 const EditEventModal = ({
   editModalOpen,
   setEditModalOpen,
-
-  handleEventUpdate,
-  editedEvent,
-  title,
-  setTitle,
-  start,
-  setStart,
-  end,
-  setEnd,
-  phone,
-  setPhone,
-  numOfGuests,
-  setNumOfGuests,
-  priceOfGuest,
-  setPriceOfGuest,
-  room,
-  setRoom,
-  setColor,
-  setSelectedRoom,
-  price,
-  setPrice,
-  setDeleteConfirmationOpen,
-  setOverlay,
-  setDaysDifference,
-  setOpen,
-  setModalOpen,
+  handleEventChange,
 }) => {
+  const {
+    editedEvent,
+    title,
+    setTitle,
+    start,
+    setStart,
+    end,
+    setEnd,
+    phone,
+    setPhone,
+    numOfGuests,
+    setNumOfGuests,
+    priceOfGuest,
+    setPriceOfGuest,
+    room,
+    setRoom,
+    setColor,
+    setSelectedRoom,
+    price,
+    setPrice,
+    setDeleteConfirmationOpen,
+    setOverlay,
+    setDaysDifference,
+    setOpen,
+    setModalOpen,
+  } = useContext(EventContext);
   const {
     handleSubmit,
     control,
@@ -54,7 +55,7 @@ const EditEventModal = ({
       {editModalOpen && (
         <div className="modal-edit">
           <Header setEditModalOpen={setEditModalOpen} setOverlay={setOverlay} />
-          <form onSubmit={handleSubmit(handleEventUpdate)}>
+          <form onSubmit={handleSubmit(handleEventChange)}>
             <TitleInput
               title={title}
               setTitle={setTitle}

@@ -14,27 +14,45 @@ import { UserContext } from '../contexts/user.context';
 import { Button } from '@mui/material';
 import { Box } from '@mui/material';
 import Legend from '../Components/Legend';
+import { EventContext } from '../contexts/event.context';
+import { FilterRooms } from '../Components/utilities/FilterRooms';
 
-const Calendar = ({ user }) => {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState({ start: null, end: null });
+const Calendar = () => {
   const calendarRef = useRef(null);
-  const [events, setEvents] = useState([]);
-  const [overlay, setOverlay] = useState(false);
 
-  const [open, setOpen] = React.useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [editedEvent, setEditedEvent] = useState(null);
-  const [start, setStart] = useState(null);
-  const [end, setEnd] = useState(null);
-  const [title, setTitle] = useState('');
-  const [phone, setPhone] = useState('');
-  const [numOfGuests, setNumOfGuests] = useState(2);
-  const [priceOfGuest, setPriceOfGuest] = useState(65);
-  const [price, setPrice] = useState('');
-  const [room, setRoom] = useState('');
-  const [color, setColor] = useState('');
-  const [daysDifference, setDaysDifference] = useState(null);
+  const {
+    modalOpen,
+    setModalOpen,
+    selectedDate,
+    setSelectedDate,
+    events,
+    setEvents,
+    overlay,
+    setOverlay,
+    open,
+    setOpen,
+    editModalOpen,
+    setEditModalOpen,
+    editedEvent,
+    setEditedEvent,
+    start,
+    setStart,
+    end,
+    setEnd,
+    title,
+    phone,
+    numOfGuests,
+    setNumOfGuests,
+    priceOfGuest,
+    setPriceOfGuest,
+    price,
+    setPrice,
+    room,
+    color,
+    daysDifference,
+    selectedCategory,
+    setSelectedCategory,
+  } = useContext(EventContext);
 
   const { logOutUser } = useContext(UserContext);
 
@@ -54,7 +72,7 @@ const Calendar = ({ user }) => {
     baseURL: process.env.REACT_APP_PUBLIC_API_URL,
   });
 
-  const onEventAdded = async () => {
+  const onEventAdded = async (event) => {
     const eventData = {
       title: title,
       start: start,
@@ -92,27 +110,29 @@ const Calendar = ({ user }) => {
   };
 
   useEffect(() => {
-    // Pobierz dane kalendarza z serwera API
     axiosInstance.get('/api/calendar/get-events').then((response) => {
       setEvents(response.data);
     });
   }, []);
 
-  const handleEventDelete = async () => {
+  const handleEventDelete = async (eventId) => {
     if (editedEvent) {
       const response = await axiosInstance.delete(
         `/api/calendar/delete-event/${editedEvent._def.extendedProps._id}`
       );
-      const deletedEvent = response.data;
-      setEvents([deletedEvent]);
 
+      const updatedEvents = events.filter((event) => event.id !== eventId);
+      setEvents(updatedEvents);
+      // const deletedEvent = response.data;
+      // setEvents([...events]);
       setOpen(false);
       setOverlay(false);
       setEditedEvent(null);
+      window.location.reload();
     }
   };
 
-  const handleEventUpdate = async (e) => {
+  const handleEventChange = async (event) => {
     if (editedEvent) {
       const updatedEventData = {
         start: start.toISOString(),
@@ -141,9 +161,12 @@ const Calendar = ({ user }) => {
             .remove();
 
           const updatedEvent = response.data;
+
           setEvents([updatedEvent]);
+
           setEditModalOpen(false);
           setOverlay(false);
+          window.location.reload();
         } else {
           console.error('Failed to update event');
         }
@@ -175,8 +198,6 @@ const Calendar = ({ user }) => {
     setPrice(total);
   }, [numOfGuests, priceOfGuest, daysDifference]);
 
-  const [selectedRoom, setSelectedRoom] = useState('');
-
   const handleEventDidMount = (info) => {
     const backgroundColor = info.event.extendedProps.color || 'gray';
 
@@ -196,6 +217,11 @@ const Calendar = ({ user }) => {
     info.el.appendChild(dateElement);
   };
 
+  const filteredEvents = events.filter(
+    (event) =>
+      selectedCategory === '' || event.extendedProps.room === selectedCategory
+  );
+
   return (
     <section>
       <Box
@@ -209,7 +235,9 @@ const Calendar = ({ user }) => {
         <Button variant="contained" onClick={logOut}>
           Wyloguj
         </Button>
-        <Legend />
+        {/* <Legend /> */}
+
+        <FilterRooms setSelectedCategory={setSelectedCategory}></FilterRooms>
       </Box>
       <div style={{ position: 'relative', zIndex: 0 }}>
         <FullCalendar
@@ -219,11 +247,10 @@ const Calendar = ({ user }) => {
           timeZone="Europe/Warsaw"
           displayEventTime={false}
           ref={calendarRef}
-          events={events}
+          events={filteredEvents}
           dateClick={handleDateClick}
           eventRemove={handleEventDelete}
-          eventChange={handleEventUpdate}
-          // datesSet={handleDateSet}
+          eventChange={handleEventChange}
           eventClick={eventClick}
           eventColor="gray"
           eventDidMount={handleEventDidMount}
@@ -239,28 +266,6 @@ const Calendar = ({ user }) => {
           setSelectedDate(null);
         }}
         onEventAdded={onEventAdded}
-        start={start}
-        setStart={setStart}
-        end={end}
-        setEnd={setEnd}
-        title={title}
-        setTitle={setTitle}
-        phone={phone}
-        setPhone={setPhone}
-        numOfGuests={numOfGuests}
-        setNumOfGuests={setNumOfGuests}
-        priceOfGuest={priceOfGuest}
-        setPriceOfGuest={setPriceOfGuest}
-        price={price}
-        setPrice={setPrice}
-        room={room}
-        setRoom={setRoom}
-        color={color}
-        setColor={setColor}
-        setDaysDifference={setDaysDifference}
-        setModalOpen={setModalOpen}
-        setEditModalOpen={setEditModalOpen}
-        setOverlay={setOverlay}
       />
 
       <DeleteConfirmationModal
@@ -273,32 +278,8 @@ const Calendar = ({ user }) => {
       />
       <EditEventModal
         editModalOpen={editModalOpen}
-        handleEventUpdate={handleEventUpdate}
+        handleEventChange={handleEventChange}
         setEditModalOpen={setEditModalOpen}
-        editedEvent={editedEvent}
-        title={title}
-        setTitle={setTitle}
-        start={start}
-        setStart={setStart}
-        end={end}
-        setEnd={setEnd}
-        phone={phone}
-        setPhone={setPhone}
-        numOfGuests={numOfGuests}
-        setNumOfGuests={setNumOfGuests}
-        priceOfGuest={priceOfGuest}
-        setPriceOfGuest={setPriceOfGuest}
-        room={room}
-        setRoom={setRoom}
-        setColor={setColor}
-        setSelectedRoom={setSelectedRoom}
-        price={price}
-        setPrice={setPrice}
-        open={open}
-        setOpen={setOpen}
-        setOverlay={setOverlay}
-        setDaysDifference={setDaysDifference}
-        setModalOpen={setModalOpen}
       />
       {overlay && <div className="overlay"></div>}
     </section>
