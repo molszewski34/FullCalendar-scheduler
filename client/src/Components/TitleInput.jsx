@@ -14,7 +14,7 @@ const TitleInput = ({
       <Controller
         name="title"
         control={control}
-        defaultValue=""
+        defaultValue={title}
         rules={{
           required: 'To pole jest wymagane',
           minLength: {
@@ -26,7 +26,7 @@ const TitleInput = ({
             message: 'Imię nie może mieć więcej niż 20 znaków',
           },
           pattern: {
-            value: /^[A-Za-z\s]+$/,
+            value: /^[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ\s]+$/,
             message: 'Imię może zawierać tylko litery',
           },
         }}

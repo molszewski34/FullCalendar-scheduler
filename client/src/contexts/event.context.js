@@ -20,12 +20,21 @@ export function EventProvider({ children }) {
   const [numOfGuests, setNumOfGuests] = useState(2);
   const [priceOfGuest, setPriceOfGuest] = useState(65);
   const [price, setPrice] = useState('');
-  const [room, setRoom] = useState('');
+  const [room, setRoom] = useState('default');
   const [color, setColor] = useState('');
   const [selectedRoom, setSelectedRoom] = useState('');
   const [daysDifference, setDaysDifference] = useState(null);
   const [filteredRoom, setFilteredRoom] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [buttonCount, setButtonCount] = useState(numOfGuests);
+  const [guestValue, setGuestValue] = useState(priceOfGuest);
+  const [numInputs, setNumInputs] = useState(numOfGuests);
+  // const [inputValues, setInputValues] = useState(new Array(numInputs).fill(65));
+  const [sumOfInputs, setSumOfInputs] = useState(0);
+  const [discountValue, setDiscountValue] = useState(0.5);
+  const [guestsFee, setGuestsFee] = useState([65]);
+  const [initialInputs, setInitialInputs] = useState([65]);
+  const [total, setTotal] = useState(65);
   return (
     <EventContext.Provider
       value={{
@@ -67,6 +76,24 @@ export function EventProvider({ children }) {
         setSelectedRoom,
         selectedCategory,
         setSelectedCategory,
+        buttonCount,
+        setButtonCount,
+        guestValue,
+        setGuestValue,
+        numInputs,
+        setNumInputs,
+        // inputValues,
+        // setInputValues,
+        sumOfInputs,
+        setSumOfInputs,
+        discountValue,
+        setDiscountValue,
+        guestsFee,
+        setGuestsFee,
+        total,
+        setTotal,
+        initialInputs,
+        setInitialInputs,
       }}
     >
       {children}

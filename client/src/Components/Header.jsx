@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button } from '@mui/material';
-const Header = ({ setEditModalOpen, setOverlay }) => {
+import { EventContext } from '../contexts/event.context';
+const Header = () => {
+  const { setEditModalOpen, setGuestsFee, setOverlay } =
+    useContext(EventContext);
   return (
     <header className="">
       <Button
@@ -10,6 +13,7 @@ const Header = ({ setEditModalOpen, setOverlay }) => {
         onClick={() => {
           setEditModalOpen(false);
           setOverlay(false);
+          setGuestsFee([65]);
         }}
       >
         Anuluj

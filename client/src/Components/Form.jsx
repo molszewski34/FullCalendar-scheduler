@@ -27,6 +27,7 @@ const Form = ({
   setPrice,
   onSubmit,
   setDaysDifference,
+  total,
 }) => {
   const {
     handleSubmit,
@@ -76,7 +77,9 @@ const Form = ({
         priceOfGuest={priceOfGuest}
         setPriceOfGuest={setPriceOfGuest}
       />
-
+      <div className="price-per-day ">
+        Za dzień: <span>{total}zł </span>
+      </div>
       <div className="price">
         Do zapłaty: <span>{price}zł </span>
       </div>

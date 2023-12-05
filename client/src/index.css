@@ -165,10 +165,23 @@ label {
   font-size: 1em;
   font-weight: bold;
 }
+.price-per-day {
+  display: flex;
+  gap: 1em;
+  align-self: end;
+  align-items: center;
+  font-size: 0.8em;
+  font-weight: bold;
+}
 
 .price span {
-  font-size: 2em;
+  font-size: 1.5em;
   color: #65a30d;
+}
+
+.price-per-day span {
+  font-size: 1.5em;
+  color: #a855f7;
 }
 
 .form-submit {
@@ -234,12 +247,12 @@ label {
   z-index: 2;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 280px;
+  width: 480px;
 
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   background: #fff;
   border: 1px solid rgb(0 0 0 / 0.3);
   padding: 1em;
@@ -249,7 +262,7 @@ label {
 
 @media (min-width: 640px) {
   .modal-edit {
-    top: 25%;
+    top: 50%;
   }
 }
 
@@ -265,6 +278,54 @@ label {
   cursor: pointer;
 }
 
+.discount {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  align-items: stretch;
+}
+
+.discount-box {
+  /* width: 200px; */
+  display: flex;
+  height: 100%;
+  align-items: flex-start;
+  margin-bottom: 0.2em;
+}
+.discount-box input {
+  width: 50px;
+}
+
+.discount-box-item-btns {
+  display: flex;
+  gap: 0.5em;
+}
+
+.discount-box-wrapper {
+  display: flex;
+  flex-direction: column;
+  border: solid 1px gray;
+  padding: 0.2em;
+}
+.discount-box-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+.discount-btns {
+  display: flex;
+  gap: 0.1em;
+}
+
+.discount-btn {
+  margin-top: 0.5em;
+  background-color: #000;
+  color: #fff;
+  border-radius: 3px;
+  border: none;
+}
+
 .overlay {
   z-index: 1;
   position: fixed;
@@ -275,9 +336,9 @@ label {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-.fc-daygrid-event-harness {
+/* .fc-daygrid-event-harness {
   transform: skew(-30deg);
-}
+} */
 
 .fc-event-main-frame {
   padding-left: 1em;
