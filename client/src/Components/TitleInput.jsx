@@ -22,7 +22,7 @@ const TitleInput = ({
             message: 'Imię musi mieć co najmniej 1 znak',
           },
           maxLength: {
-            value: 20,
+            value: 30,
             message: 'Imię nie może mieć więcej niż 20 znaków',
           },
           pattern: {

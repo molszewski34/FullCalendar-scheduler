@@ -130,8 +130,7 @@ const Calendar = () => {
 
       const updatedEvents = events.filter((event) => event.id !== eventId);
       setEvents(updatedEvents);
-      // const deletedEvent = response.data;
-      // setEvents([...events]);
+
       setOpen(false);
       setOverlay(false);
       setEditedEvent(null);
