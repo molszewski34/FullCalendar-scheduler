@@ -5,10 +5,7 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { EventContext } from '../contexts/event.context';
 import { Box, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import //   handlEditedPriceOfGuestIncrement,
-//   handlePriceOfGuestDecrement,
-//   handlePriceOfGuestIncrement,
-'./utilities/eventUtilities';
+import './utilities/eventUtilities';
 const GuestItem = ({ priceOfGuest }) => {
   const { setPriceOfGuest } = useContext(EventContext);
 
@@ -18,10 +15,6 @@ const GuestItem = ({ priceOfGuest }) => {
     register,
     formState: { errors },
   } = useForm();
-
-  //   const handleInputChange = (event) => {
-  //     setGuestValue(event.target.value);
-  //   };
 
   const handlePriceOfGuestIncrement = () => {
     setPriceOfGuest(priceOfGuest + 1);
@@ -42,7 +35,6 @@ const GuestItem = ({ priceOfGuest }) => {
         <header>Osoba</header>
         <div className="discount-box-item">
           <Person4Icon />
-          {/* <input type="text" value={guestValue} onChange={handleInputChange} /> */}
           <input
             {...register('priceOfGuest', {
               required: true,
@@ -50,7 +42,6 @@ const GuestItem = ({ priceOfGuest }) => {
             })}
             value={priceOfGuest}
             onChange={(e) => setPriceOfGuest(e.target.value)}
-            // onChange={(e) => handlePriceChange(e, i)}
           />
           <div className="discount-box-item-btns">
             <RemoveCircleOutlineIcon

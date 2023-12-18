@@ -305,6 +305,7 @@ label {
   display: flex;
   flex-direction: column;
   border: solid 1px gray;
+  border-radius: 8px;
   padding: 0.2em;
 }
 .discount-box-item {
@@ -365,4 +366,15 @@ label {
 .form-control {
   font-size: 1em;
   padding: 0.3em;
+}
+
+.rdtTimeToggle {
+  padding: 0.5em;
+  border: 1px #000 solid;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.rdtPrev .rdtNext span {
+  padding: 1.3em;
 }

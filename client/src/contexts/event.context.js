@@ -6,13 +6,11 @@ export const EventContext = createContext();
 export function EventProvider({ children }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState({ start: null, end: null });
-
   const [events, setEvents] = useState([]);
   const [overlay, setOverlay] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editedEvent, setEditedEvent] = useState(null);
-
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
   const [title, setTitle] = useState('');
@@ -29,12 +27,12 @@ export function EventProvider({ children }) {
   const [buttonCount, setButtonCount] = useState(numOfGuests);
   const [guestValue, setGuestValue] = useState(priceOfGuest);
   const [numInputs, setNumInputs] = useState(numOfGuests);
-  // const [inputValues, setInputValues] = useState(new Array(numInputs).fill(65));
   const [sumOfInputs, setSumOfInputs] = useState(0);
   const [discountValue, setDiscountValue] = useState(0.5);
   const [guestsFee, setGuestsFee] = useState([65]);
   const [initialInputs, setInitialInputs] = useState([65]);
   const [total, setTotal] = useState(65);
+  const [cachedEvents, setCachedEvents] = useState([]);
   return (
     <EventContext.Provider
       value={{
@@ -82,8 +80,7 @@ export function EventProvider({ children }) {
         setGuestValue,
         numInputs,
         setNumInputs,
-        // inputValues,
-        // setInputValues,
+
         sumOfInputs,
         setSumOfInputs,
         discountValue,
@@ -94,6 +91,8 @@ export function EventProvider({ children }) {
         setTotal,
         initialInputs,
         setInitialInputs,
+        cachedEvents,
+        setCachedEvents,
       }}
     >
       {children}
