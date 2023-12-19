@@ -71,39 +71,49 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
     formState: { errors },
   } = useForm();
 
+  // Handles input change for a specific index and updates the total accordingly.
   const handleInputChange = (index, value) => {
     const newValue = parseInt(value) || 0;
+
     const newInputs = [...guestsFee];
 
     const diff = newValue - newInputs[index];
-    newInputs[index] = newValue;
+
     setGuestsFee(newInputs);
     setInitialInputs(newInputs);
     setTotal(total + diff);
   };
 
+  // Increments the value at a specific index and updates the total.
   const incrementValue = (index) => {
     const newInputs = [...guestsFee];
+
     newInputs[index] += 1;
+
     setGuestsFee(newInputs);
     setInitialInputs(newInputs);
     setTotal(total + 1);
   };
 
+  // Decrements the value at a specific index and updates the total.
   const decrementValue = (index) => {
     const newInputs = [...guestsFee];
+
     newInputs[index] -= 1;
+
     setGuestsFee(newInputs);
     setInitialInputs(newInputs);
     setTotal(total - 1);
   };
 
+  // Changes the value at a specific index based on a percentage and updates the total.
   const changeValuePercentage = (index, percentage) => {
     if (guestsFee === initialInputs) {
       const newInputs = [...guestsFee];
       const newValue = newInputs[index] * (1 + percentage / 100);
       const diff = newValue - newInputs[index];
       newInputs[index] = newValue;
+
       setGuestsFee(newInputs);
       setTotal(total + diff);
     } else {
@@ -112,6 +122,7 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
       const newValue = initialValue[index] * (1 + percentage / 100);
       const diff = newValue - newInputs[index];
       newInputs[index] = newValue;
+
       setGuestsFee(newInputs);
       setTotal(total + diff);
     }
