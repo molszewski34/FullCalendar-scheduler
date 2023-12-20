@@ -61,6 +61,24 @@ export function EventProvider({ children }) {
     },
   ]);
 
+  const [discountbtnData, setDiscountBtnData] = useState([
+    {
+      backgroundColor: '#ff5252',
+      text: '50%',
+      value: -50,
+    },
+    {
+      backgroundColor: '#fb8c00',
+      text: '25%',
+      value: -25,
+    },
+    {
+      backgroundColor: '#00c853',
+      text: '10%',
+      value: -10,
+    },
+  ]);
+
   return (
     <EventContext.Provider
       value={{
@@ -123,6 +141,8 @@ export function EventProvider({ children }) {
         setCachedEvents,
         roomsList,
         setRoomList,
+        discountbtnData,
+        setDiscountBtnData,
       }}
     >
       {children}
