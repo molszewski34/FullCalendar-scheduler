@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { EventContext } from '../contexts/event.context';
 import { useForm, Controller } from 'react-hook-form';
+// import roomsList from './data/roomsList';
 const RoomSelection = ({
   room,
   error,
@@ -9,6 +10,7 @@ const RoomSelection = ({
   setNumOfGuests,
   setPriceOfGuest,
   setSelectedRoom,
+  // roomsList,
 }) => {
   const {
     setButtonCount,
@@ -17,33 +19,39 @@ const RoomSelection = ({
     priceOfGuest,
     setGuestsFee,
     setTotal,
+    roomsList,
   } = useContext(EventContext);
 
   const { handleSubmit, control, setError } = useForm();
 
-  const roomsList = [
-    {
-      name: 'Sypialnia',
-      numOfGuests: 2,
-      priceOfGuest: 65,
-      color: `linear-gradient(to right, #ED213A, #93291E)`,
-      generateInput: () => generateInputs(2),
-    },
-    {
-      name: '3 łóżka',
-      numOfGuests: 3,
-      priceOfGuest: 65,
-      color: `linear-gradient(to right, #005C97, #363795)`,
-      generateInput: () => generateInputs(3),
-    },
-    {
-      name: '2 łóżka',
-      numOfGuests: 2,
-      priceOfGuest: 65,
-      color: `linear-gradient(to right, #3CA55C, #B5AC49)`,
-      generateInput: () => generateInputs(2),
-    },
-  ];
+  // const roomsList = [
+  //   {
+  //     name: 'Sypialnia',
+  //     numOfGuests: 2,
+  //     priceOfGuest: 65,
+  //     color: `linear-gradient(to right, #ED213A, #93291E)`,
+
+  //     defNumOfGuests: 2,
+  //   },
+  //   {
+  //     name: '3 łóżka',
+  //     numOfGuests: 3,
+  //     priceOfGuest: 65,
+  //     color: `linear-gradient(to right, #005C97, #363795)`,
+
+  //     defNumOfGuests: 3,
+  //   },
+  //   {
+  //     name: '2 łóżka',
+  //     numOfGuests: 2,
+  //     priceOfGuest: 65,
+  //     color: `linear-gradient(to right, #3CA55C, #B5AC49)`,
+
+  //     defNumOfGuests: 2,
+  //   },
+  // ];
+
+  console.log(roomsList);
 
   const handleRoomChange = (roomItem) => {
     setRoom(roomItem.name);
@@ -75,7 +83,8 @@ const RoomSelection = ({
               style={{ background: roomItem.color }}
               onClick={() => {
                 handleRoomChange(roomItem);
-                roomItem.generateInput();
+                // roomItem.generateInput(roomItem.defNumOfGuests);
+                generateInputs(roomItem.defNumOfGuests);
               }}
             >
               {roomItem.name}
