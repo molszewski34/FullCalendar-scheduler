@@ -9,8 +9,6 @@ const RoomSelection = ({
   setNumOfGuests,
   setPriceOfGuest,
   setSelectedRoom,
-  // priceOfGuest,
-  // setButtonCount,
 }) => {
   const {
     setButtonCount,
@@ -53,7 +51,6 @@ const RoomSelection = ({
     setNumOfGuests(roomItem.numOfGuests);
     setPriceOfGuest(roomItem.priceOfGuest);
     setSelectedRoom(roomItem.name);
-    // setInputValues(new Array(roomItem.numOfGuests).fill(priceOfGuest));
   };
 
   const generateInputs = (count) => {
@@ -84,12 +81,6 @@ const RoomSelection = ({
               {roomItem.name}
             </button>
           ))}
-          {/* <div>
-            <button onClick={() => generateInputs(1)}>Generuj 1 Input</button>
-            <button onClick={() => generateInputs(3)}>Generuj 3 Inputy</button>
-            <button onClick={() => generateInputs(5)}>Generuj 5 Inputów</button>
-           
-          </div> */}
         </div>
       </div>
     </div>

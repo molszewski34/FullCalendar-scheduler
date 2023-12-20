@@ -9,13 +9,10 @@ import {
   handlePriceOfGuestIncrement,
   handlePriceOfGuestDecrement,
 } from './utilities/eventUtilities';
-
-import Person4Icon from '@mui/icons-material/Person4';
+import PersonIcon from '@mui/icons-material/Person';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
-import Header from './Header';
-import GuestItem from './GuestItem';
 const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
   const {
     title,
@@ -49,14 +46,7 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
   } = useContext(EventContext);
 
   const [selectedRoom, setSelectedRoom] = useState('');
-  const [appliedDiscounts, setAppliedDiscounts] = useState(
-    Array(guestsFee.length).fill(false)
-  );
-  const roomsList = [
-    { name: 'Sypialnia', numOfGuests: 2, priceOfGuest: 65, color: 'red' },
-    { name: '3 łóżka', numOfGuests: 3, priceOfGuest: 65, color: 'blue' },
-    { name: '2 łóżka', numOfGuests: 2, priceOfGuest: 65, color: 'green' },
-  ];
+
   useEffect(() => {
     const totalPrice = total * daysDifference;
     setPrice(totalPrice);
@@ -78,56 +68,52 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
   };
 
   const {
-    register,
-    handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
 
-  // const handleInputChange = (index, value) => {
-  //   const newInputs = [...guestsFee];
-
-  //   const diff = value - newInputs[index];
-  //   newInputs[index] = value;
-  //   setGuestsFee(newInputs);
-  //   setInitialInputs(newInputs);
-  //   setTotal(total + diff);
-
-  // };
-
+  // Handles input change for a specific index and updates the total accordingly.
   const handleInputChange = (index, value) => {
-    const newValue = parseInt(value) || 0; // Parse value to integer or set to 0 if NaN
+    const newValue = parseInt(value) || 0;
+
     const newInputs = [...guestsFee];
 
     const diff = newValue - newInputs[index];
-    newInputs[index] = newValue;
+
     setGuestsFee(newInputs);
     setInitialInputs(newInputs);
     setTotal(total + diff);
   };
 
+  // Increments the value at a specific index and updates the total.
   const incrementValue = (index) => {
     const newInputs = [...guestsFee];
+
     newInputs[index] += 1;
+
     setGuestsFee(newInputs);
     setInitialInputs(newInputs);
     setTotal(total + 1);
   };
 
+  // Decrements the value at a specific index and updates the total.
   const decrementValue = (index) => {
     const newInputs = [...guestsFee];
+
     newInputs[index] -= 1;
+
     setGuestsFee(newInputs);
     setInitialInputs(newInputs);
     setTotal(total - 1);
   };
 
+  // Changes the value at a specific index based on a percentage and updates the total.
   const changeValuePercentage = (index, percentage) => {
     if (guestsFee === initialInputs) {
       const newInputs = [...guestsFee];
       const newValue = newInputs[index] * (1 + percentage / 100);
       const diff = newValue - newInputs[index];
       newInputs[index] = newValue;
+
       setGuestsFee(newInputs);
       setTotal(total + diff);
     } else {
@@ -136,6 +122,7 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
       const newValue = initialValue[index] * (1 + percentage / 100);
       const diff = newValue - newInputs[index];
       newInputs[index] = newValue;
+
       setGuestsFee(newInputs);
       setTotal(total + diff);
     }
@@ -203,10 +190,14 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
               <div className="discount-box">
                 <div className="discount-box-wrapper">
                   <div className="discount-box-item" key={index}>
+                    <PersonIcon style={{ color: '#757575' }} />
                     <input
                       key={index}
                       type="text"
                       value={value}
+                      style={{
+                        fontSize: '1em',
+                      }}
                       onChange={(e) =>
                         handleInputChange(index, parseInt(e.target.value))
                       }
@@ -222,24 +213,32 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
                         fontSize="large"
                         type="button"
                         onClick={() => incrementValue(index)}
-                        color="success"
+                        style={{ color: '#8bc34a' }}
                       />
                     </div>
                   </div>
                   <div className="discount-btns ">
                     <Button
                       variant="contained"
-                      color="secondary"
                       className="discount-btn"
                       sx={{ my: 1 }}
                       size="small"
                       onClick={() => changeValuePercentage(index, -50)}
+                      style={{
+                        color: '#fff',
+                        backgroundColor: '#ff5252',
+                        fontWeight: 'bold',
+                      }}
                     >
                       50%
                     </Button>
                     <Button
                       variant="contained"
-                      color="secondary"
+                      style={{
+                        color: '#fff',
+                        backgroundColor: '#fb8c00',
+                        fontWeight: 'bold',
+                      }}
                       className="discount-btn"
                       sx={{ my: 1 }}
                       size="small"
@@ -249,11 +248,15 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
                     </Button>
                     <Button
                       variant="contained"
+                      style={{
+                        color: '#fff',
+                        backgroundColor: '#00c853',
+                        fontWeight: 'bold',
+                      }}
                       color="secondary"
                       className="discount-btn"
                       sx={{ my: 1 }}
                       size="small"
-                      // onClick={() => handleReduceValueBy50Percent(index)}
                       onClick={() => changeValuePercentage(index, -10)}
                     >
                       10%

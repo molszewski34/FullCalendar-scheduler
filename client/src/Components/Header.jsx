@@ -2,8 +2,18 @@ import React, { useContext } from 'react';
 import { Button } from '@mui/material';
 import { EventContext } from '../contexts/event.context';
 const Header = () => {
-  const { setEditModalOpen, setGuestsFee, setOverlay } =
-    useContext(EventContext);
+  const {
+    setEditModalOpen,
+    setGuestsFee,
+    setOverlay,
+    setTitle,
+    setPhone,
+    setPriceOfGuest,
+    setNumOfGuests,
+
+    setRoom,
+    setColor,
+  } = useContext(EventContext);
   return (
     <header className="">
       <Button
@@ -14,6 +24,13 @@ const Header = () => {
           setEditModalOpen(false);
           setOverlay(false);
           setGuestsFee([65]);
+          setTitle('');
+          setPhone('');
+          setPriceOfGuest('');
+          setNumOfGuests('');
+
+          setRoom('');
+          setColor('');
         }}
       >
         Anuluj

@@ -16,7 +16,7 @@ import { Box } from '@mui/material';
 import Legend from '../Components/Legend';
 import { EventContext } from '../contexts/event.context';
 import { FilterRooms } from '../Components/utilities/FilterRooms';
-
+import { useQuery } from 'react-query';
 const Calendar = () => {
   const calendarRef = useRef(null);
 
@@ -116,11 +116,11 @@ const Calendar = () => {
     setEnd(arg.date);
   };
 
-  useEffect(() => {
-    axiosInstance.get('/api/calendar/get-events').then((response) => {
-      setEvents(response.data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   axiosInstance.get('/api/calendar/get-events').then((response) => {
+  //     setEvents(response.data);
+  //   });
+  // }, []);
 
   const handleEventDelete = async (eventId) => {
     if (editedEvent) {
@@ -130,8 +130,7 @@ const Calendar = () => {
 
       const updatedEvents = events.filter((event) => event.id !== eventId);
       setEvents(updatedEvents);
-      // const deletedEvent = response.data;
-      // setEvents([...events]);
+
       setOpen(false);
       setOverlay(false);
       setEditedEvent(null);
@@ -236,6 +235,18 @@ const Calendar = () => {
   );
 
   console.log(title);
+
+  const { data: eventsData, refetch } = useQuery('events', () =>
+    axiosInstance
+      .get('/api/calendar/get-events')
+      .then((response) => response.data)
+  );
+
+  useEffect(() => {
+    if (eventsData) {
+      setEvents(eventsData);
+    }
+  }, [eventsData]);
 
   return (
     <section>

@@ -16,7 +16,7 @@ export function FilterRooms() {
         name="roomSelection"
         onChange={(e) => setSelectedCategory(e.target.value)}
       >
-        <option value="">Pokoje</option>
+        <option value="">Wszystkie</option>
         <option value="Sypialnia">Sypialnia</option>
         <option value="2 łóżka">2 łóżka</option>
         <option value="3 łóżka">3 łóżka</option>
