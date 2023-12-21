@@ -44,6 +44,7 @@ const EditEventModal = ({
     setTotal,
     initialInputs,
     setInitialInputs,
+    discountbtnData,
   } = useContext(EventContext);
   const {
     handleSubmit,
@@ -223,36 +224,27 @@ const EditEventModal = ({
                     </div>
                   </div>
                   <div className="discount-btns ">
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      className="discount-btn"
-                      sx={{ my: 1 }}
-                      size="small"
-                      onClick={() => changeValuePercentage(index, -50)}
-                    >
-                      50%
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      className="discount-btn"
-                      sx={{ my: 1 }}
-                      size="small"
-                      onClick={() => changeValuePercentage(index, -25)}
-                    >
-                      25%
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      className="discount-btn"
-                      sx={{ my: 1 }}
-                      size="small"
-                      onClick={() => changeValuePercentage(index, -10)}
-                    >
-                      10%
-                    </Button>
+                    {discountbtnData.map((discountBtn) => {
+                      console.log(discountBtn.text);
+                      return (
+                        <Button
+                          variant="contained"
+                          className="discount-btn"
+                          sx={{ my: 1 }}
+                          size="small"
+                          onClick={() =>
+                            changeValuePercentage(index, discountBtn.value)
+                          }
+                          style={{
+                            color: '#fff',
+                            backgroundColor: discountBtn.backgroundColor,
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          {discountBtn.text}
+                        </Button>
+                      );
+                    })}
                   </div>
                 </div>
               </div>

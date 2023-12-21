@@ -234,8 +234,6 @@ const Calendar = () => {
       selectedCategory === '' || event.extendedProps.room === selectedCategory
   );
 
-  console.log(title);
-
   const { data: eventsData, refetch } = useQuery('events', () =>
     axiosInstance
       .get('/api/calendar/get-events')
@@ -261,7 +259,6 @@ const Calendar = () => {
         <Button variant="contained" onClick={logOut}>
           Wyloguj
         </Button>
-        {/* <Legend /> */}
 
         <FilterRooms setSelectedCategory={setSelectedCategory}></FilterRooms>
       </Box>
