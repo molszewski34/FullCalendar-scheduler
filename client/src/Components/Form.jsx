@@ -26,6 +26,7 @@ const Form = ({
   setSelectedRoom,
   setPrice,
   onSubmit,
+  daysDifference,
   setDaysDifference,
   total,
 }) => {
@@ -50,6 +51,7 @@ const Form = ({
         setStart={setStart}
         end={end}
         setEnd={setEnd}
+        daysDifference={daysDifference}
         setDaysDifference={setDaysDifference}
       />
       <PhoneInput

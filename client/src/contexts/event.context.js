@@ -32,51 +32,12 @@ export function EventProvider({ children }) {
   const [guestsFee, setGuestsFee] = useState([65]);
   const [initialInputs, setInitialInputs] = useState([65]);
   const [total, setTotal] = useState(65);
-  const [cachedEvents, setCachedEvents] = useState([]);
 
-  const [roomsList, setRoomList] = useState([
-    {
-      name: 'Sypialnia',
-      numOfGuests: 2,
-      priceOfGuest: 65,
-      color: `linear-gradient(to right, #ED213A, #93291E)`,
+  const [discountBtns, setDiscountBtns] = useState([
+    { name: '50%', value: -50, bgColor: '#009688' },
+    { name: '25%', value: -25, bgColor: '#03a9f4' },
+    { name: '10%', value: -10, bgColor: '#00bcd4' },
 
-      defNumOfGuests: 2,
-    },
-    {
-      name: '3 łóżka',
-      numOfGuests: 3,
-      priceOfGuest: 65,
-      color: `linear-gradient(to right, #005C97, #363795)`,
-
-      defNumOfGuests: 3,
-    },
-    {
-      name: '2 łóżka',
-      numOfGuests: 2,
-      priceOfGuest: 65,
-      color: `linear-gradient(to right, #3CA55C, #B5AC49)`,
-
-      defNumOfGuests: 2,
-    },
-  ]);
-
-  const [discountbtnData, setDiscountBtnData] = useState([
-    {
-      backgroundColor: '#ff5252',
-      text: '50%',
-      value: -50,
-    },
-    {
-      backgroundColor: '#fb8c00',
-      text: '25%',
-      value: -25,
-    },
-    {
-      backgroundColor: '#00c853',
-      text: '10%',
-      value: -10,
-    },
   ]);
 
   return (
@@ -137,12 +98,9 @@ export function EventProvider({ children }) {
         setTotal,
         initialInputs,
         setInitialInputs,
-        cachedEvents,
-        setCachedEvents,
-        roomsList,
-        setRoomList,
-        discountbtnData,
-        setDiscountBtnData,
+        discountBtns,
+        setDiscountBtns,
+
       }}
     >
       {children}

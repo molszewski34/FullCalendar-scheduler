@@ -36,6 +36,7 @@ const EditEventModal = ({
     price,
     setPrice,
     setOverlay,
+    daysDifference,
     setDaysDifference,
     setOpen,
     guestsFee,
@@ -44,7 +45,8 @@ const EditEventModal = ({
     setTotal,
     initialInputs,
     setInitialInputs,
-    discountbtnData,
+    discountBtns,
+
   } = useContext(EventContext);
   const {
     handleSubmit,
@@ -118,7 +120,9 @@ const EditEventModal = ({
           >
             <Header
               setEditModalOpen={setEditModalOpen}
+              setModalOpen={setModalOpen}
               setOverlay={setOverlay}
+              modalName={'Edytuj wydarzenie'}
             />
             <form onSubmit={handleSubmit(handleEventChange)}>
               <TitleInput
@@ -143,6 +147,7 @@ const EditEventModal = ({
                 end={end}
                 setEnd={setEnd}
                 editedEvent={editedEvent}
+                daysDifference={daysDifference}
                 setDaysDifference={setDaysDifference}
               />
               <RoomSelection
@@ -224,27 +229,26 @@ const EditEventModal = ({
                     </div>
                   </div>
                   <div className="discount-btns ">
-                    {discountbtnData.map((discountBtn) => {
-                      console.log(discountBtn.text);
-                      return (
+
+                    <div className="discount-btns ">
+                      {discountBtns.map((discountBtn) => (
                         <Button
                           variant="contained"
+                          style={{ backgroundColor: discountBtn.bgColor }}
+
                           className="discount-btn"
                           sx={{ my: 1 }}
                           size="small"
                           onClick={() =>
                             changeValuePercentage(index, discountBtn.value)
                           }
-                          style={{
-                            color: '#fff',
-                            backgroundColor: discountBtn.backgroundColor,
-                            fontWeight: 'bold',
-                          }}
+
                         >
-                          {discountBtn.text}
+                          {discountBtn.name}
                         </Button>
-                      );
-                    })}
+                      ))}
+                    </div>
+
                   </div>
                 </div>
               </div>

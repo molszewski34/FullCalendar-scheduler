@@ -9,7 +9,9 @@ import {
   handlePriceOfGuestIncrement,
   handlePriceOfGuestDecrement,
 } from './utilities/eventUtilities';
+
 import PersonIcon from '@mui/icons-material/Person';
+
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
@@ -43,7 +45,9 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
     setTotal,
     initialInputs,
     setInitialInputs,
-    discountbtnData,
+
+    discountBtns,
+
   } = useContext(EventContext);
 
   const [selectedRoom, setSelectedRoom] = useState('');
@@ -72,7 +76,7 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
     formState: { errors },
   } = useForm();
 
-  // Handles input change for a specific index and updates the total accordingly.
+
   const handleInputChange = (index, value) => {
     const newValue = parseInt(value) || 0;
 
@@ -142,20 +146,11 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
             }}
             mr={2}
           >
-            <header className="">
-              <Button
-                variant="contained"
-                color="info"
-                onClick={() => {
-                  setModalOpen(false);
-                  setOverlay(false);
-                }}
-              >
-                Anuluj
-              </Button>
-              <h2>Dodaj wydarzenie</h2>
-            </header>
-
+            <Header
+              modalName={'Dodaj Wydarzenie'}
+              setModalOpen={setModalOpen}
+              setOverlay={setOverlay}
+            />
             <Form
               title={title}
               setTitle={setTitle}
@@ -182,6 +177,7 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
               handlePriceOfGuestDecrement={handlePriceOfGuestDecrement}
               onSubmit={onSubmit}
               errors={errors}
+              daysDifference={daysDifference}
               setDaysDifference={setDaysDifference}
             ></Form>
           </Box>
@@ -219,27 +215,22 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
                     </div>
                   </div>
                   <div className="discount-btns ">
-                    {discountbtnData.map((discountBtn) => {
-                      console.log(discountBtn.text);
-                      return (
-                        <Button
-                          variant="contained"
-                          className="discount-btn"
-                          sx={{ my: 1 }}
-                          size="small"
-                          onClick={() =>
-                            changeValuePercentage(index, discountBtn.value)
-                          }
-                          style={{
-                            color: '#fff',
-                            backgroundColor: discountBtn.backgroundColor,
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          {discountBtn.text}
-                        </Button>
-                      );
-                    })}
+
+                    {discountBtns.map((discountBtn) => (
+                      <Button
+                        variant="contained"
+                        style={{ backgroundColor: discountBtn.bgColor }}
+                        className="discount-btn"
+                        sx={{ my: 1 }}
+                        size="small"
+                        onClick={() =>
+                          changeValuePercentage(index, discountBtn.value)
+                        }
+                      >
+                        {discountBtn.name}
+                      </Button>
+                    ))}
+
                   </div>
                 </div>
               </div>

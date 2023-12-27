@@ -40,9 +40,7 @@ const Calendar = () => {
     end,
     setEnd,
     title,
-    setTitle,
     phone,
-    setPhone,
     numOfGuests,
     setNumOfGuests,
     priceOfGuest,
@@ -194,8 +192,7 @@ const Calendar = () => {
     setSelectedDate({ start, end });
     setStart(info.event._instance.range.start);
     setEnd(info.event._instance.range.end);
-    setTitle(info.event.title);
-    setPhone(info.event._def.extendedProps.phone);
+
     setPriceOfGuest(info.event._def.extendedProps.priceOfGuest);
     setNumOfGuests(info.event._def.extendedProps.numOfGuests);
     setGuestsFee(info.event._def.extendedProps.guestsFee);
@@ -234,6 +231,7 @@ const Calendar = () => {
       selectedCategory === '' || event.extendedProps.room === selectedCategory
   );
 
+
   const { data: eventsData, refetch } = useQuery('events', () =>
     axiosInstance
       .get('/api/calendar/get-events')
@@ -245,6 +243,7 @@ const Calendar = () => {
       setEvents(eventsData);
     }
   }, [eventsData]);
+
 
   return (
     <section>
