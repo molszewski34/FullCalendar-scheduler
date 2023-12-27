@@ -24,10 +24,10 @@ export function FilterRooms() {
               <option
                 key={index}
                 value={room.name}
-                style={{
-                  color: room.color, // Kolor tekstu
-                  backgroundColor: room.color, // Kolor tła
-                }}
+                // style={{
+                //   color: room.color, // Kolor tekstu
+                //   backgroundColor: room.color, // Kolor tła
+                // }}
               >
                 {room.name}
               </option>
@@ -35,9 +35,6 @@ export function FilterRooms() {
           );
         })}
       </select>
-      {/* {roomsList.map((room, index) => {
-        return <button style={{ background: room.color }}>test</button>;
-      })} */}
     </div>
   );
 }

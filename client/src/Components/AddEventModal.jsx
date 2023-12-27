@@ -9,6 +9,7 @@ import {
   handlePriceOfGuestIncrement,
   handlePriceOfGuestDecrement,
 } from './utilities/eventUtilities';
+import Header from './Header';
 
 import PersonIcon from '@mui/icons-material/Person';
 
@@ -47,7 +48,6 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
     setInitialInputs,
 
     discountBtns,
-
   } = useContext(EventContext);
 
   const [selectedRoom, setSelectedRoom] = useState('');
@@ -75,7 +75,6 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
   const {
     formState: { errors },
   } = useForm();
-
 
   const handleInputChange = (index, value) => {
     const newValue = parseInt(value) || 0;
@@ -215,7 +214,6 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
                     </div>
                   </div>
                   <div className="discount-btns ">
-
                     {discountBtns.map((discountBtn) => (
                       <Button
                         variant="contained"
@@ -230,7 +228,6 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
                         {discountBtn.name}
                       </Button>
                     ))}
-
                   </div>
                 </div>
               </div>

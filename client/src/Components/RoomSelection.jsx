@@ -26,6 +26,44 @@ const RoomSelection = ({
 
   console.log(roomsList);
 
+  // const roomsList = [
+  //   {
+  //     name: 'Sypialnia',
+
+  //     numOfGuests: 2,
+
+  //     priceOfGuest: 65,
+
+  //     color: `linear-gradient(to right, #ED213A, #93291E)`,
+
+  //     defNumOfGuests: 2,
+  //   },
+
+  //   {
+  //     name: '3 łóżka',
+
+  //     numOfGuests: 3,
+
+  //     priceOfGuest: 65,
+
+  //     color: `linear-gradient(to right, #005C97, #363795)`,
+
+  //     defNumOfGuests: 3,
+  //   },
+
+  //   {
+  //     name: '2 łóżka',
+
+  //     numOfGuests: 2,
+
+  //     priceOfGuest: 65,
+
+  //     color: `linear-gradient(to right, #3CA55C, #B5AC49)`,
+
+  //     defNumOfGuests: 2,
+  //   },
+  // ];
+
   const handleRoomChange = (roomItem) => {
     setRoom(roomItem.name);
     setColor(roomItem.color);
