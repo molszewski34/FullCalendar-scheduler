@@ -35,8 +35,8 @@ const EditEventModal = ({
     setSelectedRoom,
     price,
     setPrice,
-    setDeleteConfirmationOpen,
     setOverlay,
+    daysDifference,
     setDaysDifference,
     setOpen,
     setModalOpen,
@@ -46,6 +46,7 @@ const EditEventModal = ({
     setTotal,
     initialInputs,
     setInitialInputs,
+    discountBtns,
   } = useContext(EventContext);
   const {
     handleSubmit,
@@ -58,18 +59,8 @@ const EditEventModal = ({
     setPrice(total);
   }, [numOfGuests, priceOfGuest, setPrice]);
 
-  // const handleInputChange = (index, value) => {
-  //   const newInputs = [...guestsFee];
-
-  //   const diff = value - newInputs[index];
-  //   newInputs[index] = value;
-  //   setGuestsFee(newInputs);
-  //   setInitialInputs(newInputs);
-  //   setTotal(total + diff);
-  // };
-
   const handleInputChange = (index, value) => {
-    const newValue = parseInt(value) || 0; // Parse value to integer or set to 0 if NaN
+    const newValue = parseInt(value) || 0;
     const newInputs = [...guestsFee];
 
     const diff = newValue - newInputs[index];
@@ -114,8 +105,6 @@ const EditEventModal = ({
     }
   };
 
-  // console.log(guestsFee);
-
   return (
     <div>
       {editModalOpen && (
@@ -131,7 +120,9 @@ const EditEventModal = ({
           >
             <Header
               setEditModalOpen={setEditModalOpen}
+              setModalOpen={setModalOpen}
               setOverlay={setOverlay}
+              modalName={'Edytuj wydarzenie'}
             />
             <form onSubmit={handleSubmit(handleEventChange)}>
               <TitleInput
@@ -156,6 +147,7 @@ const EditEventModal = ({
                 end={end}
                 setEnd={setEnd}
                 editedEvent={editedEvent}
+                daysDifference={daysDifference}
                 setDaysDifference={setDaysDifference}
               />
               <RoomSelection
@@ -237,37 +229,22 @@ const EditEventModal = ({
                     </div>
                   </div>
                   <div className="discount-btns ">
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      className="discount-btn"
-                      sx={{ my: 1 }}
-                      size="small"
-                      onClick={() => changeValuePercentage(index, -50)}
-                    >
-                      50%
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      className="discount-btn"
-                      sx={{ my: 1 }}
-                      size="small"
-                      onClick={() => changeValuePercentage(index, -25)}
-                    >
-                      25%
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      className="discount-btn"
-                      sx={{ my: 1 }}
-                      size="small"
-                      // onClick={() => handleReduceValueBy50Percent(index)}
-                      onClick={() => changeValuePercentage(index, -10)}
-                    >
-                      10%
-                    </Button>
+                    <div className="discount-btns ">
+                      {discountBtns.map((discountBtn) => (
+                        <Button
+                          variant="contained"
+                          style={{ backgroundColor: discountBtn.bgColor }}
+                          className="discount-btn"
+                          sx={{ my: 1 }}
+                          size="small"
+                          onClick={() =>
+                            changeValuePercentage(index, discountBtn.value)
+                          }
+                        >
+                          {discountBtn.name}
+                        </Button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>

@@ -40,9 +40,7 @@ const Calendar = () => {
     end,
     setEnd,
     title,
-    setTitle,
     phone,
-    setPhone,
     numOfGuests,
     setNumOfGuests,
     priceOfGuest,
@@ -130,8 +128,6 @@ const Calendar = () => {
 
       const updatedEvents = events.filter((event) => event.id !== eventId);
       setEvents(updatedEvents);
-      // const deletedEvent = response.data;
-      // setEvents([...events]);
       setOpen(false);
       setOverlay(false);
       setEditedEvent(null);
@@ -195,8 +191,7 @@ const Calendar = () => {
     setSelectedDate({ start, end });
     setStart(info.event._instance.range.start);
     setEnd(info.event._instance.range.end);
-    setTitle(info.event.title);
-    setPhone(info.event._def.extendedProps.phone);
+
     setPriceOfGuest(info.event._def.extendedProps.priceOfGuest);
     setNumOfGuests(info.event._def.extendedProps.numOfGuests);
     setGuestsFee(info.event._def.extendedProps.guestsFee);
@@ -234,8 +229,6 @@ const Calendar = () => {
     (event) =>
       selectedCategory === '' || event.extendedProps.room === selectedCategory
   );
-
-  console.log(title);
 
   return (
     <section>

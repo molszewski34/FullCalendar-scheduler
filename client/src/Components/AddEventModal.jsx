@@ -10,7 +10,6 @@ import {
   handlePriceOfGuestDecrement,
 } from './utilities/eventUtilities';
 
-import Person4Icon from '@mui/icons-material/Person4';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
@@ -46,17 +45,11 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
     setTotal,
     initialInputs,
     setInitialInputs,
+    discountBtns,
   } = useContext(EventContext);
 
   const [selectedRoom, setSelectedRoom] = useState('');
-  const [appliedDiscounts, setAppliedDiscounts] = useState(
-    Array(guestsFee.length).fill(false)
-  );
-  const roomsList = [
-    { name: 'Sypialnia', numOfGuests: 2, priceOfGuest: 65, color: 'red' },
-    { name: '3 łóżka', numOfGuests: 3, priceOfGuest: 65, color: 'blue' },
-    { name: '2 łóżka', numOfGuests: 2, priceOfGuest: 65, color: 'green' },
-  ];
+
   useEffect(() => {
     const totalPrice = total * daysDifference;
     setPrice(totalPrice);
@@ -84,19 +77,8 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
     formState: { errors },
   } = useForm();
 
-  // const handleInputChange = (index, value) => {
-  //   const newInputs = [...guestsFee];
-
-  //   const diff = value - newInputs[index];
-  //   newInputs[index] = value;
-  //   setGuestsFee(newInputs);
-  //   setInitialInputs(newInputs);
-  //   setTotal(total + diff);
-
-  // };
-
   const handleInputChange = (index, value) => {
-    const newValue = parseInt(value) || 0; // Parse value to integer or set to 0 if NaN
+    const newValue = parseInt(value) || 0;
     const newInputs = [...guestsFee];
 
     const diff = newValue - newInputs[index];
@@ -154,20 +136,11 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
             }}
             mr={2}
           >
-            <header className="">
-              <Button
-                variant="contained"
-                color="info"
-                onClick={() => {
-                  setModalOpen(false);
-                  setOverlay(false);
-                }}
-              >
-                Anuluj
-              </Button>
-              <h2>Dodaj wydarzenie</h2>
-            </header>
-
+            <Header
+              modalName={'Dodaj Wydarzenie'}
+              setModalOpen={setModalOpen}
+              setOverlay={setOverlay}
+            />
             <Form
               title={title}
               setTitle={setTitle}
@@ -194,6 +167,7 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
               handlePriceOfGuestDecrement={handlePriceOfGuestDecrement}
               onSubmit={onSubmit}
               errors={errors}
+              daysDifference={daysDifference}
               setDaysDifference={setDaysDifference}
             ></Form>
           </Box>
@@ -227,37 +201,20 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
                     </div>
                   </div>
                   <div className="discount-btns ">
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      className="discount-btn"
-                      sx={{ my: 1 }}
-                      size="small"
-                      onClick={() => changeValuePercentage(index, -50)}
-                    >
-                      50%
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      className="discount-btn"
-                      sx={{ my: 1 }}
-                      size="small"
-                      onClick={() => changeValuePercentage(index, -25)}
-                    >
-                      25%
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      className="discount-btn"
-                      sx={{ my: 1 }}
-                      size="small"
-                      // onClick={() => handleReduceValueBy50Percent(index)}
-                      onClick={() => changeValuePercentage(index, -10)}
-                    >
-                      10%
-                    </Button>
+                    {discountBtns.map((discountBtn) => (
+                      <Button
+                        variant="contained"
+                        style={{ backgroundColor: discountBtn.bgColor }}
+                        className="discount-btn"
+                        sx={{ my: 1 }}
+                        size="small"
+                        onClick={() =>
+                          changeValuePercentage(index, discountBtn.value)
+                        }
+                      >
+                        {discountBtn.name}
+                      </Button>
+                    ))}
                   </div>
                 </div>
               </div>

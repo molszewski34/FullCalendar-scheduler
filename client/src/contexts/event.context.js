@@ -35,6 +35,12 @@ export function EventProvider({ children }) {
   const [guestsFee, setGuestsFee] = useState([65]);
   const [initialInputs, setInitialInputs] = useState([65]);
   const [total, setTotal] = useState(65);
+  const [discountBtns, setDiscountBtns] = useState([
+    { name: '50%', value: -50, bgColor: '#009688' },
+    { name: '25%', value: -25, bgColor: '#03a9f4' },
+    { name: '10%', value: -10, bgColor: '#00bcd4' },
+  ]);
+
   return (
     <EventContext.Provider
       value={{
@@ -82,8 +88,6 @@ export function EventProvider({ children }) {
         setGuestValue,
         numInputs,
         setNumInputs,
-        // inputValues,
-        // setInputValues,
         sumOfInputs,
         setSumOfInputs,
         discountValue,
@@ -94,6 +98,8 @@ export function EventProvider({ children }) {
         setTotal,
         initialInputs,
         setInitialInputs,
+        discountBtns,
+        setDiscountBtns,
       }}
     >
       {children}
