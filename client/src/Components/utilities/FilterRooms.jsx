@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { EventContext } from '../../contexts/event.context';
+
 export function FilterRooms() {
-  const { setSelectedCategory } = useContext(EventContext);
+  const { setSelectedCategory, roomsList } = useContext(EventContext);
 
   return (
     <div>
@@ -16,11 +17,27 @@ export function FilterRooms() {
         name="roomSelection"
         onChange={(e) => setSelectedCategory(e.target.value)}
       >
-        <option value="">Pokoje</option>
-        <option value="Sypialnia">Sypialnia</option>
-        <option value="2 łóżka">2 łóżka</option>
-        <option value="3 łóżka">3 łóżka</option>
+        <option value="">Wszystkie</option>
+        {roomsList.map((room, index) => {
+          return (
+            <>
+              <option
+                key={index}
+                value={room.name}
+                style={{
+                  color: room.color, // Kolor tekstu
+                  backgroundColor: room.color, // Kolor tła
+                }}
+              >
+                {room.name}
+              </option>
+            </>
+          );
+        })}
       </select>
+      {/* {roomsList.map((room, index) => {
+        return <button style={{ background: room.color }}>test</button>;
+      })} */}
     </div>
   );
 }

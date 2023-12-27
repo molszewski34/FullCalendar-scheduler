@@ -1,12 +1,11 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
+
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+
 import DialogTitle from '@mui/material/DialogTitle';
 
 const DeleteConfirmationModal = ({
@@ -15,7 +14,6 @@ const DeleteConfirmationModal = ({
   open,
   setOpen,
   editedEvent,
-  setEditedEvent,
   setOverlay,
   handleEventDelete,
 }) => {
@@ -49,15 +47,14 @@ const DeleteConfirmationModal = ({
           <Box>
             <div>
               <DialogTitle id="modal-modal-title" variant="h6" component="h2">
-                Czy jesteś pewien że chcesz usunać pobyt{' '}
-                <b> {editedEvent != null && editedEvent._def.title}</b>
+                Czy jesteś pewien, że chcesz usunąć pobyt
+                <b> {editedEvent != null && editedEvent._def.title}?</b>
               </DialogTitle>
               <DialogContent>
-                w dniach:
-                <b>od:</b>
-                {`  ${editedEvent != null && formattedStartDate}`}
+                w dniach: <b>od:</b>
+                {`${editedEvent != null && formattedStartDate}`}
                 <b> do:</b>
-                {`     ${editedEvent != null && formattedEndDate}`}
+                {`${editedEvent != null && formattedEndDate}`}
               </DialogContent>
             </div>
 

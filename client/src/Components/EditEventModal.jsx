@@ -39,7 +39,6 @@ const EditEventModal = ({
     daysDifference,
     setDaysDifference,
     setOpen,
-    setModalOpen,
     guestsFee,
     setGuestsFee,
     total,
@@ -47,6 +46,7 @@ const EditEventModal = ({
     initialInputs,
     setInitialInputs,
     discountBtns,
+
   } = useContext(EventContext);
   const {
     handleSubmit,
@@ -229,22 +229,26 @@ const EditEventModal = ({
                     </div>
                   </div>
                   <div className="discount-btns ">
+
                     <div className="discount-btns ">
                       {discountBtns.map((discountBtn) => (
                         <Button
                           variant="contained"
                           style={{ backgroundColor: discountBtn.bgColor }}
+
                           className="discount-btn"
                           sx={{ my: 1 }}
                           size="small"
                           onClick={() =>
                             changeValuePercentage(index, discountBtn.value)
                           }
+
                         >
                           {discountBtn.name}
                         </Button>
                       ))}
                     </div>
+
                   </div>
                 </div>
               </div>

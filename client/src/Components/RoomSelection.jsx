@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { EventContext } from '../contexts/event.context';
 import { useForm, Controller } from 'react-hook-form';
+// import roomsList from './data/roomsList';
 const RoomSelection = ({
   room,
   error,
@@ -9,8 +10,7 @@ const RoomSelection = ({
   setNumOfGuests,
   setPriceOfGuest,
   setSelectedRoom,
-  // priceOfGuest,
-  // setButtonCount,
+  // roomsList,
 }) => {
   const {
     setButtonCount,
@@ -19,33 +19,12 @@ const RoomSelection = ({
     priceOfGuest,
     setGuestsFee,
     setTotal,
+    roomsList,
   } = useContext(EventContext);
 
   const { handleSubmit, control, setError } = useForm();
 
-  const roomsList = [
-    {
-      name: 'Sypialnia',
-      numOfGuests: 2,
-      priceOfGuest: 65,
-      color: `linear-gradient(to right, #ED213A, #93291E)`,
-      generateInput: () => generateInputs(2),
-    },
-    {
-      name: '3 łóżka',
-      numOfGuests: 3,
-      priceOfGuest: 65,
-      color: `linear-gradient(to right, #005C97, #363795)`,
-      generateInput: () => generateInputs(3),
-    },
-    {
-      name: '2 łóżka',
-      numOfGuests: 2,
-      priceOfGuest: 65,
-      color: `linear-gradient(to right, #3CA55C, #B5AC49)`,
-      generateInput: () => generateInputs(2),
-    },
-  ];
+  console.log(roomsList);
 
   const handleRoomChange = (roomItem) => {
     setRoom(roomItem.name);
@@ -53,7 +32,6 @@ const RoomSelection = ({
     setNumOfGuests(roomItem.numOfGuests);
     setPriceOfGuest(roomItem.priceOfGuest);
     setSelectedRoom(roomItem.name);
-    // setInputValues(new Array(roomItem.numOfGuests).fill(priceOfGuest));
   };
 
   const generateInputs = (count) => {
@@ -78,18 +56,13 @@ const RoomSelection = ({
               style={{ background: roomItem.color }}
               onClick={() => {
                 handleRoomChange(roomItem);
-                roomItem.generateInput();
+                // roomItem.generateInput(roomItem.defNumOfGuests);
+                generateInputs(roomItem.defNumOfGuests);
               }}
             >
               {roomItem.name}
             </button>
           ))}
-          {/* <div>
-            <button onClick={() => generateInputs(1)}>Generuj 1 Input</button>
-            <button onClick={() => generateInputs(3)}>Generuj 3 Inputy</button>
-            <button onClick={() => generateInputs(5)}>Generuj 5 Inputów</button>
-           
-          </div> */}
         </div>
       </div>
     </div>

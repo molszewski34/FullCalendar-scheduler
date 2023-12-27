@@ -10,11 +10,11 @@ import {
   handlePriceOfGuestDecrement,
 } from './utilities/eventUtilities';
 
+import PersonIcon from '@mui/icons-material/Person';
+
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
-import Header from './Header';
-import GuestItem from './GuestItem';
 const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
   const {
     title,
@@ -45,7 +45,9 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
     setTotal,
     initialInputs,
     setInitialInputs,
+
     discountBtns,
+
   } = useContext(EventContext);
 
   const [selectedRoom, setSelectedRoom] = useState('');
@@ -71,45 +73,52 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
   };
 
   const {
-    register,
-    handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
 
+
   const handleInputChange = (index, value) => {
     const newValue = parseInt(value) || 0;
+
     const newInputs = [...guestsFee];
 
     const diff = newValue - newInputs[index];
-    newInputs[index] = newValue;
+
     setGuestsFee(newInputs);
     setInitialInputs(newInputs);
     setTotal(total + diff);
   };
 
+  // Increments the value at a specific index and updates the total.
   const incrementValue = (index) => {
     const newInputs = [...guestsFee];
+
     newInputs[index] += 1;
+
     setGuestsFee(newInputs);
     setInitialInputs(newInputs);
     setTotal(total + 1);
   };
 
+  // Decrements the value at a specific index and updates the total.
   const decrementValue = (index) => {
     const newInputs = [...guestsFee];
+
     newInputs[index] -= 1;
+
     setGuestsFee(newInputs);
     setInitialInputs(newInputs);
     setTotal(total - 1);
   };
 
+  // Changes the value at a specific index based on a percentage and updates the total.
   const changeValuePercentage = (index, percentage) => {
     if (guestsFee === initialInputs) {
       const newInputs = [...guestsFee];
       const newValue = newInputs[index] * (1 + percentage / 100);
       const diff = newValue - newInputs[index];
       newInputs[index] = newValue;
+
       setGuestsFee(newInputs);
       setTotal(total + diff);
     } else {
@@ -118,6 +127,7 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
       const newValue = initialValue[index] * (1 + percentage / 100);
       const diff = newValue - newInputs[index];
       newInputs[index] = newValue;
+
       setGuestsFee(newInputs);
       setTotal(total + diff);
     }
@@ -177,10 +187,14 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
               <div className="discount-box">
                 <div className="discount-box-wrapper">
                   <div className="discount-box-item" key={index}>
+                    <PersonIcon style={{ color: '#757575' }} />
                     <input
                       key={index}
                       type="text"
                       value={value}
+                      style={{
+                        fontSize: '1em',
+                      }}
                       onChange={(e) =>
                         handleInputChange(index, parseInt(e.target.value))
                       }
@@ -196,11 +210,12 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
                         fontSize="large"
                         type="button"
                         onClick={() => incrementValue(index)}
-                        color="success"
+                        style={{ color: '#8bc34a' }}
                       />
                     </div>
                   </div>
                   <div className="discount-btns ">
+
                     {discountBtns.map((discountBtn) => (
                       <Button
                         variant="contained"
@@ -215,6 +230,7 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
                         {discountBtn.name}
                       </Button>
                     ))}
+
                   </div>
                 </div>
               </div>

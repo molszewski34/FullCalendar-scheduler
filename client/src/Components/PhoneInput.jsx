@@ -12,7 +12,7 @@ const PhoneInput = ({ phone, setPhone, editedEvent, control, errors }) => {
         rules={{
           required: 'To pole jest wymagane',
           minLength: {
-            value: 9,
+            value: 5,
             message: 'Numer telefonu jest za krótki',
           },
           maxLength: {
