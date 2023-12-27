@@ -7,30 +7,36 @@ const DateTimeInputs = ({
   end,
   setEnd,
   editedEvent,
+  daysDifference,
   setDaysDifference,
 }) => {
   useEffect(() => {
     if (start && end) {
       const oneDay = 24 * 60 * 60 * 1000;
-
       const startTimestamp = start;
       const endTimestamp = end;
-
-      const difference = Math.round(
-        Math.abs((startTimestamp - endTimestamp) / oneDay)
-      );
-      setDaysDifference(difference);
+      if (startTimestamp === endTimestamp) {
+        setDaysDifference(null);
+      } else if (startTimestamp <= endTimestamp) {
+        const difference = Math.round(
+          Math.abs((startTimestamp - endTimestamp) / oneDay)
+        );
+        setDaysDifference(difference);
+      } else {
+        setDaysDifference(0);
+      }
     } else {
       setDaysDifference(null);
     }
   }, [start, end]);
+
   return (
     <div className="date-time-inputs">
       <div className="date-time-wrapper">
         <label htmlFor="">Przyjazd</label>
         <DateTime
           value={start}
-          placeholde={
+          placeholder={
             editedEvent && editedEvent._instance.range.start
               ? editedEvent._instance.range.start
               : ''
@@ -50,6 +56,11 @@ const DateTimeInputs = ({
           onChange={(date) => setEnd(date)}
         />
       </div>
+      {daysDifference == 0 && (
+        <p className="error">
+          Dzień wyjazdu nie może poprzedzać dnia przyjazdu
+        </p>
+      )}
     </div>
   );
 };
