@@ -1,22 +1,23 @@
-import React, { useRef, useState, useEffect, useContext } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Button, TextField } from '@mui/material';
+import { Box } from '@mui/material';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import 'moment/locale/pl';
+import plLocale from '@fullcalendar/core/locales/pl';
+import SearchIcon from '@mui/icons-material/Search';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import AddEventModal from '../Components/AddEventModal';
-import axios from 'axios';
-import moment from 'moment';
-import 'moment/locale/pl';
-import plLocale from '@fullcalendar/core/locales/pl';
 import DeleteConfirmationModal from '../Components/deleteConfirmationModal';
 import EditEventModal from '../Components/EditEventModal';
 import { UserContext } from '../contexts/user.context';
-import { Button } from '@mui/material';
-import { Box } from '@mui/material';
-import Legend from '../Components/Legend';
 import { EventContext } from '../contexts/event.context';
 import { FilterRooms } from '../Components/utilities/FilterRooms';
-import { useQuery } from 'react-query';
+import TableBox from '../Components/TableBox';
+
 const Calendar = () => {
   const calendarRef = useRef(null);
 
@@ -56,6 +57,12 @@ const Calendar = () => {
     setSelectedCategory,
     guestsFee,
     setGuestsFee,
+    setShowTable,
+    searchInput,
+    setSearchInput,
+    searchedEvents,
+    setSearchedEvents,
+    showTable,
   } = useContext(EventContext);
 
   const { logOutUser } = useContext(UserContext);
@@ -71,6 +78,32 @@ const Calendar = () => {
       alert(error);
     }
   };
+
+  useEffect(() => {
+    let searchResults = events;
+
+    if (searchInput.trim() !== '') {
+      searchResults = events.filter((event) => {
+        const titleIncludes = event.title
+          .toLowerCase()
+          .includes(searchInput.toLowerCase());
+
+        const phoneIncludes = event.extendedProps.phone
+          .toString()
+          .includes(searchInput.toLowerCase());
+        setShowTable(true);
+
+        return titleIncludes || phoneIncludes;
+      });
+
+      setSearchedEvents(searchResults);
+    } else {
+      setSearchedEvents(events);
+      setShowTable(false);
+    }
+  }, [events, searchInput]);
+
+  console.log(searchedEvents);
 
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_PUBLIC_API_URL,
@@ -113,12 +146,6 @@ const Calendar = () => {
     setStart(arg.date);
     setEnd(arg.date);
   };
-
-  // useEffect(() => {
-  //   axiosInstance.get('/api/calendar/get-events').then((response) => {
-  //     setEvents(response.data);
-  //   });
-  // }, []);
 
   const handleEventDelete = async (eventId) => {
     if (editedEvent) {
@@ -231,7 +258,6 @@ const Calendar = () => {
       selectedCategory === '' || event.extendedProps.room === selectedCategory
   );
 
-
   const { data: eventsData, refetch } = useQuery('events', () =>
     axiosInstance
       .get('/api/calendar/get-events')
@@ -244,6 +270,9 @@ const Calendar = () => {
     }
   }, [eventsData]);
 
+  const calendarOptions = {
+    contentHeight: 'auto',
+  };
 
   return (
     <section>
@@ -258,8 +287,33 @@ const Calendar = () => {
         <Button variant="contained" onClick={logOut}>
           Wyloguj
         </Button>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1em',
+            position: 'relative',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <SearchIcon fontSize="large" sx={{ color: 'text.disabled' }} />
+            <TextField
+              hiddenLabel
+              size="small"
+              type="text"
+              placeholder="Wyszukaj osobę lub telefon"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+          </Box>
 
-        <FilterRooms setSelectedCategory={setSelectedCategory}></FilterRooms>
+          <FilterRooms setSelectedCategory={setSelectedCategory}></FilterRooms>
+        </Box>
       </Box>
       <div style={{ position: 'relative', zIndex: 0 }}>
         <FullCalendar
@@ -278,6 +332,7 @@ const Calendar = () => {
           eventDidMount={handleEventDidMount}
           slotEventOverlap={false}
           eventOverlap={false}
+          {...calendarOptions}
         />
       </div>
       <AddEventModal
@@ -303,6 +358,9 @@ const Calendar = () => {
         handleEventChange={handleEventChange}
         setEditModalOpen={setEditModalOpen}
       />
+
+      {showTable && <TableBox />}
+
       {overlay && <div className="overlay"></div>}
     </section>
   );

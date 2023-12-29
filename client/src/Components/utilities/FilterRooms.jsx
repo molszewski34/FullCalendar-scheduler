@@ -21,14 +21,7 @@ export function FilterRooms() {
         {roomsList.map((room, index) => {
           return (
             <>
-              <option
-                key={index}
-                value={room.name}
-                // style={{
-                //   color: room.color, // Kolor tekstu
-                //   backgroundColor: room.color, // Kolor tła
-                // }}
-              >
+              <option key={index} value={room.name}>
                 {room.name}
               </option>
             </>

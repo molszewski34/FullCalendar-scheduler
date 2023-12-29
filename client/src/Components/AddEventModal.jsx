@@ -88,7 +88,6 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
     setTotal(total + diff);
   };
 
-  // Increments the value at a specific index and updates the total.
   const incrementValue = (index) => {
     const newInputs = [...guestsFee];
 
@@ -99,7 +98,6 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
     setTotal(total + 1);
   };
 
-  // Decrements the value at a specific index and updates the total.
   const decrementValue = (index) => {
     const newInputs = [...guestsFee];
 
@@ -110,7 +108,6 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
     setTotal(total - 1);
   };
 
-  // Changes the value at a specific index based on a percentage and updates the total.
   const changeValuePercentage = (index, percentage) => {
     if (guestsFee === initialInputs) {
       const newInputs = [...guestsFee];
