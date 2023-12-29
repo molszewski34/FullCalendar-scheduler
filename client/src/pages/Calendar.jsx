@@ -17,6 +17,16 @@ import Legend from '../Components/Legend';
 import { EventContext } from '../contexts/event.context';
 import { FilterRooms } from '../Components/utilities/FilterRooms';
 import { useQuery } from 'react-query';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from '@mui/material';
+
 const Calendar = () => {
   const calendarRef = useRef(null);
 
@@ -72,6 +82,39 @@ const Calendar = () => {
     }
   };
 
+  const [searchInput, setSearchInput] = useState('');
+  const [searchedEvents, setSearchedEvents] = useState([]);
+  const [showTable, setShowTable] = useState(false);
+
+  useEffect(() => {
+    let searchResults = events;
+
+    if (searchInput.trim() !== '') {
+      searchResults = events.filter((event) => {
+        const titleIncludes = event.title
+          .toLowerCase()
+          .includes(searchInput.toLowerCase());
+
+        const phoneIncludes = event.extendedProps.phone
+          .toString()
+          .includes(searchInput.toLowerCase());
+        setShowTable(true);
+        // setOverlay(true);
+        return titleIncludes || phoneIncludes;
+      });
+
+      setSearchedEvents(searchResults);
+    } else {
+      setSearchedEvents(events);
+      setShowTable(false);
+      // setOverlay(false);s
+    }
+
+    // setShowTable(searchResults.length > 0);
+  }, [events, searchInput]);
+
+  console.log(searchedEvents);
+
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_PUBLIC_API_URL,
   });
@@ -113,12 +156,6 @@ const Calendar = () => {
     setStart(arg.date);
     setEnd(arg.date);
   };
-
-  // useEffect(() => {
-  //   axiosInstance.get('/api/calendar/get-events').then((response) => {
-  //     setEvents(response.data);
-  //   });
-  // }, []);
 
   const handleEventDelete = async (eventId) => {
     if (editedEvent) {
@@ -231,7 +268,6 @@ const Calendar = () => {
       selectedCategory === '' || event.extendedProps.room === selectedCategory
   );
 
-
   const { data: eventsData, refetch } = useQuery('events', () =>
     axiosInstance
       .get('/api/calendar/get-events')
@@ -243,7 +279,6 @@ const Calendar = () => {
       setEvents(eventsData);
     }
   }, [eventsData]);
-
 
   return (
     <section>
@@ -258,6 +293,13 @@ const Calendar = () => {
         <Button variant="contained" onClick={logOut}>
           Wyloguj
         </Button>
+        <input
+          type="text"
+          placeholder="Search by title or phone"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          style={{ marginLeft: '1rem' }}
+        />
 
         <FilterRooms setSelectedCategory={setSelectedCategory}></FilterRooms>
       </Box>
@@ -303,6 +345,58 @@ const Calendar = () => {
         handleEventChange={handleEventChange}
         setEditModalOpen={setEditModalOpen}
       />
+
+      {showTable && (
+        <div className="modal-edit">
+          <span>Zamknij</span>
+          <table className="app">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Phone</th>
+              </tr>
+            </thead>
+            <tbody>
+              {searchedEvents.length === 0 ? (
+                <tr>
+                  <td colSpan="2">Brak wyników</td>
+                </tr>
+              ) : (
+                searchedEvents.map((event) => (
+                  <tr key={event.id}>
+                    <td>{event.title === '' ? 'Brak wyników' : event.title}</td>
+                    <td>
+                      {event.extendedProps.phone === ''
+                        ? 'Brak wyników'
+                        : event.extendedProps.phone}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* {showTable && (
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Phone</th>
+            </tr>
+          </thead>
+          <tbody>
+            {searchedEvents.map((event) => (
+              <tr key={event.id}>
+                <td>{event.title}</td>
+                <td>{event.extendedProps.phone}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )} */}
+
       {overlay && <div className="overlay"></div>}
     </section>
   );
