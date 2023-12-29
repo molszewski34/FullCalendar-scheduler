@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Ubuntu:wght@400;500;700&display=swap');
 
 .fc {
-  font-family: 'Poppins', sans-serif; /* Replace 'YourFont' with the desired font */
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -37,7 +37,6 @@ h2 {
 }
 
 .fc-toolbar-title {
-  /* color: #525252; */
   color: #525252;
 }
 
@@ -55,7 +54,6 @@ h2 {
 }
 
 .fc-sticky {
-  /* color: #f8fafc; */
   color: #fff;
 }
 /* MODAL */
@@ -66,7 +64,6 @@ form {
   flex-direction: column;
   justify-content: center;
   gap: 0.3em;
-  /* align-items: center; */
 }
 
 header {
@@ -86,7 +83,6 @@ header button {
   font-weight: 500;
   cursor: pointer;
   font-weight: 600;
-  /* width: 50%; */
 }
 
 input {
@@ -257,7 +253,7 @@ label {
   width: 480px;
 
   display: flex;
-  /* flex-direction: column; */
+
   justify-content: center;
   align-items: flex-start;
   background: #fff;
@@ -293,7 +289,6 @@ label {
 }
 
 .discount-box {
-  /* width: 200px; */
   display: flex;
   height: 100%;
   align-items: flex-start;
@@ -343,10 +338,6 @@ label {
   left: 0;
   background-color: rgba(0, 0, 0, 0.3);
 }
-
-/* .fc-daygrid-event-harness {
-  transform: skew(-30deg);
-} */
 
 .fc-event-main-frame {
   padding-left: 1em;

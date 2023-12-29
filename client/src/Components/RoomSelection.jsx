@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { EventContext } from '../contexts/event.context';
 import { useForm, Controller } from 'react-hook-form';
-// import roomsList from './data/roomsList';
+
 const RoomSelection = ({
   room,
   error,
@@ -10,59 +10,12 @@ const RoomSelection = ({
   setNumOfGuests,
   setPriceOfGuest,
   setSelectedRoom,
-  // roomsList,
 }) => {
-  const {
-    setButtonCount,
-    buttonCount,
-    setInputValues,
-    priceOfGuest,
-    setGuestsFee,
-    setTotal,
-    roomsList,
-  } = useContext(EventContext);
+  const { setGuestsFee, setTotal, roomsList } = useContext(EventContext);
 
   const { handleSubmit, control, setError } = useForm();
 
   console.log(roomsList);
-
-  // const roomsList = [
-  //   {
-  //     name: 'Sypialnia',
-
-  //     numOfGuests: 2,
-
-  //     priceOfGuest: 65,
-
-  //     color: `linear-gradient(to right, #ED213A, #93291E)`,
-
-  //     defNumOfGuests: 2,
-  //   },
-
-  //   {
-  //     name: '3 łóżka',
-
-  //     numOfGuests: 3,
-
-  //     priceOfGuest: 65,
-
-  //     color: `linear-gradient(to right, #005C97, #363795)`,
-
-  //     defNumOfGuests: 3,
-  //   },
-
-  //   {
-  //     name: '2 łóżka',
-
-  //     numOfGuests: 2,
-
-  //     priceOfGuest: 65,
-
-  //     color: `linear-gradient(to right, #3CA55C, #B5AC49)`,
-
-  //     defNumOfGuests: 2,
-  //   },
-  // ];
 
   const handleRoomChange = (roomItem) => {
     setRoom(roomItem.name);
@@ -94,7 +47,7 @@ const RoomSelection = ({
               style={{ background: roomItem.color }}
               onClick={() => {
                 handleRoomChange(roomItem);
-                // roomItem.generateInput(roomItem.defNumOfGuests);
+
                 generateInputs(roomItem.defNumOfGuests);
               }}
             >

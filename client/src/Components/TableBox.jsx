@@ -56,16 +56,8 @@ const TableBox = () => {
             ) : (
               searchedEvents.map((event) => (
                 <TableRow key={event.id}>
-                  <TableCell>
-                    {/* {event.title === '' ? 'Brak wyników' : event.title} */}
-                    {event.title}
-                  </TableCell>
-                  <TableCell>
-                    {/* {event.extendedProps.phone === ''
-                  ? 'Brak wyników'
-                  : event.extendedProps.phone} */}
-                    {event.extendedProps.phone}
-                  </TableCell>
+                  <TableCell>{event.title}</TableCell>
+                  <TableCell>{event.extendedProps.phone}</TableCell>
                 </TableRow>
               ))
             )}
