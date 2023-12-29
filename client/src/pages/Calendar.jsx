@@ -11,7 +11,7 @@ import plLocale from '@fullcalendar/core/locales/pl';
 import DeleteConfirmationModal from '../Components/deleteConfirmationModal';
 import EditEventModal from '../Components/EditEventModal';
 import { UserContext } from '../contexts/user.context';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { Box } from '@mui/material';
 import Legend from '../Components/Legend';
 import { EventContext } from '../contexts/event.context';
@@ -26,6 +26,7 @@ import {
   TableRow,
   Paper,
 } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 const Calendar = () => {
   const calendarRef = useRef(null);
@@ -280,6 +281,11 @@ const Calendar = () => {
     }
   }, [eventsData]);
 
+  const calendarOptions = {
+    // ...inne opcje
+    contentHeight: 'auto', // lub określ konkretną wysokość
+  };
+
   return (
     <section>
       <Box
@@ -293,15 +299,36 @@ const Calendar = () => {
         <Button variant="contained" onClick={logOut}>
           Wyloguj
         </Button>
-        <input
-          type="text"
-          placeholder="Search by title or phone"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          style={{ marginLeft: '1rem' }}
-        />
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1em',
+            position: 'relative',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              // position: 'absolute',
+              // justifyContent: 'flex-start',
+            }}
+          >
+            <SearchIcon fontSize="large" sx={{ color: 'text.disabled' }} />
+            <TextField
+              hiddenLabel
+              size="small"
+              type="text"
+              placeholder="Wyszukaj osobę lub telefon"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              // style={{ marginLeft: '1rem' }}
+            />
+          </Box>
 
-        <FilterRooms setSelectedCategory={setSelectedCategory}></FilterRooms>
+          <FilterRooms setSelectedCategory={setSelectedCategory}></FilterRooms>
+        </Box>
       </Box>
       <div style={{ position: 'relative', zIndex: 0 }}>
         <FullCalendar
@@ -320,6 +347,7 @@ const Calendar = () => {
           eventDidMount={handleEventDidMount}
           slotEventOverlap={false}
           eventOverlap={false}
+          {...calendarOptions}
         />
       </div>
       <AddEventModal
@@ -348,33 +376,61 @@ const Calendar = () => {
 
       {showTable && (
         <div className="modal-edit">
-          <span>Zamknij</span>
-          <table className="app">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Phone</th>
-              </tr>
-            </thead>
-            <tbody>
-              {searchedEvents.length === 0 ? (
-                <tr>
-                  <td colSpan="2">Brak wyników</td>
-                </tr>
-              ) : (
-                searchedEvents.map((event) => (
-                  <tr key={event.id}>
-                    <td>{event.title === '' ? 'Brak wyników' : event.title}</td>
-                    <td>
-                      {event.extendedProps.phone === ''
-                        ? 'Brak wyników'
-                        : event.extendedProps.phone}
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+          <TableContainer
+            component={Paper}
+            className="modal-edit"
+            sx={{ display: 'flex', flexDirection: 'column', gap: '1em' }}
+          >
+            <Button
+              variant="contained"
+              sx={{
+                display: 'flex',
+                alignSelf: 'flex-end',
+                fontWeight: 'bold',
+              }}
+              onClick={() => {
+                setSearchedEvents('');
+                setShowTable(false);
+                setSearchInput('');
+              }}
+            >
+              Zamknij{' '}
+            </Button>
+            <Table>
+              <TableHead>
+                <TableRow sx={{ bgcolor: 'info.main', color: '#fff' }}>
+                  <TableCell sx={{ color: '#fff' }}>
+                    <b>Imię Nazwisko</b>
+                  </TableCell>
+                  <TableCell sx={{ color: '#fff' }}>
+                    <b>Telefon</b>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {searchedEvents.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={2}>Brak wyników</TableCell>
+                  </TableRow>
+                ) : (
+                  searchedEvents.map((event) => (
+                    <TableRow key={event.id}>
+                      <TableCell>
+                        {/* {event.title === '' ? 'Brak wyników' : event.title} */}
+                        {event.title}
+                      </TableCell>
+                      <TableCell>
+                        {/* {event.extendedProps.phone === ''
+                          ? 'Brak wyników'
+                          : event.extendedProps.phone} */}
+                        {event.extendedProps.phone}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </div>
       )}
 
