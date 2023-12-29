@@ -1,32 +1,22 @@
-import React, { useRef, useState, useEffect, useContext } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Button, TextField } from '@mui/material';
+import { Box } from '@mui/material';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import 'moment/locale/pl';
+import plLocale from '@fullcalendar/core/locales/pl';
+import SearchIcon from '@mui/icons-material/Search';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import AddEventModal from '../Components/AddEventModal';
-import axios from 'axios';
-import moment from 'moment';
-import 'moment/locale/pl';
-import plLocale from '@fullcalendar/core/locales/pl';
 import DeleteConfirmationModal from '../Components/deleteConfirmationModal';
 import EditEventModal from '../Components/EditEventModal';
 import { UserContext } from '../contexts/user.context';
-import { Button, TextField } from '@mui/material';
-import { Box } from '@mui/material';
-import Legend from '../Components/Legend';
 import { EventContext } from '../contexts/event.context';
 import { FilterRooms } from '../Components/utilities/FilterRooms';
-import { useQuery } from 'react-query';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import TableBox from '../Components/TableBox';
 
 const Calendar = () => {
   const calendarRef = useRef(null);
@@ -67,6 +57,12 @@ const Calendar = () => {
     setSelectedCategory,
     guestsFee,
     setGuestsFee,
+    setShowTable,
+    searchInput,
+    setSearchInput,
+    searchedEvents,
+    setSearchedEvents,
+    showTable,
   } = useContext(EventContext);
 
   const { logOutUser } = useContext(UserContext);
@@ -83,10 +79,6 @@ const Calendar = () => {
     }
   };
 
-  const [searchInput, setSearchInput] = useState('');
-  const [searchedEvents, setSearchedEvents] = useState([]);
-  const [showTable, setShowTable] = useState(false);
-
   useEffect(() => {
     let searchResults = events;
 
@@ -100,7 +92,7 @@ const Calendar = () => {
           .toString()
           .includes(searchInput.toLowerCase());
         setShowTable(true);
-        // setOverlay(true);
+
         return titleIncludes || phoneIncludes;
       });
 
@@ -108,10 +100,7 @@ const Calendar = () => {
     } else {
       setSearchedEvents(events);
       setShowTable(false);
-      // setOverlay(false);s
     }
-
-    // setShowTable(searchResults.length > 0);
   }, [events, searchInput]);
 
   console.log(searchedEvents);
@@ -282,8 +271,7 @@ const Calendar = () => {
   }, [eventsData]);
 
   const calendarOptions = {
-    // ...inne opcje
-    contentHeight: 'auto', // lub określ konkretną wysokość
+    contentHeight: 'auto',
   };
 
   return (
@@ -311,8 +299,6 @@ const Calendar = () => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              // position: 'absolute',
-              // justifyContent: 'flex-start',
             }}
           >
             <SearchIcon fontSize="large" sx={{ color: 'text.disabled' }} />
@@ -323,7 +309,6 @@ const Calendar = () => {
               placeholder="Wyszukaj osobę lub telefon"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              // style={{ marginLeft: '1rem' }}
             />
           </Box>
 
@@ -374,84 +359,7 @@ const Calendar = () => {
         setEditModalOpen={setEditModalOpen}
       />
 
-      {showTable && (
-        <div className="modal-edit">
-          <TableContainer
-            component={Paper}
-            className="modal-edit"
-            sx={{ display: 'flex', flexDirection: 'column', gap: '1em' }}
-          >
-            <Button
-              variant="contained"
-              sx={{
-                display: 'flex',
-                alignSelf: 'flex-end',
-                fontWeight: 'bold',
-              }}
-              onClick={() => {
-                setSearchedEvents('');
-                setShowTable(false);
-                setSearchInput('');
-              }}
-            >
-              Zamknij{' '}
-            </Button>
-            <Table>
-              <TableHead>
-                <TableRow sx={{ bgcolor: 'info.main', color: '#fff' }}>
-                  <TableCell sx={{ color: '#fff' }}>
-                    <b>Imię Nazwisko</b>
-                  </TableCell>
-                  <TableCell sx={{ color: '#fff' }}>
-                    <b>Telefon</b>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {searchedEvents.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={2}>Brak wyników</TableCell>
-                  </TableRow>
-                ) : (
-                  searchedEvents.map((event) => (
-                    <TableRow key={event.id}>
-                      <TableCell>
-                        {/* {event.title === '' ? 'Brak wyników' : event.title} */}
-                        {event.title}
-                      </TableCell>
-                      <TableCell>
-                        {/* {event.extendedProps.phone === ''
-                          ? 'Brak wyników'
-                          : event.extendedProps.phone} */}
-                        {event.extendedProps.phone}
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
-      )}
-
-      {/* {showTable && (
-        <table>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Phone</th>
-            </tr>
-          </thead>
-          <tbody>
-            {searchedEvents.map((event) => (
-              <tr key={event.id}>
-                <td>{event.title}</td>
-                <td>{event.extendedProps.phone}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )} */}
+      {showTable && <TableBox />}
 
       {overlay && <div className="overlay"></div>}
     </section>
