@@ -10,13 +10,14 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import AddEventModal from '../Components/AddEventModal';
-import DeleteConfirmationModal from '../Components/deleteConfirmationModal';
-import EditEventModal from '../Components/EditEventModal';
+import AddEventModal from '../Components/modals/AddEventModal';
+import DeleteConfirmationModal from '../Components/modals/deleteConfirmationModal';
+import EditEventModal from '../Components/modals/EditEventModal';
 import { UserContext } from '../contexts/user.context';
 import { EventContext } from '../contexts/event.context';
 import { FilterRooms } from '../Components/utilities/FilterRooms';
 import TableBox from '../Components/TableBox';
+import ManageRoomsModal from '../Components/modals/ManageRoomsModal';
 
 const Calendar = () => {
   const calendarRef = useRef(null);
@@ -260,7 +261,7 @@ const Calendar = () => {
 
   const { data: eventsData, refetch } = useQuery('events', () =>
     axiosInstance
-      .get('/api/calendar/get-events')
+      .get('/api/events/get-events')
       .then((response) => response.data)
   );
 
@@ -274,8 +275,10 @@ const Calendar = () => {
     contentHeight: 'auto',
   };
 
+  console.log(events);
+
   return (
-    <section>
+    <main>
       <Box
         sx={{
           display: 'flex',
@@ -284,9 +287,19 @@ const Calendar = () => {
           justifyContent: 'space-between',
         }}
       >
-        <Button variant="contained" onClick={logOut}>
-          Wyloguj
-        </Button>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1em',
+            position: 'relative',
+          }}
+        >
+          <Button variant="contained" onClick={logOut}>
+            Wyloguj
+          </Button>
+          <Button variant="contained">Zarządzaj pokojami</Button>
+        </Box>
         <Box
           sx={{
             display: 'flex',
@@ -358,11 +371,12 @@ const Calendar = () => {
         handleEventChange={handleEventChange}
         setEditModalOpen={setEditModalOpen}
       />
+      <ManageRoomsModal />
 
       {showTable && <TableBox />}
 
       {overlay && <div className="overlay"></div>}
-    </section>
+    </main>
   );
 };
 
