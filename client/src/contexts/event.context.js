@@ -6,6 +6,7 @@ export const EventContext = createContext();
 export function EventProvider({ children }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState({ start: null, end: null });
+  const [rooms, setRooms] = useState([]);
   const [events, setEvents] = useState([]);
   const [overlay, setOverlay] = useState(false);
   const [open, setOpen] = React.useState(false);
@@ -76,6 +77,8 @@ export function EventProvider({ children }) {
         setModalOpen,
         selectedDate,
         setSelectedDate,
+        rooms,
+        setRooms,
         events,
         setEvents,
         overlay,
