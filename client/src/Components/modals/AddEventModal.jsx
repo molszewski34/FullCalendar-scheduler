@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import Form from './Form';
+import Form from '../Form';
 import { Button, Box } from '@mui/material';
-import { EventContext } from '../contexts/event.context';
+import { EventContext } from '../../contexts/event.context';
 import {
   handleNumOfGuestsIncrement,
   handleNumOfGuestsDecrement,
   handlePriceOfGuestIncrement,
   handlePriceOfGuestDecrement,
-} from './utilities/eventUtilities';
-import Header from './Header';
+} from '../utilities/eventUtilities';
+import Header from '../Header';
 
 import PersonIcon from '@mui/icons-material/Person';
 
