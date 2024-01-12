@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { TextField, Checkbox, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import { ChromePicker } from 'react-color';
+
+import AddIcon from '@mui/icons-material/Add';
+
 const AddRoom = () => {
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_PUBLIC_API_URL,
@@ -21,7 +24,6 @@ const AddRoom = () => {
       ...roomData,
       roomColor: color.hex,
     });
-    setShowColorPicker(false);
   };
 
   const handleChange = async (e) => {
@@ -57,9 +59,18 @@ const AddRoom = () => {
   };
 
   return (
-    <div>
-      <h2>Wypełnij pola</h2>
-      <form onSubmit={handleSubmit}>
+    <div
+      style={{
+        marginLeft: '2em',
+        paddingLeft: '1em',
+        borderLeft: '1px solid black',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+      }}
+    >
+      <b style={{ margin: '0', marginBottom: '1em' }}>Wypełnij pola</b>
+      <form style={{ display: 'flex' }} onSubmit={handleSubmit}>
         <label htmlFor="roomName">Nazwa pokoju:</label>
         <input
           type="text"
@@ -72,7 +83,7 @@ const AddRoom = () => {
 
         <label htmlFor="roomNumOfGuests">Liczba miejsc:</label>
         <input
-          type="number"
+          type="text"
           id="roomNumOfGuests"
           name="roomNumOfGuests"
           value={roomData.roomNumOfGuests}
@@ -87,36 +98,55 @@ const AddRoom = () => {
           value={roomData.RoomPriceOfGuest}
           onChange={handleChange}
         />
-
-        <label htmlFor="isApartment">Czy jest Apartmentem?:</label>
-        <input
-          type="checkbox"
-          id="isApartment"
-          name="isApartment"
-          checked={roomData.isApartment}
-          onChange={() =>
-            setRoomData({ ...roomData, isApartment: !roomData.isApartment })
-          }
-        />
-
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <label htmlFor="isApartment">Czy jest Apartamentem?</label>
+          <input
+            type="checkbox"
+            id="isApartment"
+            name="isApartment"
+            checked={roomData.isApartment}
+            onChange={() =>
+              setRoomData({ ...roomData, isApartment: !roomData.isApartment })
+            }
+          />
+        </div>
         <label htmlFor="roomColor">Kolor pokoju:</label>
-        <div>
+
+        <div
+          style={{
+            display: 'flex',
+            gap: '0.3em',
+            position: 'relative',
+          }}
+        >
           <input
             type="text"
             id="roomColor"
             name="roomColor"
             value={roomData.roomColor}
             onChange={handleChange}
-            onFocus={() => setShowColorPicker(true)}
-            placeholder="Kliknij by wybrać"
+            placeholder="Kliknij przycisk"
           />
-          {showColorPicker && (
+          <div
+            style={{
+              width: '40px',
+              height: '30px',
+              borderRadius: '5px',
+              cursor: 'pointer',
+              backgroundColor:
+                roomData.roomColor === '' ? '#cbd5e1' : roomData.roomColor,
+            }}
+            onClick={() => setShowColorPicker(!showColorPicker)}
+          ></div>
+        </div>
+        {showColorPicker && (
+          <div style={{ position: 'absolute', bottom: '-130px', zIndex: '1' }}>
             <ChromePicker
               color={roomData.roomColor}
               onChange={handleColorChange}
             />
-          )}
-        </div>
+          </div>
+        )}
 
         <label htmlFor="roomLocation">Lokalizacja:</label>
         <input
@@ -128,8 +158,19 @@ const AddRoom = () => {
           placeholder="np. 2 piętro"
         />
 
-        <Button variant="contained" size="small" type="submit">
-          Dodaj
+        <Button
+          variant="contained"
+          size="small"
+          type="submit"
+          style={{
+            marginLeft: '.2em',
+            marginTop: '1em',
+            backgroundColor: '#22c55e',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          Dodaj <AddIcon style={{ marginLeft: '.2em' }} />
         </Button>
       </form>
     </div>
