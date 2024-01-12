@@ -36,6 +36,7 @@ export function EventProvider({ children }) {
   const [searchInput, setSearchInput] = useState('');
   const [searchedEvents, setSearchedEvents] = useState([]);
   const [showTable, setShowTable] = useState(false);
+  const [roomSelection, setRoomSelection] = useState('');
 
   const [discountBtns, setDiscountBtns] = useState([
     { name: '50%', value: -50, bgColor: '#009688' },
@@ -140,6 +141,8 @@ export function EventProvider({ children }) {
         setSearchedEvents,
         showTable,
         setShowTable,
+        roomSelection,
+        setRoomSelection,
       }}
     >
       {children}
