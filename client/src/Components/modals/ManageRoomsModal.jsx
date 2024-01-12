@@ -4,10 +4,12 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import { Button, Box, Text, Typography } from '@mui/material';
 import AddRoom from '../manageRoomsModalComponents/addRoom';
+import EditRoom from '../manageRoomsModalComponents/editRoom';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 const ManageRoomsModal = () => {
-  const { rooms, setRooms } = useContext(EventContext);
+  const { rooms, setRooms, roomSelection, setRoomSelection } =
+    useContext(EventContext);
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_PUBLIC_API_URL,
   });
@@ -15,8 +17,8 @@ const ManageRoomsModal = () => {
     axiosInstance.get('/api/rooms/get-rooms').then((response) => response.data)
   );
 
-  const [selectedRoom, setSelectedRoom] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [openAddRoomPanel, setOpenAddRoomPanel] = useState(false);
+  const [openEditRoomPanel, setOpenEditRoomPanel] = useState(false);
 
   useEffect(() => {
     if (roomsData) {
@@ -25,20 +27,18 @@ const ManageRoomsModal = () => {
   }, [roomsData]);
 
   const handleRoomButtonClick = (room) => {
-    setSelectedRoom(room);
+    setRoomSelection({ ...room });
   };
 
-  const roomDetailsData = selectedRoom
+  const roomDetailsData = roomSelection
     ? [
-        { label: 'Nazwa pokoju:', value: selectedRoom.roomName },
-        { label: 'Liczba miejsc:', value: selectedRoom.roomNumOfGuests },
-        { label: 'Cena za osobę:', value: selectedRoom.RoomPriceOfGuest },
-        { label: 'Kolor pokoju:', value: selectedRoom.roomColor },
-        { label: 'Lokalizacja:', value: selectedRoom.roomLocation },
+        { label: 'Nazwa pokoju:', value: roomSelection.roomName },
+        { label: 'Liczba miejsc:', value: roomSelection.roomNumOfGuests },
+        { label: 'Cena za osobę:', value: roomSelection.RoomPriceOfGuest },
+        { label: 'Kolor pokoju:', value: roomSelection.roomColor },
+        { label: 'Lokalizacja:', value: roomSelection.roomLocation },
       ]
     : [];
-
-  console.log(rooms);
 
   return (
     <Box
@@ -56,11 +56,10 @@ const ManageRoomsModal = () => {
         boxShadow:
           '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
         backgroundColor: '#fff',
-        minHeight: '410px',
       }}
     >
-      <Box
-        sx={{
+      <div
+        style={{
           display: 'flex',
           flexDirection: 'column',
           gap: '0.2em',
@@ -82,48 +81,59 @@ const ManageRoomsModal = () => {
 
               fontWeight: 'bold',
             }}
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => {
+              setOpenAddRoomPanel(!openAddRoomPanel);
+              setOpenEditRoomPanel(false);
+            }}
           >
-            {isOpen ? 'Zamknij panel' : 'Dodaj pokój +'}
+            {openAddRoomPanel ? 'Zamknij panel' : 'Dodaj pokój +'}
           </Button>
         </Box>
         <Box
           sx={{
             display: 'flex',
-            gap: '0.2em',
-            height: '100%',
           }}
         >
-          <Box
-            sx={{
-              display: 'flex',
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+
               gap: '0.2em',
-              alignItems: 'self-start',
-              borderRight: '1px solid black',
-              paddingRight: '.5em',
+
+              alignContent: 'start',
+              maxWidth: '400px',
             }}
           >
             {rooms.map((room) => (
-              <Button
-                key={room.id}
-                size="small"
-                onClick={() => handleRoomButtonClick(room)}
-                style={{
-                  fontSize: '0.7em',
+              <>
+                <Button
+                  key={room.id}
+                  size="small"
+                  onClick={() => handleRoomButtonClick(room)}
+                  style={{
+                    fontSize: '0.7em',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%',
+                    height: '50px',
 
-                  border:
-                    selectedRoom === room
-                      ? '1px solid #6b7280'
-                      : '1px solid #d1d5db',
-                  color: '#6b7280',
-                }}
-              >
-                {room.roomName}
-              </Button>
+                    border:
+                      roomSelection === room
+                        ? '1px solid #6b7280'
+                        : '1px solid #d1d5db',
+                    // borderRadius: '3px',
+                    color: '#6b7280',
+                  }}
+                >
+                  {room.roomName}
+                </Button>
+              </>
             ))}
-          </Box>
+          </div>
 
-          {selectedRoom ? (
+          {roomSelection ? (
             <Box
               sx={{
                 display: 'flex',
@@ -141,8 +151,8 @@ const ManageRoomsModal = () => {
                   sx={{
                     margin: '0',
                     marginBottom: '0.8em',
-                    fontWeight: 'bold',
-                    fontSize: '1.4em',
+                    fontWeight: 'bolder',
+                    fontSize: '1.3em',
                   }}
                 >
                   Dane pokoju
@@ -157,15 +167,20 @@ const ManageRoomsModal = () => {
                     }}
                   >
                     <Typography
-                      variant="body2"
-                      sx={{ margin: '0', fontWeight: 'bold' }}
+                      variant="body1"
+                      sx={{
+                        margin: '0',
+
+                        fontWeight: '800',
+                        fontSize: '1em',
+                      }}
                     >
                       {roomData.label}
                     </Typography>
                     {roomData.label === 'Kolor pokoju:' ? (
                       <Box
                         sx={{
-                          backgroundColor: selectedRoom.roomColor,
+                          backgroundColor: roomSelection.roomColor,
                           width: '20px',
                           height: '20px',
                           borderRadius: '15px',
@@ -174,10 +189,11 @@ const ManageRoomsModal = () => {
                     ) : (
                       <Typography
                         style={{
+                          fontSize: '1.1em',
                           color:
                             roomData.label === 'Nazwa pokoju:'
-                              ? '#0284c7'
-                              : '#4b5563',
+                              ? '#44403c'
+                              : '#71717a',
                           fontWeight:
                             roomData.label === 'Nazwa pokoju:' ? 'bolder' : '',
                         }}
@@ -192,51 +208,72 @@ const ManageRoomsModal = () => {
               <Box
                 sx={{
                   display: 'flex',
+                  flexDirection: 'column',
                   justifyContent: 'space-between',
-                  gap: '1em',
+                  gap: '.5em',
                 }}
               >
-                <Button
-                  sx={{
+                <button
+                  style={{
                     display: 'flex',
-                    flexDirection: 'column',
+
                     justifyContent: 'center',
                     alignItems: 'center',
-                    color: '#0ea5e9',
-                    border: '1px solid #d1d5db',
+                    backgroundColor: '#0ea5e9',
+                    color: '#fff',
+                    fontWeight: 'bold',
+                    border: '1px solid #0284c7',
                     borderRadius: '5px',
                     padding: '0.5em',
+                    boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    setOpenEditRoomPanel(!openEditRoomPanel);
+                    setOpenAddRoomPanel(false);
                   }}
                 >
                   <EditIcon style={{ fontSize: '1.5em', margin: '0' }} />
-                  <p style={{ fontSize: '.8em', margin: '0' }}>Edytuj</p>
-                </Button>
+                  <p
+                    style={{
+                      fontSize: '.8em',
+                      margin: '0',
+                    }}
+                  >
+                    Edytuj
+                  </p>
+                </button>
 
-                <Button
-                  sx={{
+                <button
+                  style={{
                     display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
+
                     alignItems: 'center',
-                    color: '#ef4444',
-                    border: '1px solid #d1d5db',
+                    justifyContent: 'center',
+                    backgroundColor: '#ef4444',
+                    color: '#fff',
+                    fontWeight: 'bold',
+                    border: '1px solid #dc2626',
                     borderRadius: '5px',
                     padding: '0.5em',
+                    boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+                    cursor: 'pointer',
                   }}
                 >
                   <DeleteForeverIcon
                     style={{ fontSize: '1.5em', margin: '0' }}
                   />
                   <p style={{ fontSize: '.8em', margin: '0' }}>Usuń</p>
-                </Button>
+                </button>
               </Box>
             </Box>
           ) : (
             <p style={{ padding: ' 0 .3em' }}>Wybierz pokój</p>
           )}
-          {isOpen && <AddRoom />}
+          {openAddRoomPanel && <AddRoom />}
+          {openEditRoomPanel && <EditRoom />}
         </Box>
-      </Box>
+      </div>
     </Box>
   );
 };
