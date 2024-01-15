@@ -6,6 +6,7 @@ export const EventContext = createContext();
 export function EventProvider({ children }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState({ start: null, end: null });
+  const [rooms, setRooms] = useState([]);
   const [events, setEvents] = useState([]);
   const [overlay, setOverlay] = useState(false);
   const [open, setOpen] = React.useState(false);
@@ -35,6 +36,9 @@ export function EventProvider({ children }) {
   const [searchInput, setSearchInput] = useState('');
   const [searchedEvents, setSearchedEvents] = useState([]);
   const [showTable, setShowTable] = useState(false);
+  const [roomSelection, setRoomSelection] = useState('');
+  const [roomId, setRoomId] = useState(roomSelection._id);
+  const [openManageRoomsModal, setOpenManageRoomsModal] = useState(false);
 
   const [discountBtns, setDiscountBtns] = useState([
     { name: '50%', value: -50, bgColor: '#009688' },
@@ -76,6 +80,8 @@ export function EventProvider({ children }) {
         setModalOpen,
         selectedDate,
         setSelectedDate,
+        rooms,
+        setRooms,
         events,
         setEvents,
         overlay,
@@ -116,7 +122,6 @@ export function EventProvider({ children }) {
         setGuestValue,
         numInputs,
         setNumInputs,
-
         sumOfInputs,
         setSumOfInputs,
         discountValue,
@@ -137,6 +142,12 @@ export function EventProvider({ children }) {
         setSearchedEvents,
         showTable,
         setShowTable,
+        roomSelection,
+        setRoomSelection,
+        roomId,
+        setRoomId,
+        openManageRoomsModal,
+        setOpenManageRoomsModal,
       }}
     >
       {children}

@@ -7,9 +7,7 @@ const cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json());
-// const corsOptions = {
-//   origin: 'https://kalendarz-pensjonatu-x18c.onrender.com', // frontend URI (ReactJS)
-// };
+
 app.use(cors());
 
 app.use(express.json());
@@ -25,7 +23,9 @@ async function connectToDatabase() {
     console.error('Error connecting to MongoDB:', error);
   }
 }
-app.use('/api/calendar', require('./Controllers/CalendarController'));
+
+app.use('/api/rooms', require('./Controllers/RoomController'));
+app.use('/api/events', require('./Controllers/EventController'));
 
 connectToDatabase();
 

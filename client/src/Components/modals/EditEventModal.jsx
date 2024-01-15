@@ -1,13 +1,13 @@
 import React, { useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import TitleInput from './TitleInput';
-import PhoneInput from './PhoneInput';
-import DateTimeInputs from './DateTimeInputs';
-import GuestsAndPriceInputs from './GuestsAndPriceInputs';
-import RoomSelection from './RoomSelection';
-import Header from './Header';
+import TitleInput from '../TitleInput';
+import PhoneInput from '../PhoneInput';
+import DateTimeInputs from '../DateTimeInputs';
+import GuestsAndPriceInputs from '../GuestsAndPriceInputs';
+import RoomSelection from '../RoomSelection';
+import Header from '../Header';
 import { Button, Box } from '@mui/material';
-import { EventContext } from '../contexts/event.context';
+import { EventContext } from '../../contexts/event.context';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 const EditEventModal = ({
