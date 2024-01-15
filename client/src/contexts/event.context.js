@@ -37,6 +37,8 @@ export function EventProvider({ children }) {
   const [searchedEvents, setSearchedEvents] = useState([]);
   const [showTable, setShowTable] = useState(false);
   const [roomSelection, setRoomSelection] = useState('');
+  const [roomId, setRoomId] = useState(roomSelection._id);
+  const [openManageRoomsModal, setOpenManageRoomsModal] = useState(false);
 
   const [discountBtns, setDiscountBtns] = useState([
     { name: '50%', value: -50, bgColor: '#009688' },
@@ -120,7 +122,6 @@ export function EventProvider({ children }) {
         setGuestValue,
         numInputs,
         setNumInputs,
-
         sumOfInputs,
         setSumOfInputs,
         discountValue,
@@ -143,6 +144,10 @@ export function EventProvider({ children }) {
         setShowTable,
         roomSelection,
         setRoomSelection,
+        roomId,
+        setRoomId,
+        openManageRoomsModal,
+        setOpenManageRoomsModal,
       }}
     >
       {children}
