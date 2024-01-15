@@ -64,6 +64,8 @@ const Calendar = () => {
     searchedEvents,
     setSearchedEvents,
     showTable,
+    openManageRoomsModal,
+    setOpenManageRoomsModal,
   } = useContext(EventContext);
 
   const { logOutUser } = useContext(UserContext);
@@ -298,7 +300,12 @@ const Calendar = () => {
           <Button variant="contained" onClick={logOut}>
             Wyloguj
           </Button>
-          <Button variant="contained">Zarządzaj pokojami</Button>
+          <Button
+            variant="contained"
+            onClick={() => setOpenManageRoomsModal(!openManageRoomsModal)}
+          >
+            Zarządzaj pokojami
+          </Button>
         </Box>
         <Box
           sx={{
@@ -371,7 +378,7 @@ const Calendar = () => {
         handleEventChange={handleEventChange}
         setEditModalOpen={setEditModalOpen}
       />
-      <ManageRoomsModal />
+      {openManageRoomsModal && <ManageRoomsModal />}
 
       {showTable && <TableBox />}
 
