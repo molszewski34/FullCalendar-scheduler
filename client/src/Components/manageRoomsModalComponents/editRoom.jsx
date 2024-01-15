@@ -4,8 +4,9 @@ import { EventContext } from '../../contexts/event.context';
 import { TextField, Checkbox, Button } from '@mui/material';
 import { ChromePicker } from 'react-color';
 import EditIcon from '@mui/icons-material/Edit';
+import CloseIcon from '@mui/icons-material/Close';
 const EditRoom = () => {
-  const { rooms, setRooms, roomSelection, setRoomSelection } =
+  const { roomSelection, setRoomSelection, roomId, setRoomId } =
     useContext(EventContext);
   const [showColorPicker, setShowColorPicker] = useState(false);
 
@@ -13,7 +14,6 @@ const EditRoom = () => {
     baseURL: process.env.REACT_APP_PUBLIC_API_URL,
   });
 
-  const [roomId, setRoomId] = useState(roomSelection._id);
   const [updateData, setUpdateData] = useState({
     roomName: '',
     roomNumOfGuests: '',
@@ -27,8 +27,6 @@ const EditRoom = () => {
   useEffect(() => {
     setRoomId(roomSelection._id);
   }, [roomSelection._id]);
-
-  console.log(roomId);
 
   const handleColorChange = (color) => {
     setUpdateData({
@@ -63,7 +61,6 @@ const EditRoom = () => {
         borderLeft: '1px solid black',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
       }}
     >
       <b style={{ margin: '0', marginBottom: '1em' }}>Wypełnij pola</b>
@@ -130,15 +127,21 @@ const EditRoom = () => {
           />
           <div
             style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               width: '40px',
               height: '30px',
               borderRadius: '5px',
               cursor: 'pointer',
+              fontSize: '0.5em',
               backgroundColor:
                 updateData.roomColor === '' ? '#cbd5e1' : updateData.roomColor,
             }}
             onClick={() => setShowColorPicker(!showColorPicker)}
-          ></div>
+          >
+            {showColorPicker ? <CloseIcon /> : ''}
+          </div>
         </div>
         {showColorPicker && (
           <div style={{ position: 'absolute', bottom: '-130px', zIndex: '1' }}>
