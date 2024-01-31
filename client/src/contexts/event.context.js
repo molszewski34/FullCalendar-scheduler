@@ -6,6 +6,7 @@ export const EventContext = createContext();
 export function EventProvider({ children }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState({ start: null, end: null });
+  const [roomSelection, setRoomSelection] = useState('');
   const [rooms, setRooms] = useState([]);
   const [events, setEvents] = useState([]);
   const [overlay, setOverlay] = useState(false);
@@ -18,8 +19,8 @@ export function EventProvider({ children }) {
   const [phone, setPhone] = useState('');
   const [numOfGuests, setNumOfGuests] = useState(2);
   const [priceOfGuest, setPriceOfGuest] = useState(65);
-  const [price, setPrice] = useState('');
-  const [room, setRoom] = useState('default');
+  const [price, setPrice] = useState(0);
+  const [room, setRoom] = useState('Wybierz pokój');
   const [color, setColor] = useState('');
   const [selectedRoom, setSelectedRoom] = useState('');
   const [daysDifference, setDaysDifference] = useState(null);
@@ -32,13 +33,14 @@ export function EventProvider({ children }) {
   const [discountValue, setDiscountValue] = useState(0.5);
   const [guestsFee, setGuestsFee] = useState([65]);
   const [initialInputs, setInitialInputs] = useState([65]);
-  const [total, setTotal] = useState(65);
+  const [total, setTotal] = useState(0);
   const [searchInput, setSearchInput] = useState('');
   const [searchedEvents, setSearchedEvents] = useState([]);
   const [showTable, setShowTable] = useState(false);
-  const [roomSelection, setRoomSelection] = useState('');
   const [roomId, setRoomId] = useState(roomSelection._id);
   const [openManageRoomsModal, setOpenManageRoomsModal] = useState(false);
+  const [openRoomSelectionModal, setOpenRoomSelectionModal] = useState(false);
+  const [isRoomSelected, setIsRoomSelected] = useState(false);
 
   const [discountBtns, setDiscountBtns] = useState([
     { name: '50%', value: -50, bgColor: '#009688' },
@@ -52,7 +54,6 @@ export function EventProvider({ children }) {
       numOfGuests: 2,
       priceOfGuest: 65,
       color: `linear-gradient(to right, #ED213A, #93291E)`,
-
       defNumOfGuests: 2,
     },
     {
@@ -60,7 +61,6 @@ export function EventProvider({ children }) {
       numOfGuests: 3,
       priceOfGuest: 65,
       color: `linear-gradient(to right, #005C97, #363795)`,
-
       defNumOfGuests: 3,
     },
     {
@@ -68,7 +68,6 @@ export function EventProvider({ children }) {
       numOfGuests: 2,
       priceOfGuest: 65,
       color: `linear-gradient(to right, #3CA55C, #B5AC49)`,
-
       defNumOfGuests: 2,
     },
   ]);
@@ -148,6 +147,10 @@ export function EventProvider({ children }) {
         setRoomId,
         openManageRoomsModal,
         setOpenManageRoomsModal,
+        openRoomSelectionModal,
+        setOpenRoomSelectionModal,
+        isRoomSelected,
+        setIsRoomSelected,
       }}
     >
       {children}
