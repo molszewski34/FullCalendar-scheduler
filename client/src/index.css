@@ -281,6 +281,103 @@ label {
   cursor: pointer;
 }
 
+.modal-room-selection {
+  position: absolute;
+  z-index: 2;
+
+  top: 50%;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  gap: 0.5em;
+
+  border: 1px solid rgb(0 0 0 / 0.3);
+  border-radius: 8px;
+  max-width: 400px;
+  padding: 0.5em;
+  background: #fff;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.modal-room-selection_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1em;
+}
+.modal-room-selection_header p {
+  font-weight: bold;
+  margin: 0;
+}
+
+.modal-room-selection_header svg {
+  color: #dc2626;
+  font-size: 1.6em;
+  cursor: pointer;
+  align-self: end;
+}
+
+.modal-room-selection_wrapper {
+  display: grid;
+  align-content: start;
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 0.2em;
+  height: 120px;
+  overflow-y: auto;
+
+  align-content: start;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  z-index: 0;
+  overflow: visible;
+}
+.modal-room-selection_wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.modal-room-selection_wrapper button {
+  font-size: 0.74em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 50px;
+  color: #000;
+  border: 2px solid #d4d4d8;
+  border-radius: 8px;
+  background-color: #fff;
+  font-weight: bold;
+  padding: 0.5em;
+  cursor: pointer;
+  position: relative;
+}
+.modal-room-selection_wrapper button:hover {
+  background-color: #f9fafb;
+}
+
+.modal-room-selection_wrapper button:hover::before {
+  content: attr(data-tip);
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 99;
+  white-space: nowrap;
+  display: none;
+}
+
+.modal-room-selection_wrapper button:hover::before {
+  display: block;
+  z-index: 99;
+}
+
 .discount {
   display: flex;
   flex-direction: column;
@@ -288,9 +385,19 @@ label {
   align-items: stretch;
 }
 
+.discount-container {
+  height: 600px;
+  width: 300px;
+  overflow-y: auto;
+
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
+}
+
 .discount-box {
   display: flex;
-  height: 100%;
+
   align-items: flex-start;
   margin-bottom: 0.2em;
 }
