@@ -8,19 +8,16 @@ const Header = ({ modalName, setModalOpen }) => {
     setOverlay,
     setStart,
     setEnd,
-
     setTitle,
     setPhone,
     setPriceOfGuest,
     setNumOfGuests,
-
     setGuestsFee,
     setRoom,
     setColor,
-    title,
+    setTotal,
+    setPrice,
   } = useContext(EventContext);
-
-  console.log(title);
 
   return (
     <header className="">
@@ -34,14 +31,14 @@ const Header = ({ modalName, setModalOpen }) => {
           setOverlay(false);
           setTitle('');
           setGuestsFee([65]);
-
           setStart(null);
           setEnd(null);
           setPhone('');
           setPriceOfGuest(65);
           setNumOfGuests(2);
-          setRoom('default');
-
+          setRoom('Wybierz pokój');
+          setTotal(0);
+          setPrice(0);
           setColor('');
         }}
       >
