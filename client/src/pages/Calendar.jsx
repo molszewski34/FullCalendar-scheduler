@@ -66,6 +66,8 @@ const Calendar = () => {
     showTable,
     openManageRoomsModal,
     setOpenManageRoomsModal,
+    rooms,
+    setRooms,
   } = useContext(EventContext);
 
   const { logOutUser } = useContext(UserContext);
@@ -106,7 +108,7 @@ const Calendar = () => {
     }
   }, [events, searchInput]);
 
-  console.log(searchedEvents);
+  // console.log(searchedEvents);
 
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_PUBLIC_API_URL,
@@ -261,6 +263,16 @@ const Calendar = () => {
       selectedCategory === '' || event.extendedProps.room === selectedCategory
   );
 
+  const { data: roomsData } = useQuery('rooms', () =>
+    axiosInstance.get('/api/rooms/get-rooms').then((response) => response.data)
+  );
+
+  useEffect(() => {
+    if (roomsData) {
+      setRooms(roomsData);
+    }
+  }, [roomsData]);
+
   const { data: eventsData, refetch } = useQuery('events', () =>
     axiosInstance
       .get('/api/events/get-events')
@@ -277,7 +289,7 @@ const Calendar = () => {
     contentHeight: 'auto',
   };
 
-  console.log(events);
+  // console.log(events);
 
   return (
     <main>
