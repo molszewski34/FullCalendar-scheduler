@@ -13,29 +13,25 @@ const GuestsAndPriceInputs = ({}) => {
     setTotal,
     initialInputs,
     setInitialInputs,
+    roomSelection,
   } = useContext(EventContext);
 
   const addInput = () => {
-    if (guestsFee.length < 6) {
-      setGuestsFee([...guestsFee, 65]);
-      setInitialInputs([...initialInputs, 65]);
-      setTotal(total + 65);
+    if (roomSelection != '') {
+      setGuestsFee([...guestsFee, roomSelection.RoomPriceOfGuest]);
+      setInitialInputs([...initialInputs, roomSelection.RoomPriceOfGuest]);
+      setTotal(total + roomSelection.RoomPriceOfGuest);
     }
   };
 
   const removeInput = () => {
-    if (guestsFee.length > 0) {
+    if (guestsFee.length > 0 && roomSelection != '') {
       const lastInputValue = guestsFee[guestsFee.length - 1];
       setGuestsFee(guestsFee.slice(0, -1));
       setInitialInputs(initialInputs.slice(0, -1));
       setTotal(total - lastInputValue);
     }
   };
-
-  const {
-    register,
-    formState: { errors },
-  } = useForm();
 
   return (
     <Box
@@ -53,12 +49,8 @@ const GuestsAndPriceInputs = ({}) => {
             label="Liczba gości"
             variant="filled"
             size="small"
-            {...register('numOfGuests', {
-              required: true,
-              min: 1,
-              max: 6,
-            })}
-            value={guestsFee.length}
+            disabled={roomSelection == '' ? true : false}
+            value={guestsFee.length || '--'}
             onChange={(e) => setNumOfGuests(e.target.value)}
           />
           <Box sx={{ display: 'inline-flex' }} spacing={{ xs: 1, sm: 2 }}>
@@ -66,21 +58,17 @@ const GuestsAndPriceInputs = ({}) => {
               fontSize="large"
               type="button"
               onClick={removeInput}
+              style={{ color: roomSelection == '' ? '#d1d5db' : '' }}
             />
 
             <AddCircleOutlineIcon
               fontSize="large"
               type="button"
               onClick={addInput}
+              style={{ color: roomSelection == '' ? '#d1d5db' : '' }}
             />
           </Box>
         </Box>
-        {errors.numOfGuests && errors.numOfGuests.type === 'min' && (
-          <p className="error">Minimalnie 1 gość</p>
-        )}
-        {errors.numOfGuests && errors.numOfGuests.type === 'max' && (
-          <p className="error">Maksymalnie 6 gości</p>
-        )}
       </div>
     </Box>
   );

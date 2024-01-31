@@ -10,11 +10,10 @@ import {
   handlePriceOfGuestDecrement,
 } from '../utilities/eventUtilities';
 import Header from '../Header';
-
 import PersonIcon from '@mui/icons-material/Person';
-
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import RoomSelectionModal from './roomSelectionModal';
 
 const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
   const {
@@ -46,15 +45,16 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
     setTotal,
     initialInputs,
     setInitialInputs,
-
     discountBtns,
+    openRoomSelectionModal,
+    setOpenRoomSelectionModal,
   } = useContext(EventContext);
 
   const [selectedRoom, setSelectedRoom] = useState('');
 
   useEffect(() => {
     const totalPrice = total * daysDifference;
-    setPrice(totalPrice);
+    setPrice(totalPrice.toFixed(2));
   }, [numOfGuests, priceOfGuest, total, daysDifference]);
 
   const onSubmit = (event) => {
@@ -72,60 +72,74 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
     onClose();
   };
 
+  console.log(guestsFee);
+
   const {
     formState: { errors },
   } = useForm();
 
   const handleInputChange = (index, value) => {
-    const newValue = parseInt(value) || 0;
+    if (value < 0) {
+      value = 0;
+    }
+    const newInputValues = [...guestsFee];
+    newInputValues[index] = parseFloat(value);
+    const sum = newInputValues.reduce(
+      (acc, currentValue) => acc + currentValue,
+      0
+    );
 
-    const newInputs = [...guestsFee];
-
-    const diff = newValue - newInputs[index];
-
-    setGuestsFee(newInputs);
-    setInitialInputs(newInputs);
-    setTotal(total + diff);
+    setGuestsFee(newInputValues);
+    setTotal(sum);
   };
 
   const incrementValue = (index) => {
-    const newInputs = [...guestsFee];
-
-    newInputs[index] += 1;
-
-    setGuestsFee(newInputs);
-    setInitialInputs(newInputs);
-    setTotal(total + 1);
+    const newInputValues = [...guestsFee];
+    newInputValues[index] = (parseFloat(newInputValues[index]) || 0) + 1;
+    const sum = newInputValues.reduce(
+      (acc, currentValue) => acc + currentValue,
+      0
+    );
+    setTotal(sum);
+    setGuestsFee(newInputValues);
+    setInitialInputs(guestsFee);
   };
 
   const decrementValue = (index) => {
-    const newInputs = [...guestsFee];
-
-    newInputs[index] -= 1;
-
-    setGuestsFee(newInputs);
-    setInitialInputs(newInputs);
-    setTotal(total - 1);
+    const newInputValues = [...guestsFee];
+    newInputValues[index] = Math.max(
+      (parseFloat(newInputValues[index]) || 0) - 1,
+      0
+    );
+    const sum = newInputValues.reduce(
+      (acc, currentValue) => acc + currentValue,
+      0
+    );
+    setTotal(sum);
+    setGuestsFee(newInputValues);
+    setInitialInputs(guestsFee);
   };
 
   const changeValuePercentage = (index, percentage) => {
     if (guestsFee === initialInputs) {
       const newInputs = [...guestsFee];
-      const newValue = newInputs[index] * (1 + percentage / 100);
+      const newValue = (newInputs[index] * (1 + percentage / 100)).toFixed(2);
+
       const diff = newValue - newInputs[index];
-      newInputs[index] = newValue;
+      newInputs[index] = parseFloat(newValue);
 
       setGuestsFee(newInputs);
-      setTotal(total + diff);
+      setTotal(total + parseFloat(diff));
     } else {
       const initialValue = [...initialInputs];
       const newInputs = [...guestsFee];
-      const newValue = initialValue[index] * (1 + percentage / 100);
+      const newValue = (initialValue[index] * (1 + percentage / 100)).toFixed(
+        2
+      );
       const diff = newValue - newInputs[index];
-      newInputs[index] = newValue;
-
+      newInputs[index] = parseFloat(newValue);
       setGuestsFee(newInputs);
-      setTotal(total + diff);
+      setTotal(total + parseFloat(diff));
     }
   };
 
@@ -178,7 +192,22 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
             ></Form>
           </Box>
 
-          <div>
+          <div
+            className="discount-container"
+            style={{
+              height: '600px',
+              width: '300px',
+
+              overflowY: 'auto',
+              borderBottom: `${
+                guestsFee.length >= 7 ? '1px solid #a1a1aa' : ''
+              } `,
+              paddingBottom: `${guestsFee.length >= 7 ? '0.8em' : ''} `,
+              scrollBehavior: 'smooth',
+              overflowScrolling: 'touch',
+              overscrollBehaviorY: 'none',
+            }}
+          >
             {guestsFee.map((value, index) => (
               <div className="discount-box">
                 <div className="discount-box-wrapper">
@@ -190,10 +219,14 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
                       value={value}
                       style={{
                         fontSize: '1em',
+                        color: ` ${
+                          value[index] <= 0 || value[index] <= '0' ? 'red' : ''
+                        }`,
+                        border: `solid 1px ${
+                          value[index] <= 0 || value[index] <= '0' ? 'red' : ''
+                        }`,
                       }}
-                      onChange={(e) =>
-                        handleInputChange(index, parseInt(e.target.value))
-                      }
+                      onChange={(e) => handleInputChange(index, e.target.value)}
                     />
                     <div className="discount-box-item-btns">
                       <RemoveCircleOutlineIcon
@@ -230,6 +263,7 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
               </div>
             ))}
           </div>
+          {openRoomSelectionModal && <RoomSelectionModal />}
         </div>
       )}
     </>
