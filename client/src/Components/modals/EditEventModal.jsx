@@ -8,13 +8,9 @@ import RoomSelection from '../RoomSelection';
 import Header from '../Header';
 import { Button, Box } from '@mui/material';
 import { EventContext } from '../../contexts/event.context';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-const EditEventModal = ({
-  editModalOpen,
-  setEditModalOpen,
-  handleEventChange,
-}) => {
+import DiscountPanel from '../DiscountPanel';
+import RoomSelectionModal from './roomSelectionModal';
+const EditEventModal = ({ setEditModalOpen, handleEventChange }) => {
   const {
     editedEvent,
     title,
@@ -40,13 +36,13 @@ const EditEventModal = ({
     setDaysDifference,
     setOpen,
     guestsFee,
-    setGuestsFee,
     total,
     setTotal,
-    initialInputs,
-    setInitialInputs,
-    discountBtns,
     setModalOpen,
+    openRoomSelectionModal,
+    editModalOpen,
+    setRoomId,
+    rooms,
   } = useContext(EventContext);
   const {
     handleSubmit,
@@ -55,55 +51,27 @@ const EditEventModal = ({
   } = useForm();
 
   useEffect(() => {
-    const total = numOfGuests * priceOfGuest;
-    setPrice(total);
-  }, [numOfGuests, priceOfGuest, setPrice]);
+    if (editModalOpen && editedEvent?._def?.extendedProps?.room) {
+      const roomName = editedEvent._def.extendedProps.room;
+      const foundRoom = rooms.find((room) => room.roomName === roomName);
 
-  const handleInputChange = (index, value) => {
-    const newValue = parseInt(value) || 0;
-    const newInputs = [...guestsFee];
-
-    const diff = newValue - newInputs[index];
-    newInputs[index] = newValue;
-    setGuestsFee(newInputs);
-    setInitialInputs(newInputs);
-    setTotal(total + diff);
-  };
-
-  const incrementValue = (index) => {
-    const newInputs = [...guestsFee];
-    newInputs[index] += 1;
-    setGuestsFee(newInputs);
-    setInitialInputs(newInputs);
-    setTotal(total + 1);
-  };
-
-  const decrementValue = (index) => {
-    const newInputs = [...guestsFee];
-    newInputs[index] -= 1;
-    setGuestsFee(newInputs);
-    setInitialInputs(newInputs);
-    setTotal(total - 1);
-  };
-
-  const changeValuePercentage = (index, percentage) => {
-    if (guestsFee === initialInputs) {
-      const newInputs = [...guestsFee];
-      const newValue = newInputs[index] * (1 + percentage / 100);
-      const diff = newValue - newInputs[index];
-      newInputs[index] = newValue;
-      setGuestsFee(newInputs);
-      setTotal(total + diff);
-    } else {
-      const initialValue = [...initialInputs];
-      const newInputs = [...guestsFee];
-      const newValue = initialValue[index] * (1 + percentage / 100);
-      const diff = newValue - newInputs[index];
-      newInputs[index] = newValue;
-      setGuestsFee(newInputs);
-      setTotal(total + diff);
+      if (foundRoom) {
+        setRoomId(foundRoom._id);
+      }
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (editModalOpen) {
+      const sum = guestsFee.reduce(
+        (acc, currentValue) => acc + currentValue,
+        0
+      );
+      setTotal(sum);
+      const totalPrice = total * numOfGuests;
+      setPrice(totalPrice.toFixed(2));
+    }
+  }, []);
 
   return (
     <div>
@@ -174,7 +142,10 @@ const EditEventModal = ({
               <div className="price-per-day ">
                 Za dzień: <span>{total}zł </span>
               </div>
-              <div className="price">
+              <div
+                className="price"
+                style={{ fontSize: price.length > 6 ? '.8em' : '' }}
+              >
                 Do zapłaty: <span>{price}zł </span>
               </div>
               <div className="modal-edit_btn-wrapper">
@@ -200,56 +171,9 @@ const EditEventModal = ({
               </div>
             </form>
           </Box>
-          <div>
-            {guestsFee.map((value, index) => (
-              <div className="discount-box">
-                <div className="discount-box-wrapper">
-                  <div className="discount-box-item" key={index}>
-                    <input
-                      key={index}
-                      type="text"
-                      value={value}
-                      onChange={(e) =>
-                        handleInputChange(index, parseInt(e.target.value))
-                      }
-                    />
-                    <div className="discount-box-item-btns">
-                      <RemoveCircleOutlineIcon
-                        fontSize="large"
-                        type="button"
-                        onClick={() => decrementValue(index)}
-                        color="warning"
-                      />
-                      <AddCircleOutlineIcon
-                        fontSize="large"
-                        type="button"
-                        onClick={() => incrementValue(index)}
-                        color="success"
-                      />
-                    </div>
-                  </div>
-                  <div className="discount-btns ">
-                    <div className="discount-btns ">
-                      {discountBtns.map((discountBtn) => (
-                        <Button
-                          variant="contained"
-                          style={{ backgroundColor: discountBtn.bgColor }}
-                          className="discount-btn"
-                          sx={{ my: 1 }}
-                          size="small"
-                          onClick={() =>
-                            changeValuePercentage(index, discountBtn.value)
-                          }
-                        >
-                          {discountBtn.name}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <DiscountPanel />
+
+          {openRoomSelectionModal && <RoomSelectionModal />}
         </div>
       )}
     </div>
