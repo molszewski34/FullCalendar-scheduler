@@ -15,6 +15,8 @@ const RoomSelectionModal = () => {
     setPriceOfGuest,
     setNumOfGuests,
     setTotal,
+    setColor,
+    setRoomId,
   } = useContext(EventContext);
 
   const handleRoomButtonClick = (room) => {
@@ -22,6 +24,8 @@ const RoomSelectionModal = () => {
     setRoom(room.roomName);
     setPriceOfGuest(room.RoomPriceOfGuest);
     setNumOfGuests(room.roomNumOfGuests);
+    setColor(room.roomColor);
+    setRoomId(room._id);
   };
 
   const generateInputs = (count, priceOfGuest) => {
