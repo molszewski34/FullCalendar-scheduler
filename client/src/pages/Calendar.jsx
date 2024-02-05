@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Button, TextField } from '@mui/material';
-import { Box } from '@mui/material';
+import { Button, TextField, Box, InputAdornment } from '@mui/material';
+
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import 'moment/locale/pl';
@@ -11,13 +11,14 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import AddEventModal from '../Components/modals/AddEventModal';
-import DeleteConfirmationModal from '../Components/modals/deleteConfirmationModal';
+import DeleteConfirmationModal from '../Components/modals/DeleteConfirmationModal';
 import EditEventModal from '../Components/modals/EditEventModal';
 import { UserContext } from '../contexts/user.context';
 import { EventContext } from '../contexts/event.context';
 import { FilterRooms } from '../Components/utilities/FilterRooms';
 import TableBox from '../Components/TableBox';
 import ManageRoomsModal from '../Components/modals/ManageRoomsModal';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 const Calendar = () => {
   const calendarRef = useRef(null);
@@ -61,13 +62,12 @@ const Calendar = () => {
     setShowTable,
     searchInput,
     setSearchInput,
-    searchedEvents,
     setSearchedEvents,
     showTable,
     openManageRoomsModal,
     setOpenManageRoomsModal,
-    rooms,
     setRooms,
+    roomId,
   } = useContext(EventContext);
 
   const { logOutUser } = useContext(UserContext);
@@ -108,13 +108,11 @@ const Calendar = () => {
     }
   }, [events, searchInput]);
 
-  // console.log(searchedEvents);
-
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_PUBLIC_API_URL,
   });
 
-  const onEventAdded = async (event) => {
+  const onEventAdded = async () => {
     const eventData = {
       title: title,
       start: start,
@@ -132,7 +130,7 @@ const Calendar = () => {
 
     try {
       const response = await axiosInstance.post(
-        '/api/calendar/create-event',
+        `/api/events/${roomId}/create-event`,
         eventData
       );
       const newEvent = response.data;
@@ -155,7 +153,7 @@ const Calendar = () => {
   const handleEventDelete = async (eventId) => {
     if (editedEvent) {
       const response = await axiosInstance.delete(
-        `/api/calendar/delete-event/${editedEvent._def.extendedProps._id}`
+        `/api/events/${roomId}/delete-event/${editedEvent._def.extendedProps._id}`
       );
 
       const updatedEvents = events.filter((event) => event.id !== eventId);
@@ -187,7 +185,7 @@ const Calendar = () => {
 
       try {
         const response = await axiosInstance.put(
-          `/api/calendar/update-event/${editedEvent._def.extendedProps._id}`,
+          `/api/events/${roomId}/update-event/${editedEvent._def.extendedProps._id}`,
           updatedEventData
         );
 
@@ -221,6 +219,7 @@ const Calendar = () => {
 
   const eventClick = (info) => {
     const { start, end } = info.event;
+
     setSelectedDate({ start, end });
     setStart(info.event._instance.range.start);
     setEnd(info.event._instance.range.end);
@@ -251,8 +250,8 @@ const Calendar = () => {
       startDate.getMinutes()
     ).padStart(2, '0')}`;
     const dateElement = document.createElement('div');
-    dateElement.textContent = `Godzina przyjazdu: ${formattedStartDate}`;
-    dateElement.style.color = '#fff';
+    dateElement.textContent = ` ${info.event.extendedProps.room}`;
+    dateElement.style.color = '#e2e8f0';
     dateElement.style.fontWeight = 'bold';
     dateElement.style.marginLeft = '1em';
     info.el.appendChild(dateElement);
@@ -289,8 +288,6 @@ const Calendar = () => {
     contentHeight: 'auto',
   };
 
-  // console.log(events);
-
   return (
     <main>
       <Box
@@ -314,7 +311,9 @@ const Calendar = () => {
           </Button>
           <Button
             variant="contained"
+            startIcon={<ManageAccountsIcon />}
             onClick={() => setOpenManageRoomsModal(!openManageRoomsModal)}
+            color="secondary"
           >
             Zarządzaj pokojami
           </Button>
@@ -328,19 +327,28 @@ const Calendar = () => {
           }}
         >
           <Box
+            fullWidth
             sx={{
               display: 'flex',
               alignItems: 'center',
             }}
           >
-            <SearchIcon fontSize="large" sx={{ color: 'text.disabled' }} />
             <TextField
               hiddenLabel
               size="small"
               type="text"
-              placeholder="Wyszukaj osobę lub telefon"
+              placeholder="Wyszukaj osobę..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon sx={{ color: 'text.disabled' }} />
+                  </InputAdornment>
+                ),
+                sx: { pr: '24px' },
+                placeholderTypographyProps: { fontSize: '0.6em' },
+              }}
             />
           </Box>
 
@@ -373,6 +381,7 @@ const Calendar = () => {
         onClose={() => {
           setModalOpen(false);
           setSelectedDate(null);
+          setOverlay(false);
         }}
         onEventAdded={onEventAdded}
       />
