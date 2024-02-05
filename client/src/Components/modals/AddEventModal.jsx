@@ -11,7 +11,7 @@ import {
 } from '../utilities/eventUtilities';
 import Header from '../Header';
 
-import RoomSelectionModal from './roomSelectionModal';
+import RoomSelectionModal from './RoomSelectionModal';
 import DiscountPanel from '../DiscountPanel';
 
 const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
@@ -40,6 +40,7 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
     setOverlay,
     total,
     openRoomSelectionModal,
+    roomSelection,
   } = useContext(EventContext);
 
   const [selectedRoom, setSelectedRoom] = useState('');
@@ -114,6 +115,7 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
               errors={errors}
               daysDifference={daysDifference}
               setDaysDifference={setDaysDifference}
+              roomSelection={roomSelection}
             ></Form>
           </Box>
 

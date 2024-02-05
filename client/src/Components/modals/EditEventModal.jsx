@@ -9,7 +9,7 @@ import Header from '../Header';
 import { Button, Box } from '@mui/material';
 import { EventContext } from '../../contexts/event.context';
 import DiscountPanel from '../DiscountPanel';
-import RoomSelectionModal from './roomSelectionModal';
+import RoomSelectionModal from './RoomSelectionModal';
 const EditEventModal = ({ setEditModalOpen, handleEventChange }) => {
   const {
     editedEvent,
@@ -43,6 +43,7 @@ const EditEventModal = ({ setEditModalOpen, handleEventChange }) => {
     editModalOpen,
     setRoomId,
     rooms,
+    roomSelection,
   } = useContext(EventContext);
   const {
     handleSubmit,
@@ -152,8 +153,12 @@ const EditEventModal = ({ setEditModalOpen, handleEventChange }) => {
                 <Button
                   variant="contained"
                   size="large"
-                  style={{ backgroundColor: '#16a34a' }}
+                  style={{
+                    backgroundColor:
+                      roomSelection == '' ? '#d1d5db' : '#16a34a',
+                  }}
                   type="submit"
+                  disabled={roomSelection == '' ? true : false}
                 >
                   Zapisz
                 </Button>

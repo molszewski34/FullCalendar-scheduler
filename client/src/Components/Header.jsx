@@ -17,6 +17,8 @@ const Header = ({ modalName, setModalOpen }) => {
     setColor,
     setTotal,
     setPrice,
+    setOpenRoomSelectionModal,
+    setRoomSelection,
   } = useContext(EventContext);
 
   return (
@@ -29,17 +31,19 @@ const Header = ({ modalName, setModalOpen }) => {
           setEditModalOpen(false);
           setModalOpen(false);
           setOverlay(false);
+          setOpenRoomSelectionModal(false);
           setTitle('');
           setGuestsFee([65]);
           setStart(null);
           setEnd(null);
           setPhone('');
           setPriceOfGuest(65);
-          setNumOfGuests(2);
+          setNumOfGuests(0);
           setRoom('Wybierz pokój');
           setTotal(0);
           setPrice(0);
           setColor('');
+          setRoomSelection('');
         }}
       >
         Anuluj

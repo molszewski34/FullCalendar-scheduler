@@ -29,12 +29,15 @@ const Form = ({
   daysDifference,
   setDaysDifference,
   total,
+  roomSelection,
 }) => {
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm();
+
+  console.log(roomSelection);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -92,6 +95,7 @@ const Form = ({
         size="large"
         className="form-submit"
         type="submit"
+        disabled={roomSelection == '' ? true : false}
       >
         Zapisz
       </Button>
