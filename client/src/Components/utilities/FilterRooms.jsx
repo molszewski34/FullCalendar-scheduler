@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { EventContext } from '../../contexts/event.context';
 
 export function FilterRooms() {
-  const { setSelectedCategory, roomsList } = useContext(EventContext);
+  const { setSelectedCategory, rooms } = useContext(EventContext);
 
   return (
     <div>
@@ -18,13 +18,15 @@ export function FilterRooms() {
         onChange={(e) => setSelectedCategory(e.target.value)}
       >
         <option value="">Wszystkie</option>
-        {roomsList.map((room, index) => {
+        {rooms.map((room, index) => {
+          let displayName = room.roomName;
+          if (displayName.length > 12) {
+            displayName = displayName.substring(0, 12) + '...';
+          }
           return (
-            <>
-              <option key={index} value={room.name}>
-                {room.name}
-              </option>
-            </>
+            <option key={index} value={room.roomName}>
+              {displayName}
+            </option>
           );
         })}
       </select>
