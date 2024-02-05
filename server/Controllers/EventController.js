@@ -36,7 +36,7 @@ router.get('/get-event/:eventId', async (req, res) => {
   }
 });
 
-router.post('/:roomId/events', async (req, res) => {
+router.post('/:roomId/create-event', async (req, res) => {
   const roomId = req.params.roomId;
   const eventData = req.body;
 

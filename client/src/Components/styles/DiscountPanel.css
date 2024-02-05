@@ -1,0 +1,57 @@
+.discount {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  align-items: stretch;
+}
+
+.discount-container {
+  height: 600px;
+  width: 300px;
+  overflow-y: auto;
+
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
+}
+
+.discount-box {
+  display: flex;
+
+  align-items: flex-start;
+  margin-bottom: 0.2em;
+}
+.discount-box input {
+  width: 50px;
+}
+
+.discount-box-item-btns {
+  display: flex;
+  gap: 0.5em;
+}
+
+.discount-box-wrapper {
+  display: flex;
+  flex-direction: column;
+  border: solid 1px gray;
+  border-radius: 8px;
+  padding: 0.2em;
+}
+.discount-box-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+.discount-btns {
+  display: flex;
+  gap: 0.1em;
+}
+
+.discount-btn {
+  margin-top: 0.5em;
+  background-color: #000;
+  color: #fff;
+  border-radius: 3px;
+  border: none;
+}

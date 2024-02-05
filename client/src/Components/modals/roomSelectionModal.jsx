@@ -4,6 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import LocalHotelIcon from '@mui/icons-material/LocalHotel';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import '../styles/RoomSelectionModal.css';
 const RoomSelectionModal = () => {
   const {
     setRoom,
@@ -15,6 +16,8 @@ const RoomSelectionModal = () => {
     setPriceOfGuest,
     setNumOfGuests,
     setTotal,
+    setColor,
+    setRoomId,
   } = useContext(EventContext);
 
   const handleRoomButtonClick = (room) => {
@@ -22,6 +25,8 @@ const RoomSelectionModal = () => {
     setRoom(room.roomName);
     setPriceOfGuest(room.RoomPriceOfGuest);
     setNumOfGuests(room.roomNumOfGuests);
+    setColor(room.roomColor);
+    setRoomId(room._id);
   };
 
   const generateInputs = (count, priceOfGuest) => {

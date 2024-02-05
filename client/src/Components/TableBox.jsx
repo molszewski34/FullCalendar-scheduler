@@ -15,6 +15,22 @@ import {
 const TableBox = () => {
   const { setSearchInput, searchedEvents, setSearchedEvents, setShowTable } =
     useContext(EventContext);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = (1 + date.getMonth()).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const tableHeaders = [
+    { label: 'Imię Nazwisko' },
+    { label: 'Telefon' },
+    { label: 'Od' },
+    { label: 'Do' },
+    { label: 'Osób' },
+  ];
   return (
     <div className="modal-edit">
       <TableContainer
@@ -40,12 +56,11 @@ const TableBox = () => {
         <Table>
           <TableHead>
             <TableRow sx={{ bgcolor: 'info.main', color: '#fff' }}>
-              <TableCell sx={{ color: '#fff' }}>
-                <b>Imię Nazwisko</b>
-              </TableCell>
-              <TableCell sx={{ color: '#fff' }}>
-                <b>Telefon</b>
-              </TableCell>
+              {tableHeaders.map((header) => (
+                <TableCell sx={{ color: '#fff', fontSize: '0.8em' }}>
+                  <b>{header.label}</b>
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -56,8 +71,21 @@ const TableBox = () => {
             ) : (
               searchedEvents.map((event) => (
                 <TableRow key={event.id}>
-                  <TableCell>{event.title}</TableCell>
-                  <TableCell>{event.extendedProps.phone}</TableCell>
+                  <TableCell sx={{ fontSize: '0.8em' }}>
+                    {event.title}
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '0.8em' }}>
+                    {event.extendedProps.phone}
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '0.8em' }}>
+                    {formatDate(event.start)}
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '0.8em' }}>
+                    {formatDate(event.end)}
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '0.8em' }}>
+                    {event.extendedProps.numOfGuests}
+                  </TableCell>
                 </TableRow>
               ))
             )}
