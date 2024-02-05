@@ -6,30 +6,20 @@ import { EventContext } from '../contexts/event.context';
 import PersonIcon from '@mui/icons-material/Person';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import './styles/DiscountPanel.css';
 const DiscountPanel = ({ onClose, onEventAdded }) => {
   const {
     title,
-    setTitle,
     start,
-    setStart,
     end,
-    setEnd,
     phone,
-    setPhone,
     numOfGuests,
-    setNumOfGuests,
     priceOfGuest,
-    setPriceOfGuest,
     price,
     setPrice,
     room,
-    setRoom,
     color,
-    setColor,
-    setModalOpen,
     daysDifference,
-    setDaysDifference,
-    setOverlay,
     guestsFee,
     setGuestsFee,
     total,
@@ -37,8 +27,6 @@ const DiscountPanel = ({ onClose, onEventAdded }) => {
     initialInputs,
     setInitialInputs,
     discountBtns,
-    openRoomSelectionModal,
-    setOpenRoomSelectionModal,
   } = useContext(EventContext);
 
   useEffect(() => {
