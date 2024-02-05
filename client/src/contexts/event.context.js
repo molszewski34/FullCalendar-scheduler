@@ -38,6 +38,7 @@ export function EventProvider({ children }) {
   const [searchedEvents, setSearchedEvents] = useState([]);
   const [showTable, setShowTable] = useState(false);
   const [roomId, setRoomId] = useState(roomSelection._id);
+  const [eventId, setEventId] = useState('');
   const [openManageRoomsModal, setOpenManageRoomsModal] = useState(false);
   const [openRoomSelectionModal, setOpenRoomSelectionModal] = useState(false);
   const [isRoomSelected, setIsRoomSelected] = useState(false);
@@ -151,6 +152,8 @@ export function EventProvider({ children }) {
         setOpenRoomSelectionModal,
         isRoomSelected,
         setIsRoomSelected,
+        eventId,
+        setEventId,
       }}
     >
       {children}
