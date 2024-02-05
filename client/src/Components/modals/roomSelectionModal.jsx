@@ -4,6 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import LocalHotelIcon from '@mui/icons-material/LocalHotel';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import '../styles/RoomSelectionModal.css';
 const RoomSelectionModal = () => {
   const {
     setRoom,
