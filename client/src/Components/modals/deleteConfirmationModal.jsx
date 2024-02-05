@@ -9,8 +9,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
 const DeleteConfirmationModal = ({
-  deleteConfirmationOpen,
-
   open,
   setOpen,
   editedEvent,
