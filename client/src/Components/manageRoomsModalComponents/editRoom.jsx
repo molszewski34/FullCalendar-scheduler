@@ -1,27 +1,31 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { EventContext } from '../../contexts/event.context';
-import { TextField, Checkbox, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import { ChromePicker } from 'react-color';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
-const EditRoom = () => {
-  const { roomSelection, setRoomSelection, roomId, setRoomId } =
-    useContext(EventContext);
-  const [showColorPicker, setShowColorPicker] = useState(false);
+import { useForm } from 'react-hook-form';
 
+const EditRoom = () => {
+  const {
+    roomSelection,
+    setRoomSelection,
+    roomId,
+    setRoomId,
+    showColorPicker,
+    setShowColorPicker,
+  } = useContext(EventContext);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm();
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_PUBLIC_API_URL,
-  });
-
-  const [updateData, setUpdateData] = useState({
-    roomName: '',
-    roomNumOfGuests: '',
-    RoomPriceOfGuest: '',
-    isApartment: false,
-    roomColor: '',
-    roomLocation: '',
-    events: [],
   });
 
   useEffect(() => {
@@ -29,24 +33,15 @@ const EditRoom = () => {
   }, [roomSelection._id]);
 
   const handleColorChange = (color) => {
-    setUpdateData({
-      ...updateData,
-      roomColor: color.hex,
-    });
+    setValue('roomColor', color.hex);
   };
 
-  const handleInputChange = (e) => {
-    setUpdateData({ ...updateData, [e.target.name]: e.target.value });
-  };
-
-  const handleUpdate = async (e) => {
-    e.preventDefault();
+  const handleUpdate = async (data) => {
     try {
       const response = await axiosInstance.patch(
         `/api/rooms/update-room/${roomId}`,
-        updateData
+        data
       );
-      console.log(response.data);
       setRoomSelection(response.data);
     } catch (error) {
       console.error(error);
@@ -64,51 +59,64 @@ const EditRoom = () => {
       }}
     >
       <b style={{ margin: '0', marginBottom: '1em' }}>Wypełnij pola</b>
-      <form style={{ display: 'flex' }} onSubmit={handleUpdate}>
+      <form style={{ display: 'flex' }} onSubmit={handleSubmit(handleUpdate)}>
         <label htmlFor="roomName">Nazwa pokoju:</label>
         <input
           type="text"
           id="roomName"
-          name="roomName"
-          value={updateData.roomName}
-          onChange={handleInputChange}
-          placeholder={roomSelection.roomName}
+          {...register('roomName', { required: 'Nazwa pokoju jest wymagana' })}
+          defaultValue={roomSelection.roomName}
         />
+        {errors.roomName && <p className="error">{errors.roomName.message}</p>}
 
         <label htmlFor="roomNumOfGuests">Liczba miejsc:</label>
         <input
-          type="text"
           id="roomNumOfGuests"
-          name="roomNumOfGuests"
-          value={updateData.roomNumOfGuests}
-          onChange={handleInputChange}
-          placeholder={roomSelection.roomNumOfGuests}
+          {...register('roomNumOfGuests', {
+            required: 'Liczba miejsc jest wymagana',
+            pattern: {
+              value: /^[0-9]*$/,
+              message: 'Pole może zawierać tylko liczby',
+            },
+            min: {
+              value: 1,
+              message: 'Liczba miejsc nie może być mniejsza niż 1',
+            },
+            max: {
+              value: 9999,
+              message: 'Przekroczono maksymalną liczbę osób',
+            },
+          })}
+          defaultValue={roomSelection.roomNumOfGuests}
         />
+        {errors.roomNumOfGuests && (
+          <p className="error">{errors.roomNumOfGuests.message}</p>
+        )}
 
         <label htmlFor="RoomPriceOfGuest">Cena za osobę</label>
         <input
-          type="text"
           id="RoomPriceOfGuest"
-          name="RoomPriceOfGuest"
-          value={updateData.RoomPriceOfGuest}
-          onChange={handleInputChange}
-          placeholder={roomSelection.RoomPriceOfGuest}
+          {...register('RoomPriceOfGuest', {
+            required: 'Cena za osobę jest wymagana',
+            pattern: {
+              value: /^[0-9]*$/,
+              message: 'Pole może zawierać tylko liczby',
+            },
+            min: {
+              value: 1,
+              message: 'Liczba miejsc nie może być mniejsza niż 1',
+            },
+            max: {
+              value: 9999,
+              message: 'Przekroczono maksymalną liczbę osób',
+            },
+          })}
+          defaultValue={roomSelection.RoomPriceOfGuest}
         />
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <label htmlFor="isApartment">Czy jest Apartamentem?</label>
-          <input
-            type="checkbox"
-            id="isApartment"
-            name="isApartment"
-            checked={updateData.isApartment}
-            onChange={() =>
-              setUpdateData({
-                ...updateData,
-                isApartment: !updateData.isApartment,
-              })
-            }
-          />
-        </div>
+        {errors.RoomPriceOfGuest && (
+          <p className="error">{errors.RoomPriceOfGuest.message}</p>
+        )}
+
         <label htmlFor="roomColor">Kolor pokoju:</label>
         <div
           style={{
@@ -120,10 +128,10 @@ const EditRoom = () => {
           <input
             type="text"
             id="roomColor"
-            name="roomColor"
-            value={updateData.roomColor}
-            onChange={handleInputChange}
-            placeholder={roomSelection.roomColor}
+            {...register('roomColor', {
+              required: 'To pole nie może być puste',
+            })}
+            defaultValue={roomSelection.roomColor}
           />
           <div
             style={{
@@ -136,17 +144,20 @@ const EditRoom = () => {
               cursor: 'pointer',
               fontSize: '0.5em',
               backgroundColor:
-                updateData.roomColor === '' ? '#cbd5e1' : updateData.roomColor,
+                watch('roomColor') === '' ? '#cbd5e1' : watch('roomColor'),
             }}
             onClick={() => setShowColorPicker(!showColorPicker)}
           >
             {showColorPicker ? <CloseIcon /> : ''}
           </div>
         </div>
+        {errors.roomColor && (
+          <span className="error">{errors.roomColor.message}</span>
+        )}
         {showColorPicker && (
           <div style={{ position: 'absolute', bottom: '-130px', zIndex: '1' }}>
             <ChromePicker
-              color={updateData.roomColor}
+              color={watch('roomColor')}
               onChange={handleColorChange}
             />
           </div>
@@ -156,11 +167,22 @@ const EditRoom = () => {
         <input
           type="text"
           id="roomLocation"
-          name="roomLocation"
-          value={updateData.roomLocation}
-          onChange={handleInputChange}
-          placeholder={roomSelection.roomLocation}
+          {...register('roomLocation', {
+            required: 'Lokalizacja jest wymagana',
+            minLength: {
+              value: 3,
+              message: 'Nazwa musi mieć co najmniej 3 znaki',
+            },
+            maxLength: {
+              value: 30,
+              message: 'Nazwa nie może mieć więcej niż 20 znaków',
+            },
+          })}
+          defaultValue={roomSelection.roomLocation}
         />
+        {errors.roomLocation && (
+          <p className="error">{errors.roomLocation.message}</p>
+        )}
 
         <Button
           variant="contained"

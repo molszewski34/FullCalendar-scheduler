@@ -38,6 +38,7 @@ const ManageRoomsModal = () => {
 
   const handleRoomButtonClick = (room) => {
     setRoomSelection({ ...room });
+    setOpenEditRoomPanel(false);
   };
 
   const roomDetailsData = roomSelection
@@ -119,7 +120,7 @@ const ManageRoomsModal = () => {
                     gap: '0.2em',
                     flexDirection: 'column',
                     fontSize: '0.8em',
-                    marginLeft: '.5em',
+                    marginX: '1em',
                     justifyContent: 'space-between',
 
                     width: '120px',
@@ -129,7 +130,6 @@ const ManageRoomsModal = () => {
                     <Typography
                       variant="h6"
                       sx={{
-                        margin: '0',
                         marginBottom: '0.8em',
                         fontWeight: 'bolder',
                         fontSize: '1.3em',
@@ -243,7 +243,17 @@ const ManageRoomsModal = () => {
                   </Box>
                 </Box>
               ) : (
-                <p style={{ padding: ' 0 .3em' }}>Wybierz pokój</p>
+                <p
+                  style={{
+                    padding: ' 0 .3em',
+                    width: '100%',
+                    margin: '0 .7em',
+                    color: '#334155',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  Wybierz pokój
+                </p>
               )}
             </div>
           ) : (
