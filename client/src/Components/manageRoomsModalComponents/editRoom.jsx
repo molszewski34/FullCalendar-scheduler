@@ -9,8 +9,8 @@ import { useForm } from 'react-hook-form';
 
 const EditRoom = () => {
   const {
-    roomSelection,
-    setRoomSelection,
+    chossenRoom,
+    setChossenRoom,
     roomId,
     setRoomId,
     showColorPicker,
@@ -29,8 +29,8 @@ const EditRoom = () => {
   });
 
   useEffect(() => {
-    setRoomId(roomSelection._id);
-  }, [roomSelection._id]);
+    setRoomId(chossenRoom._id);
+  }, [chossenRoom._id]);
 
   const handleColorChange = (color) => {
     setValue('roomColor', color.hex);
@@ -42,7 +42,7 @@ const EditRoom = () => {
         `/api/rooms/update-room/${roomId}`,
         data
       );
-      setRoomSelection(response.data);
+      setChossenRoom(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -64,7 +64,7 @@ const EditRoom = () => {
           type="text"
           id="roomName"
           {...register('roomName', { required: 'Nazwa pokoju jest wymagana' })}
-          defaultValue={roomSelection.roomName}
+          defaultValue={chossenRoom.roomName}
         />
         {errors.roomName && <p className="error">{errors.roomName.message}</p>}
 
@@ -86,7 +86,7 @@ const EditRoom = () => {
               message: 'Przekroczono maksymalną liczbę osób',
             },
           })}
-          defaultValue={roomSelection.roomNumOfGuests}
+          defaultValue={chossenRoom.roomNumOfGuests}
         />
         {errors.roomNumOfGuests && (
           <p className="error">{errors.roomNumOfGuests.message}</p>
@@ -110,7 +110,7 @@ const EditRoom = () => {
               message: 'Przekroczono maksymalną liczbę osób',
             },
           })}
-          defaultValue={roomSelection.RoomPriceOfGuest}
+          defaultValue={chossenRoom.RoomPriceOfGuest}
         />
         {errors.RoomPriceOfGuest && (
           <p className="error">{errors.RoomPriceOfGuest.message}</p>
@@ -130,7 +130,7 @@ const EditRoom = () => {
             {...register('roomColor', {
               required: 'To pole nie może być puste',
             })}
-            defaultValue={roomSelection.roomColor}
+            defaultValue={chossenRoom.roomColor}
           />
           <div
             style={{
@@ -178,7 +178,7 @@ const EditRoom = () => {
               message: 'Nazwa nie może mieć więcej niż 20 znaków',
             },
           })}
-          defaultValue={roomSelection.roomLocation}
+          defaultValue={chossenRoom.roomLocation}
         />
         {errors.roomLocation && (
           <p className="error">{errors.roomLocation.message}</p>

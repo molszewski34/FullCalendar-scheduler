@@ -5,15 +5,15 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 const DeleteRoom = () => {
   const [message, setMessage] = useState('');
-  const { roomSelection, roomId, setRoomId, setRoomSelection } =
+  const { chossenRoom, roomId, setRoomId, setChossenRoom } =
     useContext(EventContext);
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_PUBLIC_API_URL,
   });
 
   useEffect(() => {
-    setRoomId(roomSelection._id);
-  }, [roomSelection._id]);
+    setRoomId(chossenRoom._id);
+  }, [chossenRoom._id]);
 
   const handleDelete = async (e) => {
     e.preventDefault();
@@ -22,7 +22,7 @@ const DeleteRoom = () => {
         `/api/rooms/delete-room/${roomId}`
       );
 
-      setRoomSelection(response.data);
+      setChossenRoom(response.data);
     } catch (error) {
       setMessage(`Error: ${error.response.data.message}`);
     }
@@ -43,7 +43,7 @@ const DeleteRoom = () => {
     >
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <b style={{ color: '#dc2626' }}>Czy jesteś pewien, że chcesz usunąć:</b>
-        <p style={{ margin: '0' }}>{roomSelection.roomName} </p>
+        <p style={{ margin: '0' }}>{chossenRoom.roomName} </p>
         <b style={{ margin: '0' }}>
           i wszystkie wydarzenia do niego przypisane ?
         </b>

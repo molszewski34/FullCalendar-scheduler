@@ -6,7 +6,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 const RoomInfo = () => {
   const {
-    roomSelection,
+    chossenRoom,
     openEditRoomPanel,
     setOpenEditRoomPanel,
     openAddRoomPanel,
@@ -15,18 +15,18 @@ const RoomInfo = () => {
     setOpenDeleteRoomPanel,
   } = useContext(EventContext);
 
-  const roomDetailsData = roomSelection
+  const roomDetailsData = chossenRoom
     ? [
-        { label: 'Nazwa pokoju:', value: roomSelection.roomName },
-        { label: 'Liczba miejsc:', value: roomSelection.roomNumOfGuests },
-        { label: 'Cena za osobę:', value: roomSelection.RoomPriceOfGuest },
-        { label: 'Kolor pokoju:', value: roomSelection.roomColor },
-        { label: 'Lokalizacja:', value: roomSelection.roomLocation },
+        { label: 'Nazwa pokoju:', value: chossenRoom.roomName },
+        { label: 'Liczba miejsc:', value: chossenRoom.roomNumOfGuests },
+        { label: 'Cena za osobę:', value: chossenRoom.RoomPriceOfGuest },
+        { label: 'Kolor pokoju:', value: chossenRoom.roomColor },
+        { label: 'Lokalizacja:', value: chossenRoom.roomLocation },
       ]
     : [];
   return (
     <div className="">
-      {roomSelection ? (
+      {chossenRoom ? (
         <Box
           sx={{
             display: 'flex',
@@ -72,7 +72,7 @@ const RoomInfo = () => {
                 {roomData.label === 'Kolor pokoju:' ? (
                   <Box
                     sx={{
-                      backgroundColor: roomSelection.roomColor,
+                      backgroundColor: chossenRoom.roomColor,
                       width: '20px',
                       height: '20px',
                       borderRadius: '15px',

@@ -6,13 +6,15 @@ import { EventContext } from '../../contexts/event.context';
 import { Typography } from '@mui/material';
 
 const AccordionComponent = () => {
-  const { rooms, setRoomSelection } = useContext(EventContext);
+  const { rooms, setChossenRoom, chossenRoom } = useContext(EventContext);
 
   const [openEditRoomPanel, setOpenEditRoomPanel] = useState(false);
 
   const sortedRooms = rooms.sort(
     (a, b) => a.roomNumOfGuests - b.roomNumOfGuests
   );
+
+  console.log(chossenRoom);
   return (
     <div
       style={{
@@ -42,7 +44,7 @@ const AccordionComponent = () => {
           }
 
           const handleRoomButtonClick = (room) => {
-            setRoomSelection({ ...room });
+            setChossenRoom({ ...room });
             setOpenEditRoomPanel(false);
           };
 
