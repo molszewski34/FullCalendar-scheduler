@@ -43,6 +43,9 @@ export function EventProvider({ children }) {
   const [openRoomSelectionModal, setOpenRoomSelectionModal] = useState(false);
   const [isRoomSelected, setIsRoomSelected] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
+  const [openEditRoomPanel, setOpenEditRoomPanel] = useState(false);
+  const [openAddRoomPanel, setOpenAddRoomPanel] = useState(false);
+  const [openDeleteRoomPanel, setOpenDeleteRoomPanel] = useState(false);
 
   const [discountBtns, setDiscountBtns] = useState([
     { name: '50%', value: -50, bgColor: '#009688' },
@@ -157,6 +160,12 @@ export function EventProvider({ children }) {
         setEventId,
         showColorPicker,
         setShowColorPicker,
+        openEditRoomPanel,
+        setOpenEditRoomPanel,
+        openAddRoomPanel,
+        setOpenAddRoomPanel,
+        openDeleteRoomPanel,
+        setOpenDeleteRoomPanel,
       }}
     >
       {children}
