@@ -51,7 +51,7 @@ const AddRoom = () => {
         borderLeft: '1px solid black',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        alignItems: 'start',
       }}
     >
       <b style={{ margin: '0', marginBottom: '1em' }}>Wypełnij pola</b>
@@ -149,14 +149,14 @@ const AddRoom = () => {
           >
             {showColorPicker ? <CloseIcon /> : ''}
           </div>
+          {showColorPicker && (
+            <div style={{ position: 'absolute', top: '35px', zIndex: '1' }}>
+              <ChromePicker color={roomColor} onChange={handleColorChange} />
+            </div>
+          )}
         </div>
         {errors.roomColor && (
           <span className="error">{errors.roomColor.message}</span>
-        )}
-        {showColorPicker && (
-          <div style={{ position: 'absolute', bottom: '-130px', zIndex: '1' }}>
-            <ChromePicker color={roomColor} onChange={handleColorChange} />
-          </div>
         )}
 
         <label htmlFor="roomLocation">Lokalizacja:</label>

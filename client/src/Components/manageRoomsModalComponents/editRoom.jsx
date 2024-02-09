@@ -51,7 +51,6 @@ const EditRoom = () => {
   return (
     <div
       style={{
-        marginLeft: '2em',
         paddingLeft: '1em',
         borderLeft: '1px solid black',
         display: 'flex',
@@ -140,6 +139,7 @@ const EditRoom = () => {
               justifyContent: 'center',
               width: '40px',
               height: '30px',
+              border: '1px solid #94a3b8',
               borderRadius: '5px',
               cursor: 'pointer',
               fontSize: '0.5em',
@@ -150,17 +150,17 @@ const EditRoom = () => {
           >
             {showColorPicker ? <CloseIcon /> : ''}
           </div>
+          {showColorPicker && (
+            <div style={{ position: 'absolute', top: '35px', zIndex: '1' }}>
+              <ChromePicker
+                color={watch('roomColor')}
+                onChange={handleColorChange}
+              />
+            </div>
+          )}
         </div>
         {errors.roomColor && (
           <span className="error">{errors.roomColor.message}</span>
-        )}
-        {showColorPicker && (
-          <div style={{ position: 'absolute', bottom: '-130px', zIndex: '1' }}>
-            <ChromePicker
-              color={watch('roomColor')}
-              onChange={handleColorChange}
-            />
-          </div>
         )}
 
         <label htmlFor="roomLocation">Lokalizacja:</label>
