@@ -8,7 +8,7 @@ const PhoneInput = ({ phone, setPhone, editedEvent, control, errors }) => {
       <Controller
         name="phone"
         control={control}
-        defaultValue={phone}
+        value={phone}
         rules={{
           required: 'To pole jest wymagane',
           minLength: {
@@ -33,7 +33,6 @@ const PhoneInput = ({ phone, setPhone, editedEvent, control, errors }) => {
             }
             variant="filled"
             size="small"
-            {...field}
             onChange={(event) => {
               field.onChange(event.target.value);
               setPhone(event.target.value);

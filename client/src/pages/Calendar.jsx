@@ -19,7 +19,9 @@ import { FilterRooms } from '../Components/utilities/FilterRooms';
 import TableBox from '../Components/TableBox';
 import ManageRoomsModal from '../Components/modals/ManageRoomsModal';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-
+import useEventChange from '../api/handleEventChange';
+import useEventAdd from '../api/handleEventAdd';
+import useEventDelete from '../api/handleEventDelete';
 const Calendar = () => {
   const calendarRef = useRef(null);
 
@@ -43,7 +45,9 @@ const Calendar = () => {
     end,
     setEnd,
     title,
+    setTitle,
     phone,
+    setPhone,
     numOfGuests,
     setNumOfGuests,
     priceOfGuest,
@@ -68,8 +72,19 @@ const Calendar = () => {
     setOpenManageRoomsModal,
     setRooms,
     roomId,
+    rooms,
+    setRoomId,
+    setEventId,
+    setDestinationRoomId,
   } = useContext(EventContext);
 
+  // ** Api hooks
+  const { handleEventChange } = useEventChange();
+  const { handleEventAdd } = useEventAdd();
+  const { handleEventDelete } = useEventDelete();
+  //
+
+  // ** Login/LogOut
   const { logOutUser } = useContext(UserContext);
 
   const logOut = async () => {
@@ -112,103 +127,12 @@ const Calendar = () => {
     baseURL: process.env.REACT_APP_PUBLIC_API_URL,
   });
 
-  const onEventAdded = async () => {
-    const eventData = {
-      title: title,
-      start: start,
-      end: end,
-      extendedProps: {
-        phone: phone,
-        numOfGuests: numOfGuests,
-        priceOfGuest: priceOfGuest,
-        price: price,
-        room: room,
-        color: color,
-        guestsFee: guestsFee,
-      },
-    };
-
-    try {
-      const response = await axiosInstance.post(
-        `/api/events/${roomId}/create-event`,
-        eventData
-      );
-      const newEvent = response.data;
-      setEvents([...events, newEvent]);
-      setModalOpen(false);
-      setOverlay(false);
-    } catch (error) {
-      console.error('Błąd podczas dodawania wydarzenia:', error);
-    }
-  };
-
   const handleDateClick = (arg) => {
     setModalOpen(true);
     setOverlay(true);
     setSelectedDate(arg.date);
     setStart(arg.date);
     setEnd(arg.date);
-  };
-
-  const handleEventDelete = async (eventId) => {
-    if (editedEvent) {
-      const response = await axiosInstance.delete(
-        `/api/events/${roomId}/delete-event/${editedEvent._def.extendedProps._id}`
-      );
-
-      const updatedEvents = events.filter((event) => event.id !== eventId);
-      setEvents(updatedEvents);
-
-      setOpen(false);
-      setOverlay(false);
-      setEditedEvent(null);
-      window.location.reload();
-    }
-  };
-
-  const handleEventChange = async (event) => {
-    if (editedEvent) {
-      const updatedEventData = {
-        start: start.toISOString(),
-        end: end.toISOString(),
-        title: title,
-        extendedProps: {
-          phone: phone,
-          numOfGuests: numOfGuests,
-          priceOfGuest: priceOfGuest,
-          price: price,
-          room: room,
-          color: color,
-          guestsFee: guestsFee,
-        },
-      };
-
-      try {
-        const response = await axiosInstance.put(
-          `/api/events/${roomId}/update-event/${editedEvent._def.extendedProps._id}`,
-          updatedEventData
-        );
-
-        if (response.status === 200) {
-          calendarRef.current
-            .getApi()
-            .getEventSourceById(editedEvent.id)
-            .remove();
-
-          const updatedEvent = response.data;
-
-          setEvents([updatedEvent]);
-
-          setEditModalOpen(false);
-          setOverlay(false);
-          window.location.reload();
-        } else {
-          console.error('Failed to update event');
-        }
-      } catch (error) {
-        console.error('Error updating event:', error);
-      }
-    }
   };
 
   const openEditModal = (event) => {
@@ -218,17 +142,19 @@ const Calendar = () => {
   };
 
   const eventClick = (info) => {
+    // ** eventClick passes states to FullCalendar props to EditEventModal
     const { start, end } = info.event;
-
     setSelectedDate({ start, end });
     setStart(info.event._instance.range.start);
     setEnd(info.event._instance.range.end);
-
+    setTitle(info.event._instance.range.title);
+    setPhone(info.event._def.extendedProps.phone);
     setPriceOfGuest(info.event._def.extendedProps.priceOfGuest);
     setNumOfGuests(info.event._def.extendedProps.numOfGuests);
     setGuestsFee(info.event._def.extendedProps.guestsFee);
     setRoom(info.event._def.extendedProps.room);
     setColor(info.event._def.extendedProps.color);
+    setEventId(info.event._def.extendedProps._id);
     setEditModalOpen(true);
     openEditModal(info.event);
   };
@@ -287,6 +213,8 @@ const Calendar = () => {
   const calendarOptions = {
     contentHeight: 'auto',
   };
+
+  console.log(`roomId ${roomId}`);
 
   return (
     <main>
@@ -383,7 +311,7 @@ const Calendar = () => {
           setSelectedDate(null);
           setOverlay(false);
         }}
-        onEventAdded={onEventAdded}
+        onEventAdded={handleEventAdd}
       />
 
       <DeleteConfirmationModal

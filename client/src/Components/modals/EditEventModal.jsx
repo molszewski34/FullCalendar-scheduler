@@ -44,6 +44,7 @@ const EditEventModal = ({ setEditModalOpen, handleEventChange }) => {
     setRoomId,
     rooms,
     roomSelection,
+    setDestinationRoomId,
   } = useContext(EventContext);
   const {
     handleSubmit,
@@ -58,9 +59,11 @@ const EditEventModal = ({ setEditModalOpen, handleEventChange }) => {
 
       if (foundRoom) {
         setRoomId(foundRoom._id);
+        // setRoomId('z EditEventModal');
+        setDestinationRoomId(foundRoom._id);
       }
     }
-  }, []);
+  }, [editModalOpen]);
 
   useEffect(() => {
     if (editModalOpen) {
@@ -102,14 +105,6 @@ const EditEventModal = ({ setEditModalOpen, handleEventChange }) => {
                 control={control}
                 errors={errors}
               />
-              <PhoneInput
-                phone={phone}
-                setPhone={setPhone}
-                editedEvent={editedEvent}
-                error={errors.phone ? errors.phone.message : ''}
-                control={control}
-                errors={errors}
-              />
               <DateTimeInputs
                 start={start}
                 setStart={setStart}
@@ -118,6 +113,14 @@ const EditEventModal = ({ setEditModalOpen, handleEventChange }) => {
                 editedEvent={editedEvent}
                 daysDifference={daysDifference}
                 setDaysDifference={setDaysDifference}
+              />
+              <PhoneInput
+                phone={phone}
+                setPhone={setPhone}
+                editedEvent={editedEvent}
+                error={errors.phone ? errors.phone.message : ''}
+                control={control}
+                errors={errors}
               />
               <RoomSelection
                 room={room}
@@ -155,10 +158,10 @@ const EditEventModal = ({ setEditModalOpen, handleEventChange }) => {
                   size="large"
                   style={{
                     backgroundColor:
-                      roomSelection == '' ? '#d1d5db' : '#16a34a',
+                      title == '' || phone == '' ? '#d1d5db' : '#16a34a',
                   }}
                   type="submit"
-                  disabled={roomSelection == '' ? true : false}
+                  disabled={title === '' || phone === ''}
                 >
                   Zapisz
                 </Button>
