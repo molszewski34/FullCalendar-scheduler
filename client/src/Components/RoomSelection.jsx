@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import { EventContext } from '../contexts/event.context';
 
-const RoomSelection = ({ room }) => {
+const RoomSelection = ({ room, header }) => {
   const { setOpenRoomSelectionModal } = useContext(EventContext);
 
   return (
     <div>
-      <label>Wybór pokoju</label>
+      <label>{header}</label>
       {room === 'default' && <p className="error"> Wybierz 1 pokój</p>}
       <div className="room-selection">
         <div className="room-list">

@@ -65,6 +65,7 @@ const Form = ({
         errors={errors}
       />
       <RoomSelection
+        header={'Wybierz pokój'}
         room={room}
         setRoom={setRoom}
         setColor={setColor}
