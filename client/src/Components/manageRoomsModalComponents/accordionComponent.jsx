@@ -6,9 +6,13 @@ import { EventContext } from '../../contexts/event.context';
 import { Typography } from '@mui/material';
 
 const AccordionComponent = () => {
-  const { rooms, setChossenRoom, chossenRoom } = useContext(EventContext);
-
-  const [openEditRoomPanel, setOpenEditRoomPanel] = useState(false);
+  const {
+    rooms,
+    setChossenRoom,
+    chossenRoom,
+    openEditRoomPanel,
+    setOpenEditRoomPanel,
+  } = useContext(EventContext);
 
   const sortedRooms = rooms.sort(
     (a, b) => a.roomNumOfGuests - b.roomNumOfGuests
