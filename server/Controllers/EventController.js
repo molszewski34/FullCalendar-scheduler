@@ -36,12 +36,12 @@ router.get('/get-event/:eventId', async (req, res) => {
   }
 });
 
-router.post('/:roomId/create-event', async (req, res) => {
-  const roomId = req.params.roomId;
+router.post('/:destinationRoomId/create-event', async (req, res) => {
+  const destinationRoomId = req.params.destinationRoomId;
   const eventData = req.body;
 
   try {
-    const room = await Room.findById(roomId);
+    const room = await Room.findById(destinationRoomId);
 
     if (!room) {
       return res.status(404).json({ error: 'Room not found' });
@@ -88,35 +88,46 @@ router.delete('/:roomId/delete-event/:eventId', async (req, res) => {
   }
 });
 
-router.put('/:roomId/update-event/:eventId', async (req, res) => {
-  const roomId = req.params.roomId;
+router.put('/:roomId/update-event/:eventId/move', async (req, res) => {
+  const sourceRoomId = req.params.roomId;
+  const destinationRoomId = req.body.destinationRoomId;
   const eventId = req.params.eventId;
-  const updatedEventData = req.body;
+  const updatedEventData = req.body.updatedEventData;
 
   try {
-    const room = await Room.findById(roomId);
+    const sourceRoom = await Room.findById(sourceRoomId);
+    const destinationRoom = await Room.findById(destinationRoomId);
 
-    if (!room) {
-      return res.status(404).json({ error: 'Room not found' });
+    if (!sourceRoom) {
+      return res.status(404).json({ error: 'Source Room not found' });
     }
 
-    const eventIndex = room.events.findIndex(
+    if (!destinationRoom) {
+      return res.status(404).json({ error: 'Destination Room not found' });
+    }
+
+    const eventIndex = sourceRoom.events.findIndex(
       (e) => e._id.toString() === eventId
     );
 
     if (eventIndex === -1) {
-      return res.status(404).json({ error: 'Event not found' });
+      return res
+        .status(404)
+        .json({ error: 'Event not found in the source room' });
     }
 
-    room.events[eventIndex] = {
-      ...room.events[eventIndex],
+    const [movedEvent] = sourceRoom.events.splice(eventIndex, 1);
+
+    destinationRoom.events.push({
+      ...movedEvent.toObject(),
       ...updatedEventData,
-    };
-    await room.save();
+    });
+
+    await Promise.all([sourceRoom.save(), destinationRoom.save()]);
 
     res.status(200).json({
-      message: 'Event updated successfully',
-      event: room.events[eventIndex],
+      message: 'Event moved successfully',
+      movedEvent: movedEvent,
     });
   } catch (error) {
     console.error(error);
