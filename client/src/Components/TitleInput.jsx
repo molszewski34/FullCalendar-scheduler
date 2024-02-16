@@ -39,7 +39,6 @@ const TitleInput = ({
             }
             variant="filled"
             size="small"
-            {...field}
             className="input-title"
             onChange={(event) => {
               field.onChange(event.target.value);
