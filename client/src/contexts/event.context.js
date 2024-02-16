@@ -47,6 +47,7 @@ export function EventProvider({ children }) {
   const [openAddRoomPanel, setOpenAddRoomPanel] = useState(false);
   const [openDeleteRoomPanel, setOpenDeleteRoomPanel] = useState(false);
   const [chossenRoom, setChossenRoom] = useState('');
+  const [destinationRoomId, setDestinationRoomId] = useState('');
 
   const [discountBtns, setDiscountBtns] = useState([
     { name: '50%', value: -50, bgColor: '#009688' },
@@ -169,6 +170,8 @@ export function EventProvider({ children }) {
         setOpenDeleteRoomPanel,
         chossenRoom,
         setChossenRoom,
+        destinationRoomId,
+        setDestinationRoomId,
       }}
     >
       {children}
