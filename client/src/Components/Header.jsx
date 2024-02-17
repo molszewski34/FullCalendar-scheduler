@@ -19,6 +19,7 @@ const Header = ({ modalName, setModalOpen }) => {
     setPrice,
     setOpenRoomSelectionModal,
     setRoomSelection,
+    setDestinationRoomId,
   } = useContext(EventContext);
 
   return (
@@ -44,6 +45,7 @@ const Header = ({ modalName, setModalOpen }) => {
           setPrice(0);
           setColor('');
           setRoomSelection('');
+          setDestinationRoomId('');
         }}
       >
         Anuluj
