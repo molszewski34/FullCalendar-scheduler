@@ -3,10 +3,19 @@ import { axiosInstance } from './axiosConfig';
 import { EventContext } from '../contexts/event.context';
 
 const useEventDelete = () => {
-  const { events, setEvents, setOpen, setOverlay, setEditedEvent, roomId } =
-    useContext(EventContext);
+  const {
+    events,
+    setEvents,
+    setOpen,
+    setOverlay,
+    setEditedEvent,
+    roomId,
+    eventId,
+  } = useContext(EventContext);
 
-  const handleEventDelete = async (eventId) => {
+  console.log(`eventId ${eventId}`);
+
+  const handleEventDelete = async () => {
     if (roomId && events) {
       try {
         const response = await axiosInstance.delete(
