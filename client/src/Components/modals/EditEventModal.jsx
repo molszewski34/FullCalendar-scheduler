@@ -123,7 +123,9 @@ const EditEventModal = ({ setEditModalOpen, handleEventChange }) => {
                 errors={errors}
               />
               <RoomSelection
-                header={'Zmień lub wybierz ponownie by zmienić cene i ilość'}
+                header={
+                  'Zmień lub wybierz ponownie by zmienić cene i ilość osób'
+                }
                 room={room}
                 setRoom={setRoom}
                 setColor={setColor}
