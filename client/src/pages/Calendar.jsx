@@ -1,11 +1,6 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Button, TextField, Box, InputAdornment } from '@mui/material';
-
-import { useQuery } from 'react-query';
-import axios from 'axios';
+import React, { useContext, useEffect, useRef } from 'react';
 import 'moment/locale/pl';
 import plLocale from '@fullcalendar/core/locales/pl';
-import SearchIcon from '@mui/icons-material/Search';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -13,25 +8,25 @@ import interactionPlugin from '@fullcalendar/interaction';
 import AddEventModal from '../Components/modals/AddEventModal';
 import DeleteConfirmationModal from '../Components/modals/DeleteConfirmationModal';
 import EditEventModal from '../Components/modals/EditEventModal';
-import { UserContext } from '../contexts/user.context';
 import { EventContext } from '../contexts/event.context';
-import { FilterRooms } from '../Components/utilities/FilterRooms';
 import TableBox from '../Components/TableBox';
 import ManageRoomsModal from '../Components/modals/ManageRoomsModal';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import useEventChange from '../api/handleEventChange';
 import useEventAdd from '../api/handleEventAdd';
 import useEventDelete from '../api/handleEventDelete';
+import useSearchResults from '../hooks/Calendar/useSearchResults';
+import CalendarNavbar from '../Components/CalendarNavbar';
+import useEventDidMount from '../hooks/Calendar/useEventDidMount';
+import useFetchRoomsAndEvents from '../api/useFetchRoomsAndEvents';
+import useHandleDateClick from '../hooks/Calendar/useHandleDateClick';
+import useCalculateTotalPrice from '../hooks/Calendar/useCalculateTotalPrice';
+import useFilteredEvents from '../hooks/Calendar/useFilteredEvents';
 const Calendar = () => {
-  const calendarRef = useRef(null);
-
   const {
     modalOpen,
     setModalOpen,
     selectedDate,
     setSelectedDate,
-    events,
-    setEvents,
     overlay,
     setOverlay,
     open,
@@ -40,43 +35,21 @@ const Calendar = () => {
     setEditModalOpen,
     editedEvent,
     setEditedEvent,
-    start,
-    setStart,
-    end,
-    setEnd,
-    title,
-    setTitle,
-    phone,
-    setPhone,
-    numOfGuests,
-    setNumOfGuests,
-    priceOfGuest,
-    setPriceOfGuest,
-    price,
-    setPrice,
-    room,
-    setRoom,
-    color,
-    setColor,
-    daysDifference,
-    selectedCategory,
-    setSelectedCategory,
-    guestsFee,
-    setGuestsFee,
-    setShowTable,
-    searchInput,
-    setSearchInput,
-    setSearchedEvents,
     showTable,
     openManageRoomsModal,
-    setOpenManageRoomsModal,
-    setRooms,
-    roomId,
-    rooms,
-    setRoomId,
+    setStart,
+    setEnd,
+    setTitle,
+    setPhone,
+    setNumOfGuests,
+    setPriceOfGuest,
+    setGuestsFee,
+    setRoom,
+    setColor,
     setEventId,
-    setDestinationRoomId,
   } = useContext(EventContext);
+
+  const calendarRef = useRef(null);
 
   // ** Api hooks
   const { handleEventChange } = useEventChange();
@@ -84,55 +57,23 @@ const Calendar = () => {
   const { handleEventDelete } = useEventDelete();
   //
 
-  // ** Login/LogOut
-  const { logOutUser } = useContext(UserContext);
+  // ** Search results hook
+  useSearchResults();
 
-  const logOut = async () => {
-    try {
-      const loggedOut = await logOutUser();
+  const { handleDateClick } = useHandleDateClick();
+  // const { eventClick } = useEventClick();
 
-      if (loggedOut) {
-        window.location.reload(true);
-      }
-    } catch (error) {
-      alert(error);
-    }
-  };
+  useCalculateTotalPrice();
 
-  useEffect(() => {
-    let searchResults = events;
+  const { handleEventDidMount } = useEventDidMount();
 
-    if (searchInput.trim() !== '') {
-      searchResults = events.filter((event) => {
-        const titleIncludes = event.title
-          .toLowerCase()
-          .includes(searchInput.toLowerCase());
+  const filteredEvents = useFilteredEvents();
 
-        const phoneIncludes = event.extendedProps.phone
-          .toString()
-          .includes(searchInput.toLowerCase());
-        setShowTable(true);
+  // ** Fetch rooms and events
+  useFetchRoomsAndEvents();
 
-        return titleIncludes || phoneIncludes;
-      });
-
-      setSearchedEvents(searchResults);
-    } else {
-      setSearchedEvents(events);
-      setShowTable(false);
-    }
-  }, [events, searchInput]);
-
-  const axiosInstance = axios.create({
-    baseURL: process.env.REACT_APP_PUBLIC_API_URL,
-  });
-
-  const handleDateClick = (arg) => {
-    setModalOpen(true);
-    setOverlay(true);
-    setSelectedDate(arg.date);
-    setStart(arg.date);
-    setEnd(arg.date);
+  const calendarOptions = {
+    contentHeight: 'auto',
   };
 
   const openEditModal = (event) => {
@@ -159,130 +100,9 @@ const Calendar = () => {
     openEditModal(info.event);
   };
 
-  useEffect(() => {
-    const total = numOfGuests * priceOfGuest * daysDifference;
-    setPrice(total);
-  }, [numOfGuests, priceOfGuest, daysDifference]);
-
-  const handleEventDidMount = (info) => {
-    const backgroundColor = info.event.extendedProps.color || 'gray';
-
-    const el = info.el;
-    el.style.background = backgroundColor;
-    el.style.fontWeight = 'bold';
-    const startDate = new Date(info.event.start);
-
-    const formattedStartDate = ` ${startDate.getHours()}:${String(
-      startDate.getMinutes()
-    ).padStart(2, '0')}`;
-    const dateElement = document.createElement('div');
-    dateElement.textContent = ` ${info.event.extendedProps.room}`;
-    dateElement.style.color = '#e2e8f0';
-    dateElement.style.fontWeight = 'bold';
-    dateElement.style.marginLeft = '1em';
-    info.el.appendChild(dateElement);
-  };
-
-  const filteredEvents = events.filter(
-    (event) =>
-      selectedCategory === '' || event.extendedProps.room === selectedCategory
-  );
-
-  const { data: roomsData } = useQuery('rooms', () =>
-    axiosInstance.get('/api/rooms/get-rooms').then((response) => response.data)
-  );
-
-  useEffect(() => {
-    if (roomsData) {
-      setRooms(roomsData);
-    }
-  }, [roomsData]);
-
-  const { data: eventsData, refetch } = useQuery('events', () =>
-    axiosInstance
-      .get('/api/events/get-events')
-      .then((response) => response.data)
-  );
-
-  useEffect(() => {
-    if (eventsData) {
-      setEvents(eventsData);
-    }
-  }, [eventsData]);
-
-  const calendarOptions = {
-    contentHeight: 'auto',
-  };
-
-  console.log(`roomId ${roomId}`);
-
   return (
     <main>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '1em',
-            position: 'relative',
-          }}
-        >
-          <Button variant="contained" onClick={logOut}>
-            Wyloguj
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<ManageAccountsIcon />}
-            onClick={() => setOpenManageRoomsModal(!openManageRoomsModal)}
-            color="secondary"
-          >
-            Zarządzaj pokojami
-          </Button>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '1em',
-            position: 'relative',
-          }}
-        >
-          <Box
-            fullWidth
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <TextField
-              hiddenLabel
-              size="small"
-              type="text"
-              placeholder="Wyszukaj osobę..."
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon sx={{ color: 'text.disabled' }} />
-                  </InputAdornment>
-                ),
-                sx: { pr: '24px' },
-                placeholderTypographyProps: { fontSize: '0.6em' },
-              }}
-            />
-          </Box>
-
-          <FilterRooms setSelectedCategory={setSelectedCategory}></FilterRooms>
-        </Box>
-      </Box>
+      <CalendarNavbar />
       <div style={{ position: 'relative', zIndex: 0 }}>
         <FullCalendar
           locale={plLocale}
