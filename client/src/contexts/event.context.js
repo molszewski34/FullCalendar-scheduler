@@ -48,7 +48,7 @@ export function EventProvider({ children }) {
   const [openDeleteRoomPanel, setOpenDeleteRoomPanel] = useState(false);
   const [chossenRoom, setChossenRoom] = useState('');
   const [destinationRoomId, setDestinationRoomId] = useState('');
-
+  const [isLoading, setIsLoading] = useState(true);
   const [discountBtns, setDiscountBtns] = useState([
     { name: '50%', value: -50, bgColor: '#009688' },
     { name: '25%', value: -25, bgColor: '#03a9f4' },
@@ -78,6 +78,8 @@ export function EventProvider({ children }) {
       defNumOfGuests: 2,
     },
   ]);
+
+  console.log(rooms);
 
   return (
     <EventContext.Provider
@@ -172,6 +174,8 @@ export function EventProvider({ children }) {
         setChossenRoom,
         destinationRoomId,
         setDestinationRoomId,
+        isLoading,
+        setIsLoading,
       }}
     >
       {children}
