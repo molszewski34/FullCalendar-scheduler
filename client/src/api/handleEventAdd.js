@@ -1,6 +1,8 @@
 import { useContext } from 'react';
 import { EventContext } from '../contexts/event.context';
+import { useMutation, useQueryClient } from 'react-query';
 import { axiosInstance } from './axiosConfig';
+
 const useEventAdd = () => {
   const {
     setModalOpen,
@@ -18,38 +20,75 @@ const useEventAdd = () => {
     room,
     color,
     destinationRoomId,
+    setIsLoading,
+    setTitle,
+    setStart,
+    setEnd,
+    setPhone,
+    setNumOfGuests,
+    setPriceOfGuest,
+    setPrice,
+    setRoom,
+    setColor,
+    setGuestsFee,
   } = useContext(EventContext);
 
-  const handleEventAdd = async () => {
-    const eventData = {
-      title: title,
-      start: start,
-      end: end,
-      extendedProps: {
-        phone: phone,
-        numOfGuests: numOfGuests,
-        priceOfGuest: priceOfGuest,
-        price: price,
-        room: room,
-        color: color,
-        guestsFee: guestsFee,
-      },
-    };
+  const queryClient = useQueryClient();
 
-    try {
+  const mutation = useMutation(
+    async (eventData) => {
       const response = await axiosInstance.post(
         `/api/events/${destinationRoomId}/create-event`,
         eventData
       );
-      const newEvent = response.data;
-      setEvents([...events, newEvent]);
-      setModalOpen(false);
-      setOverlay(false);
-    } catch (error) {
-      console.error('Błąd podczas dodawania wydarzenia:', error);
+      return response.data;
+    },
+    {
+      onSuccess: (newEvent) => {
+        setEvents((prevEvents) => [...prevEvents, newEvent]);
+        setOverlay(false);
+        resetStates();
+
+        queryClient.invalidateQueries('events');
+      },
     }
+  );
+
+  const handleEventAdd = async () => {
+    setIsLoading(true);
+
+    const eventData = {
+      title,
+      start,
+      end,
+      extendedProps: {
+        phone,
+        numOfGuests,
+        priceOfGuest,
+        price,
+        room,
+        color,
+        guestsFee,
+      },
+    };
+
+    mutation.mutate(eventData);
   };
-  return { handleEventAdd };
+
+  const resetStates = () => {
+    setTitle('');
+    setStart(null);
+    setEnd(null);
+    setPhone('');
+    setNumOfGuests(0);
+    setPriceOfGuest(65);
+    setPrice(0);
+    setRoom('Wybierz pokój');
+    setColor('');
+    setGuestsFee([65]);
+  };
+
+  return { handleEventAdd, isLoading: mutation.isLoading };
 };
 
 export default useEventAdd;

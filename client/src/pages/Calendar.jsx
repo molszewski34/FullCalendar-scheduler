@@ -6,7 +6,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import AddEventModal from '../Components/modals/AddEventModal';
-import DeleteConfirmationModal from '../Components/modals/DeleteConfirmationModal';
+import DeleteConfirmationModal from '../Components/modals/deleteConfirmationModal';
 import EditEventModal from '../Components/modals/EditEventModal';
 import { EventContext } from '../contexts/event.context';
 import TableBox from '../Components/TableBox';
@@ -21,6 +21,7 @@ import useFetchRoomsAndEvents from '../api/useFetchRoomsAndEvents';
 import useHandleDateClick from '../hooks/Calendar/useHandleDateClick';
 import useCalculateTotalPrice from '../hooks/Calendar/useCalculateTotalPrice';
 import useFilteredEvents from '../hooks/Calendar/useFilteredEvents';
+import CircularProgress from '@mui/material/CircularProgress';
 const Calendar = () => {
   const {
     modalOpen,
@@ -47,6 +48,7 @@ const Calendar = () => {
     setRoom,
     setColor,
     setEventId,
+    isLoading,
   } = useContext(EventContext);
 
   const calendarRef = useRef(null);
@@ -102,7 +104,13 @@ const Calendar = () => {
 
   return (
     <main>
+      {isLoading && (
+        <div className="loading-overlay">
+          <CircularProgress />
+        </div>
+      )}
       <CalendarNavbar />
+
       <div style={{ position: 'relative', zIndex: 0 }}>
         <FullCalendar
           locale={plLocale}
