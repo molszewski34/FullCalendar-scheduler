@@ -6,6 +6,7 @@ import { ChromePicker } from 'react-color';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import { useForm } from 'react-hook-form';
+import TextField from '@mui/material/TextField';
 
 const EditRoom = () => {
   const {
@@ -59,64 +60,89 @@ const EditRoom = () => {
     >
       <b style={{ margin: '0', marginBottom: '1em' }}>Wypełnij pola</b>
       <form style={{ display: 'flex' }} onSubmit={handleSubmit(handleUpdate)}>
-        <label htmlFor="roomName">Nazwa pokoju:</label>
-        <input
-          type="text"
-          id="roomName"
-          {...register('roomName', { required: 'Nazwa pokoju jest wymagana' })}
-          defaultValue={chossenRoom.roomName}
-        />
-        {errors.roomName && <p className="error">{errors.roomName.message}</p>}
+        <div className="" style={{ display: 'flex', flexDirection: 'column' }}>
+          <label style={{ fontWeight: 'normal' }} htmlFor="roomName">
+            Nazwa pokoju:
+          </label>
+          <TextField
+            hiddenLabel
+            size="small"
+            variant="filled"
+            type="text"
+            id="roomName"
+            {...register('roomName', {
+              required: 'Nazwa pokoju jest wymagana',
+            })}
+            defaultValue={chossenRoom.roomName}
+          />
+          {errors.roomName && (
+            <p className="error">{errors.roomName.message}</p>
+          )}
+        </div>
+        <div className="" style={{ display: 'flex', flexDirection: 'column' }}>
+          <label style={{ fontWeight: 'normal' }} htmlFor="roomNumOfGuests">
+            Liczba miejsc:
+          </label>
+          <TextField
+            hiddenLabel
+            size="small"
+            variant="filled"
+            id="roomNumOfGuests"
+            {...register('roomNumOfGuests', {
+              required: 'Liczba miejsc jest wymagana',
+              pattern: {
+                value: /^[0-9]*$/,
+                message: 'Pole może zawierać tylko liczby',
+              },
+              min: {
+                value: 1,
+                message: 'Liczba miejsc nie może być mniejsza niż 1',
+              },
+              max: {
+                value: 9999,
+                message: 'Przekroczono maksymalną liczbę osób',
+              },
+            })}
+            defaultValue={chossenRoom.roomNumOfGuests}
+          />
+          {errors.roomNumOfGuests && (
+            <p className="error">{errors.roomNumOfGuests.message}</p>
+          )}
+        </div>
+        <div className="" style={{ display: 'flex', flexDirection: 'column' }}>
+          <label style={{ fontWeight: 'normal' }} htmlFor="RoomPriceOfGuest">
+            Cena za osobę
+          </label>
+          <TextField
+            hiddenLabel
+            size="small"
+            variant="filled"
+            id="RoomPriceOfGuest"
+            {...register('RoomPriceOfGuest', {
+              required: 'Cena za osobę jest wymagana',
+              pattern: {
+                value: /^[0-9]*$/,
+                message: 'Pole może zawierać tylko liczby',
+              },
+              min: {
+                value: 1,
+                message: 'Liczba miejsc nie może być mniejsza niż 1',
+              },
+              max: {
+                value: 9999,
+                message: 'Przekroczono maksymalną liczbę osób',
+              },
+            })}
+            defaultValue={chossenRoom.RoomPriceOfGuest}
+          />
+          {errors.RoomPriceOfGuest && (
+            <p className="error">{errors.RoomPriceOfGuest.message}</p>
+          )}
+        </div>
 
-        <label htmlFor="roomNumOfGuests">Liczba miejsc:</label>
-        <input
-          id="roomNumOfGuests"
-          {...register('roomNumOfGuests', {
-            required: 'Liczba miejsc jest wymagana',
-            pattern: {
-              value: /^[0-9]*$/,
-              message: 'Pole może zawierać tylko liczby',
-            },
-            min: {
-              value: 1,
-              message: 'Liczba miejsc nie może być mniejsza niż 1',
-            },
-            max: {
-              value: 9999,
-              message: 'Przekroczono maksymalną liczbę osób',
-            },
-          })}
-          defaultValue={chossenRoom.roomNumOfGuests}
-        />
-        {errors.roomNumOfGuests && (
-          <p className="error">{errors.roomNumOfGuests.message}</p>
-        )}
-
-        <label htmlFor="RoomPriceOfGuest">Cena za osobę</label>
-        <input
-          id="RoomPriceOfGuest"
-          {...register('RoomPriceOfGuest', {
-            required: 'Cena za osobę jest wymagana',
-            pattern: {
-              value: /^[0-9]*$/,
-              message: 'Pole może zawierać tylko liczby',
-            },
-            min: {
-              value: 1,
-              message: 'Liczba miejsc nie może być mniejsza niż 1',
-            },
-            max: {
-              value: 9999,
-              message: 'Przekroczono maksymalną liczbę osób',
-            },
-          })}
-          defaultValue={chossenRoom.RoomPriceOfGuest}
-        />
-        {errors.RoomPriceOfGuest && (
-          <p className="error">{errors.RoomPriceOfGuest.message}</p>
-        )}
-
-        <label htmlFor="roomColor">Kolor pokoju:</label>
+        <label style={{ fontWeight: 'normal' }} htmlFor="roomColor">
+          Kolor pokoju:
+        </label>
         <div
           style={{
             display: 'flex',
@@ -124,7 +150,10 @@ const EditRoom = () => {
             position: 'relative',
           }}
         >
-          <input
+          <TextField
+            hiddenLabel
+            size="small"
+            variant="filled"
             type="text"
             id="roomColor"
             {...register('roomColor', {
@@ -163,8 +192,13 @@ const EditRoom = () => {
           <span className="error">{errors.roomColor.message}</span>
         )}
 
-        <label htmlFor="roomLocation">Lokalizacja:</label>
-        <input
+        <label style={{ fontWeight: 'normal' }} htmlFor="roomLocation">
+          Lokalizacja:
+        </label>
+        <TextField
+          hiddenLabel
+          size="small"
+          variant="filled"
           type="text"
           id="roomLocation"
           {...register('roomLocation', {

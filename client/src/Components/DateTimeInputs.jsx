@@ -1,15 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import DateTime from 'react-datetime';
-
-const DateTimeInputs = ({
-  start,
-  setStart,
-  end,
-  setEnd,
-  editedEvent,
-  daysDifference,
-  setDaysDifference,
-}) => {
+import { EventContext } from '../contexts/event.context';
+const DateTimeInputs = ({}) => {
+  const {
+    editedEvent,
+    start,
+    setStart,
+    end,
+    setEnd,
+    daysDifference,
+    setDaysDifference,
+  } = useContext(EventContext);
   useEffect(() => {
     if (start && end) {
       const oneDay = 24 * 60 * 60 * 1000;

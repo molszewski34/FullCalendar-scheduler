@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Button } from '@mui/material';
 import { EventContext } from '../contexts/event.context';
 
-const Header = ({ modalName, setModalOpen }) => {
+const Header = ({ modalName }) => {
   const {
     setEditModalOpen,
     setOverlay,
@@ -20,6 +20,7 @@ const Header = ({ modalName, setModalOpen }) => {
     setOpenRoomSelectionModal,
     setRoomSelection,
     setDestinationRoomId,
+    setModalOpen,
   } = useContext(EventContext);
 
   return (

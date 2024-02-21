@@ -4,7 +4,7 @@ import { Box, TextField } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { EventContext } from '../contexts/event.context';
-const GuestsAndPriceInputs = ({}) => {
+const GuestsAndPriceInputs = () => {
   const {
     setNumOfGuests,
     guestsFee,

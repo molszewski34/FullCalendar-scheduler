@@ -14,37 +14,21 @@ const EditEventModal = ({ setEditModalOpen, handleEventChange }) => {
   const {
     editedEvent,
     title,
-    setTitle,
-    start,
-    setStart,
-    end,
-    setEnd,
     phone,
-    setPhone,
     numOfGuests,
-    setNumOfGuests,
-    priceOfGuest,
-    setPriceOfGuest,
-    room,
-    setRoom,
-    setColor,
-    setSelectedRoom,
     price,
     setPrice,
-    setOverlay,
-    daysDifference,
-    setDaysDifference,
     setOpen,
     guestsFee,
     total,
     setTotal,
-    setModalOpen,
     openRoomSelectionModal,
     editModalOpen,
     setRoomId,
     rooms,
-    roomSelection,
     setDestinationRoomId,
+    setTitle,
+    setPhone,
   } = useContext(EventContext);
   const {
     handleSubmit,
@@ -90,12 +74,7 @@ const EditEventModal = ({ setEditModalOpen, handleEventChange }) => {
             }}
             mr={2}
           >
-            <Header
-              setEditModalOpen={setEditModalOpen}
-              setModalOpen={setModalOpen}
-              setOverlay={setOverlay}
-              modalName={'Edytuj wydarzenie'}
-            />
+            <Header modalName={'Edytuj wydarzenie'} />
             <form onSubmit={handleSubmit(handleEventChange)}>
               <TitleInput
                 title={title}
@@ -105,15 +84,7 @@ const EditEventModal = ({ setEditModalOpen, handleEventChange }) => {
                 control={control}
                 errors={errors}
               />
-              <DateTimeInputs
-                start={start}
-                setStart={setStart}
-                end={end}
-                setEnd={setEnd}
-                editedEvent={editedEvent}
-                daysDifference={daysDifference}
-                setDaysDifference={setDaysDifference}
-              />
+              <DateTimeInputs />
               <PhoneInput
                 phone={phone}
                 setPhone={setPhone}
@@ -122,29 +93,8 @@ const EditEventModal = ({ setEditModalOpen, handleEventChange }) => {
                 control={control}
                 errors={errors}
               />
-              <RoomSelection
-                header={
-                  'Zmień lub wybierz ponownie by zmienić cene i ilość osób'
-                }
-                room={room}
-                setRoom={setRoom}
-                setColor={setColor}
-                setNumOfGuests={setNumOfGuests}
-                setPriceOfGuest={setPriceOfGuest}
-                setSelectedRoom={setSelectedRoom}
-                editedEvent={editedEvent}
-                price={setPrice}
-                error={errors.rooms ? errors.rooms.message : ''}
-                control={control}
-                errors={errors}
-              />
-              <GuestsAndPriceInputs
-                numOfGuests={numOfGuests}
-                setNumOfGuests={setNumOfGuests}
-                priceOfGuest={priceOfGuest}
-                setPriceOfGuest={setPriceOfGuest}
-                editedEvent={editedEvent}
-              />
+              <RoomSelection />
+              <GuestsAndPriceInputs />
 
               <div className="price-per-day ">
                 Za dzień: <span>{total}zł </span>
