@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import CloseIcon from '@mui/icons-material/Close';
 import { EventContext } from '../../contexts/event.context';
 import AddIcon from '@mui/icons-material/Add';
+import TextField from '@mui/material/TextField';
 
 const AddRoom = () => {
   const { showColorPicker, setShowColorPicker } = useContext(EventContext);
@@ -31,9 +32,7 @@ const AddRoom = () => {
         '/api/rooms/create-room',
         formData
       );
-
       console.log('Data added successfully:', response.data);
-
       reset();
       setRoomColor('#cbd5e1');
     } catch (error) {
@@ -55,131 +54,166 @@ const AddRoom = () => {
       }}
     >
       <b style={{ margin: '0', marginBottom: '1em' }}>Wypełnij pola</b>
-      <form style={{ display: 'flex' }} onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="roomName">Nazwa pokoju:</label>
-        <input
-          type="text"
-          id="roomName"
-          {...register('roomName', {
-            required: 'Nazwa pokoju jest wymagana',
-            minLength: {
-              value: 3,
-              message: 'Imię musi mieć co najmniej 3 znako',
-            },
-            maxLength: {
-              value: 30,
-              message: 'Imię nie może mieć więcej niż 20 znaków',
-            },
-          })}
-          placeholder="np. Pokój 3"
-        />
-        {errors.roomName && (
-          <span className="error">{errors.roomName.message}</span>
-        )}
+      <form
+        style={{ display: 'flex', gap: '1em' }}
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="" style={{ display: 'flex', flexDirection: 'column' }}>
+          <label style={{ fontWeight: 'normal' }} htmlFor="roomName">
+            Nazwa pokoju:
+          </label>
+          <TextField
+            size="small"
+            variant="standard"
+            type="text"
+            id="roomName"
+            {...register('roomName', {
+              required: 'Nazwa pokoju jest wymagana',
+              minLength: {
+                value: 3,
+                message: 'Imię musi mieć co najmniej 3 znako',
+              },
+              maxLength: {
+                value: 30,
+                message: 'Imię nie może mieć więcej niż 20 znaków',
+              },
+            })}
+            placeholder="np. Pokój 3"
+          />
 
-        <label htmlFor="roomNumOfGuests">Liczba miejsc:</label>
-        <input
-          type="text"
-          id="roomNumOfGuests"
-          {...register('roomNumOfGuests', {
-            required: 'Liczba miejsc jest wymagana',
-            min: {
-              value: 1,
-              message: 'Liczba miejsc nie może być mniejsza niż 1',
-            },
-            max: {
-              value: 9999,
-              message: 'Przekroczono maksymalną liczbę osób',
-            },
-            pattern: {
-              value: /^[0-9]*$/,
-              message: 'Pole może zawierać tylko liczby',
-            },
-          })}
-          placeholder="np. 3"
-        />
-        {errors.roomNumOfGuests && (
-          <span className="error">{errors.roomNumOfGuests.message}</span>
-        )}
+          {errors.roomName && (
+            <span className="error">{errors.roomName.message}</span>
+          )}
+        </div>
+        <div className="" style={{ display: 'flex', flexDirection: 'column' }}>
+          <label style={{ fontWeight: 'normal' }} htmlFor="roomNumOfGuests">
+            Liczba miejsc:
+          </label>
+          <TextField
+            size="small"
+            variant="standard"
+            type="text"
+            id="roomNumOfGuests"
+            {...register('roomNumOfGuests', {
+              required: 'Liczba miejsc jest wymagana',
+              min: {
+                value: 1,
+                message: 'Liczba miejsc nie może być mniejsza niż 1',
+              },
+              max: {
+                value: 9999,
+                message: 'Przekroczono maksymalną liczbę osób',
+              },
+              pattern: {
+                value: /^[0-9]*$/,
+                message: 'Pole może zawierać tylko liczby',
+              },
+            })}
+            placeholder="np. 3"
+          />
 
-        <label htmlFor="RoomPriceOfGuest">Cena za osobę:</label>
-        <input
-          type="text"
-          id="RoomPriceOfGuest"
-          {...register('RoomPriceOfGuest', {
-            required: 'Cena za osobę jest wymagana',
-            min: {
-              value: 1,
-              message: 'Liczba miejsc nie może być mniejsza niż 1',
-            },
-            pattern: {
-              value: /^[0-9]*$/,
-              message: 'Pole może zawierać tylko liczby',
-            },
-          })}
-          placeholder="np. 60"
-        />
-        {errors.RoomPriceOfGuest && (
-          <span className="error">{errors.RoomPriceOfGuest.message}</span>
-        )}
-
-        <label htmlFor="roomColor">Kolor pokoju:</label>
-        <div
-          style={{
-            display: 'flex',
-            gap: '0.3em',
-            position: 'relative',
-          }}
-        >
-          <input type="text" id="roomColor" value={roomColor} />
-
+          {errors.roomNumOfGuests && (
+            <span className="error">{errors.roomNumOfGuests.message}</span>
+          )}
+        </div>
+        <div className="" style={{ display: 'flex', flexDirection: 'column' }}>
+          <label style={{ fontWeight: 'normal' }} htmlFor="RoomPriceOfGuest">
+            Cena za osobę:
+          </label>
+          <TextField
+            size="small"
+            variant="standard"
+            type="text"
+            id="RoomPriceOfGuest"
+            {...register('RoomPriceOfGuest', {
+              required: 'Cena za osobę jest wymagana',
+              min: {
+                value: 1,
+                message: 'Liczba miejsc nie może być mniejsza niż 1',
+              },
+              pattern: {
+                value: /^[0-9]*$/,
+                message: 'Pole może zawierać tylko liczby',
+              },
+            })}
+            placeholder="np. 60"
+          />
+          {errors.RoomPriceOfGuest && (
+            <span className="error">{errors.RoomPriceOfGuest.message}</span>
+          )}
+        </div>
+        <div className="">
+          <label style={{ fontWeight: 'normal' }} htmlFor="roomColor">
+            Kolor pokoju:
+          </label>
           <div
             style={{
               display: 'flex',
+              gap: '0.3em',
+              position: 'relative',
               alignItems: 'center',
-              justifyContent: 'center',
-              width: '40px',
-              height: '30px',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              fontSize: '0.5em',
-              backgroundColor: roomColor,
             }}
-            onClick={() => setShowColorPicker(!showColorPicker)}
           >
-            {showColorPicker ? <CloseIcon /> : ''}
-          </div>
-          {showColorPicker && (
-            <div style={{ position: 'absolute', top: '35px', zIndex: '1' }}>
-              <ChromePicker color={roomColor} onChange={handleColorChange} />
+            <TextField
+              size="small"
+              variant="standard"
+              type="text"
+              id="roomColor"
+              value={roomColor}
+            />
+
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '40px',
+                height: '30px',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                fontSize: '0.5em',
+                backgroundColor: roomColor,
+              }}
+              onClick={() => setShowColorPicker(!showColorPicker)}
+            >
+              {showColorPicker ? <CloseIcon /> : ''}
             </div>
+            {showColorPicker && (
+              <div style={{ position: 'absolute', top: '35px', zIndex: '1' }}>
+                <ChromePicker color={roomColor} onChange={handleColorChange} />
+              </div>
+            )}
+          </div>
+          {errors.roomColor && (
+            <span className="error">{errors.roomColor.message}</span>
           )}
         </div>
-        {errors.roomColor && (
-          <span className="error">{errors.roomColor.message}</span>
-        )}
-
-        <label htmlFor="roomLocation">Lokalizacja:</label>
-        <input
-          type="text"
-          id="roomLocation"
-          {...register('roomLocation', {
-            required: 'Lokalizacja jest wymagana',
-            minLength: {
-              value: 3,
-              message: 'Nazwa musi mieć co najmniej 3 znaki',
-            },
-            maxLength: {
-              value: 30,
-              message: 'Nazwa nie może mieć więcej niż 20 znaków',
-            },
-          })}
-          placeholder="np. 2 piętro"
-        />
-        {errors.roomLocation && (
-          <span className="error">{errors.roomLocation.message}</span>
-        )}
-
+        <div className="" style={{ display: 'flex', flexDirection: 'column' }}>
+          <label style={{ fontWeight: 'normal' }} htmlFor="roomLocation">
+            Lokalizacja:
+          </label>
+          <TextField
+            size="small"
+            variant="standard"
+            type="text"
+            id="roomLocation"
+            {...register('roomLocation', {
+              required: 'Lokalizacja jest wymagana',
+              minLength: {
+                value: 3,
+                message: 'Nazwa musi mieć co najmniej 3 znaki',
+              },
+              maxLength: {
+                value: 30,
+                message: 'Nazwa nie może mieć więcej niż 20 znaków',
+              },
+            })}
+            placeholder="np. 2 piętro"
+          />
+          {errors.roomLocation && (
+            <span className="error">{errors.roomLocation.message}</span>
+          )}
+        </div>
         <Button
           variant="contained"
           size="small"
