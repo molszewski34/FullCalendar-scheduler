@@ -7,9 +7,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import { EventContext } from '../../contexts/event.context';
 import AddIcon from '@mui/icons-material/Add';
 import TextField from '@mui/material/TextField';
-
+import { useMutation, useQueryClient } from 'react-query';
 const AddRoom = () => {
   const { showColorPicker, setShowColorPicker } = useContext(EventContext);
+  const queryClient = useQueryClient();
+
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_PUBLIC_API_URL,
   });
@@ -21,29 +23,32 @@ const AddRoom = () => {
   } = useForm();
   const [roomColor, setRoomColor] = useState('#cbd5e1');
 
+  const mutation = useMutation(
+    async (data) => await axiosInstance.post('/api/rooms/create-room', data),
+    {
+      onSuccess: () => {
+        console.log('Data added successfully');
+        reset();
+        setRoomColor('#cbd5e1');
+        queryClient.invalidateQueries('rooms');
+      },
+      onError: (error) => {
+        console.error('Error adding data:', error);
+      },
+    }
+  );
+
   const handleColorChange = (color) => {
     setRoomColor(color.hex);
   };
 
-  const onSubmit = async (data) => {
-    try {
-      const formData = { ...data, roomColor: roomColor };
-      const response = await axiosInstance.post(
-        '/api/rooms/create-room',
-        formData
-      );
-      console.log('Data added successfully:', response.data);
-      reset();
-      setRoomColor('#cbd5e1');
-    } catch (error) {
-      console.error('Error adding data:', error);
-    }
+  const onSubmit = (data) => {
+    const formData = { ...data, roomColor: roomColor };
+    mutation.mutate(formData);
   };
 
-  console.log(roomColor);
-
   return (
-    <div
+    <main
       style={{
         marginLeft: '2em',
         paddingLeft: '1em',
@@ -216,7 +221,7 @@ const AddRoom = () => {
         </div>
         <Button
           variant="contained"
-          size="small"
+          size="large"
           type="submit"
           style={{
             marginLeft: '.2em',
@@ -229,7 +234,7 @@ const AddRoom = () => {
           Dodaj <AddIcon style={{ marginLeft: '.2em' }} />
         </Button>
       </form>
-    </div>
+    </main>
   );
 };
 
