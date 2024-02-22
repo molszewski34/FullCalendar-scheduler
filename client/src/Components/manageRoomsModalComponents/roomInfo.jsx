@@ -63,7 +63,6 @@ const RoomInfo = () => {
                   sx={{
                     margin: '0',
 
-                    fontWeight: '700',
                     fontSize: '1em',
                   }}
                 >
@@ -81,13 +80,12 @@ const RoomInfo = () => {
                 ) : (
                   <Typography
                     style={{
-                      fontSize: '1.1em',
+                      fontSize: '1.3em',
                       color:
                         roomData.label === 'Nazwa pokoju:'
                           ? '#ea580c'
                           : '#71717a',
-                      fontWeight:
-                        roomData.label === 'Nazwa pokoju:' ? 'bolder' : '',
+                      fontWeight: 'bold',
                     }}
                     variant="body1"
                   >
@@ -105,15 +103,18 @@ const RoomInfo = () => {
               gap: '.5em',
             }}
           >
-            <button
-              className="room-action-button"
+            <Button
+              variant="contained"
+              size="large"
               onClick={() => {
                 setOpenEditRoomPanel(!openEditRoomPanel);
                 setOpenDeleteRoomPanel(false);
                 setOpenAddRoomPanel(false);
               }}
+              startIcon={
+                <EditIcon style={{ fontSize: '1.5em', margin: '0' }} />
+              }
             >
-              <EditIcon style={{ fontSize: '1.5em', margin: '0' }} />
               <p
                 style={{
                   fontSize: '.8em',
@@ -122,31 +123,23 @@ const RoomInfo = () => {
               >
                 Edytuj
               </p>
-            </button>
+            </Button>
 
-            <button
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: '#ef4444',
-                color: '#fff',
-                fontWeight: 'bold',
-                border: '1px solid #dc2626',
-                borderRadius: '5px',
-                padding: '0.5em',
-                boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
-                cursor: 'pointer',
-              }}
+            <Button
+              variant="contained"
+              size="large"
+              color="error"
               onClick={() => {
                 setOpenDeleteRoomPanel(!openDeleteRoomPanel);
                 setOpenEditRoomPanel(false);
                 setOpenAddRoomPanel(false);
               }}
+              startIcon={
+                <DeleteForeverIcon style={{ fontSize: '1.5em', margin: '0' }} />
+              }
             >
-              <DeleteForeverIcon style={{ fontSize: '1.5em', margin: '0' }} />
               <p style={{ fontSize: '.8em', margin: '0' }}>Usuń</p>
-            </button>
+            </Button>
           </Box>
         </Box>
       ) : (

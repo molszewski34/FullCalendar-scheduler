@@ -7,7 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import { useForm } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
-
+import { useMutation, useQueryClient } from 'react-query';
 const EditRoom = () => {
   const {
     chossenRoom,
@@ -37,13 +37,27 @@ const EditRoom = () => {
     setValue('roomColor', color.hex);
   };
 
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(
+    (data) =>
+      axiosInstance
+        .patch(`/api/rooms/update-room/${roomId}`, data)
+        .then((res) => res.data),
+    {
+      onSuccess: (data) => {
+        setChossenRoom(data);
+        queryClient.invalidateQueries('rooms');
+      },
+      onError: (error) => {
+        console.error(error);
+      },
+    }
+  );
+
   const handleUpdate = async (data) => {
     try {
-      const response = await axiosInstance.patch(
-        `/api/rooms/update-room/${roomId}`,
-        data
-      );
-      setChossenRoom(response.data);
+      await mutation.mutateAsync(data);
     } catch (error) {
       console.error(error);
     }
@@ -220,7 +234,7 @@ const EditRoom = () => {
 
         <Button
           variant="contained"
-          size="small"
+          size="large"
           type="submit"
           style={{
             marginLeft: '.2em',

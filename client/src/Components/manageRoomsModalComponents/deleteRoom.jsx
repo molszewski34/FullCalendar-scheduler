@@ -1,31 +1,38 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { EventContext } from '../../contexts/event.context';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { Button } from '@mui/material';
 
 const DeleteRoom = () => {
   const [message, setMessage] = useState('');
-  const { chossenRoom, roomId, setRoomId, setChossenRoom } =
-    useContext(EventContext);
+  const { chossenRoom, setChossenRoom } = useContext(EventContext);
+  const queryClient = useQueryClient();
+
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_PUBLIC_API_URL,
   });
-
-  useEffect(() => {
-    setRoomId(chossenRoom._id);
-  }, [chossenRoom._id]);
-
-  const handleDelete = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axiosInstance.delete(
-        `/api/rooms/delete-room/${roomId}`
-      );
-
-      setChossenRoom(response.data);
-    } catch (error) {
-      setMessage(`Error: ${error.response.data.message}`);
+  const deleteRoomMutation = useMutation(
+    (roomId) =>
+      axiosInstance.delete(
+        `${process.env.REACT_APP_PUBLIC_API_URL}/api/rooms/delete-room/${roomId}`
+      ),
+    {
+      onSuccess: (data) => {
+        // Invalidate the room query and refetch it
+        setChossenRoom(data);
+        queryClient.invalidateQueries('rooms');
+      },
+      onError: (error) => {
+        setMessage(`Error: ${error.response.data.message}`);
+      },
     }
+  );
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    deleteRoomMutation.mutate(chossenRoom._id);
   };
 
   return (
@@ -48,29 +55,20 @@ const DeleteRoom = () => {
           i wszystkie wydarzenia do niego przypisane ?
         </b>
         <b style={{ margin: '0', marginTop: '1em', color: '#dc2626' }}>
-          Te działanie jest nieodwracalne. Bądź pewien, że wiesz co robisz.
+          Te działanie jest nieodwracalne.
         </b>
       </div>
-      <button
-        style={{
-          display: 'flex',
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: '#ef4444',
-          color: '#fff',
-          fontWeight: 'bold',
-          border: '1px solid #dc2626',
-          borderRadius: '5px',
-          padding: '0.5em',
-          boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
-          cursor: 'pointer',
-        }}
+      <Button
+        variant="contained"
+        size="medium"
+        color="error"
         onClick={handleDelete}
+        startIcon={
+          <DeleteForeverIcon style={{ fontSize: '1.5em', margin: '0' }} />
+        }
       >
-        <DeleteForeverIcon style={{ fontSize: '1.5em', margin: '0' }} />
         <p style={{ fontSize: '.8em', margin: '0' }}>Usuń Pokój</p>
-      </button>
+      </Button>
     </div>
   );
 };
