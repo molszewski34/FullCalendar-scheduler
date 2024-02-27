@@ -37,15 +37,30 @@
   border-radius: 8px;
   padding: 0.2em;
 }
+
 .discount-box-item {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
 }
+
+@media (max-width: 640px) {
+  .discount-box-item {
+    flex-direction: column;
+  }
+}
+
 .discount-btns {
   display: flex;
   gap: 0.1em;
+}
+
+@media (max-width: 640px) {
+  .discount-btns {
+    flex-direction: column;
+    gap: 0.2em;
+  }
 }
 
 .discount-btn {
