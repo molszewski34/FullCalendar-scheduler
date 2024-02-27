@@ -8,6 +8,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useForm } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import { useMutation, useQueryClient } from 'react-query';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
 const EditRoom = () => {
   const {
     chossenRoom,
@@ -16,6 +18,10 @@ const EditRoom = () => {
     setRoomId,
     showColorPicker,
     setShowColorPicker,
+    setOpenEditRoomPanel,
+    setOpenAddRoomPanel,
+    openDeleteRoomPanel,
+    setOpenDeleteRoomPanel,
   } = useContext(EventContext);
 
   const {
@@ -23,6 +29,7 @@ const EditRoom = () => {
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm();
   const axiosInstance = axios.create({
@@ -36,6 +43,10 @@ const EditRoom = () => {
   const handleColorChange = (color) => {
     setValue('roomColor', color.hex);
   };
+
+  useEffect(() => {
+    reset();
+  }, [chossenRoom]);
 
   const queryClient = useQueryClient();
 
@@ -72,7 +83,7 @@ const EditRoom = () => {
         flexDirection: 'column',
       }}
     >
-      <b style={{ margin: '0', marginBottom: '1em' }}>Wypełnij pola</b>
+      <b style={{ margin: '0', marginBottom: '1em' }}>Dane pokoju</b>
       <form style={{ display: 'flex' }} onSubmit={handleSubmit(handleUpdate)}>
         <div className="" style={{ display: 'flex', flexDirection: 'column' }}>
           <label style={{ fontWeight: 'normal' }} htmlFor="roomName">
@@ -87,7 +98,7 @@ const EditRoom = () => {
             {...register('roomName', {
               required: 'Nazwa pokoju jest wymagana',
             })}
-            defaultValue={chossenRoom.roomName}
+            placeholder={chossenRoom.roomName}
           />
           {errors.roomName && (
             <p className="error">{errors.roomName.message}</p>
@@ -117,7 +128,7 @@ const EditRoom = () => {
                 message: 'Przekroczono maksymalną liczbę osób',
               },
             })}
-            defaultValue={chossenRoom.roomNumOfGuests}
+            placeholder={chossenRoom.roomNumOfGuests}
           />
           {errors.roomNumOfGuests && (
             <p className="error">{errors.roomNumOfGuests.message}</p>
@@ -147,7 +158,7 @@ const EditRoom = () => {
                 message: 'Przekroczono maksymalną liczbę osób',
               },
             })}
-            defaultValue={chossenRoom.RoomPriceOfGuest}
+            placeholder={chossenRoom.RoomPriceOfGuest}
           />
           {errors.RoomPriceOfGuest && (
             <p className="error">{errors.RoomPriceOfGuest.message}</p>
@@ -173,7 +184,7 @@ const EditRoom = () => {
             {...register('roomColor', {
               required: 'To pole nie może być puste',
             })}
-            defaultValue={chossenRoom.roomColor}
+            placeholder={chossenRoom.roomColor}
           />
           <div
             style={{
@@ -186,8 +197,7 @@ const EditRoom = () => {
               borderRadius: '5px',
               cursor: 'pointer',
               fontSize: '0.5em',
-              backgroundColor:
-                watch('roomColor') === '' ? '#cbd5e1' : watch('roomColor'),
+              backgroundColor: chossenRoom.roomColor,
             }}
             onClick={() => setShowColorPicker(!showColorPicker)}
           >
@@ -226,7 +236,7 @@ const EditRoom = () => {
               message: 'Nazwa nie może mieć więcej niż 20 znaków',
             },
           })}
-          defaultValue={chossenRoom.roomLocation}
+          placeholder={chossenRoom.roomLocation}
         />
         {errors.roomLocation && (
           <p className="error">{errors.roomLocation.message}</p>
@@ -243,8 +253,28 @@ const EditRoom = () => {
             display: 'flex',
             alignItems: 'center',
           }}
+          endIcon={<EditIcon />}
         >
-          Edytuj <EditIcon style={{ marginLeft: '.2em', fontSize: '1.2em' }} />
+          Edytuj
+        </Button>
+        <Button
+          variant="contained"
+          size="large"
+          color="error"
+          style={{
+            marginLeft: '.2em',
+            marginTop: '1em',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+          onClick={() => {
+            setOpenDeleteRoomPanel(!openDeleteRoomPanel);
+            setOpenEditRoomPanel(false);
+            setOpenAddRoomPanel(false);
+          }}
+          endIcon={<DeleteForeverIcon />}
+        >
+          Usuń
         </Button>
       </form>
     </div>
