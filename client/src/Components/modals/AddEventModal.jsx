@@ -72,13 +72,16 @@ const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
   return (
     <>
       {isOpen && (
-        <div className="modal-edit">
+        <div className="modal">
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
               borderRight: 1,
               paddingRight: 2,
+              '@media (max-width:640px)': {
+                width: '150px',
+              },
             }}
             mr={2}
           >
