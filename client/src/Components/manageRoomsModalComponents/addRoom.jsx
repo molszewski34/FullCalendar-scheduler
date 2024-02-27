@@ -50,9 +50,7 @@ const AddRoom = () => {
   return (
     <main
       style={{
-        marginLeft: '2em',
         paddingLeft: '1em',
-        borderLeft: '1px solid black',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'start',

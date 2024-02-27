@@ -109,6 +109,7 @@ label {
   display: flex;
   gap: 0.2em;
   flex-direction: column;
+  width: 100%;
 }
 
 .room-selection {
@@ -245,7 +246,44 @@ label {
   cursor: pointer;
 }
 
-.modal-edit {
+.modal {
+  position: fixed;
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 480px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #fff;
+  border: 1px solid rgb(0 0 0 / 0.3);
+  padding: 1em;
+  border-radius: 5px;
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+@media (max-width: 640px) {
+  .modal {
+    width: 280px;
+  }
+}
+
+.modal_btn-wrapper {
+  display: flex;
+  justify-content: space-around;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .modal_btn-wrapper {
+    flex-direction: column;
+    gap: 0.5em;
+  }
+}
+.modal-table {
   position: fixed;
   z-index: 2;
   left: 50%;
@@ -265,22 +303,17 @@ label {
     0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
-@media (min-width: 640px) {
-  .modal-edit {
+@media (max-width: 640px) {
+  .modal-table {
     top: 50%;
+    width: 380px;
   }
 }
 
 @media (min-width: 1024px) {
-  .modal-edit {
+  .modal-table {
     top: 50%;
   }
-}
-
-.modal-edit_btn-wrapper {
-  display: flex;
-  justify-content: space-around;
-  cursor: pointer;
 }
 
 .overlay {
@@ -318,6 +351,7 @@ label {
 .form-control {
   font-size: 1em;
   padding: 0.3em;
+  width: 90%;
 }
 
 .rdtTimeToggle {
@@ -342,4 +376,20 @@ label {
   justify-content: center;
   align-items: center;
   z-index: 9999;
+}
+
+.filter-rooms {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.filter-rooms_label {
+  display: flex;
+}
+
+@media (max-width: 640px) {
+  .filter-rooms_label {
+    display: none;
+  }
 }

@@ -124,22 +124,6 @@ const RoomInfo = () => {
                 Edytuj
               </p>
             </Button>
-
-            <Button
-              variant="contained"
-              size="large"
-              color="error"
-              onClick={() => {
-                setOpenDeleteRoomPanel(!openDeleteRoomPanel);
-                setOpenEditRoomPanel(false);
-                setOpenAddRoomPanel(false);
-              }}
-              startIcon={
-                <DeleteForeverIcon style={{ fontSize: '1.5em', margin: '0' }} />
-              }
-            >
-              <p style={{ fontSize: '.8em', margin: '0' }}>Usuń</p>
-            </Button>
           </Box>
         </Box>
       ) : (

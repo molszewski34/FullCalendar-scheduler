@@ -12,6 +12,8 @@ const AccordionComponent = () => {
     chossenRoom,
     openEditRoomPanel,
     setOpenEditRoomPanel,
+    setOpenDeleteRoomPanel,
+    setOpenAddRoomPanel,
   } = useContext(EventContext);
 
   const sortedRooms = rooms.sort(
@@ -49,7 +51,9 @@ const AccordionComponent = () => {
 
           const handleRoomButtonClick = (room) => {
             setChossenRoom({ ...room });
-            setOpenEditRoomPanel(false);
+            setOpenEditRoomPanel(true);
+            setOpenAddRoomPanel(false);
+            setOpenDeleteRoomPanel(false);
           };
 
           const defaultExpanded =

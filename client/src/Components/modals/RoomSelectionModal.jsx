@@ -78,7 +78,7 @@ const RoomSelectionModal = () => {
                   </span>
                   <span>
                     <AttachMoneyIcon />
-                    {room.RoomPriceOfGuest}zł
+                    {room.RoomPriceOfGuest}zł/os
                   </span>
                 </div>
                 {room.roomName}

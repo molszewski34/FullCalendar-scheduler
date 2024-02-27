@@ -11,6 +11,8 @@ import {
   Button,
   TablePagination,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { tableCellClasses } from '@mui/material/TableCell';
 
 const TableBox = () => {
   const { setSearchInput, searchedEvents, setSearchedEvents, setShowTable } =
@@ -36,19 +38,39 @@ const TableBox = () => {
   };
 
   const tableHeaders = [
-    { label: 'Imię Nazwisko' },
+    { label: 'Nazwa' },
     { label: 'Telefon' },
     { label: 'Od' },
     { label: 'Do' },
     { label: 'Osób' },
   ];
 
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+  }));
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+
+    '&:last-child td, &:last-child th': {
+      border: 0,
+    },
+  }));
+
   return (
-    <div className="modal-edit">
+    <div className="modal-table">
       <TableContainer
         component={Paper}
-        className="modal-edit"
-        sx={{ display: 'flex', flexDirection: 'column', gap: '1em' }}
+        className="modal-table"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1em',
+        }}
       >
         <Button
           variant="contained"
@@ -67,7 +89,13 @@ const TableBox = () => {
               {tableHeaders.map((header, index) => (
                 <TableCell
                   key={index}
-                  sx={{ color: '#fff', fontSize: '0.8em' }}
+                  sx={{
+                    color: '#fff',
+                    fontSize: '0.8em',
+                    '@media (max-width:640px)': {
+                      fontSize: '0.6em',
+                    },
+                  }}
                 >
                   <b>{header.label}</b>
                 </TableCell>
@@ -87,23 +115,58 @@ const TableBox = () => {
                   )
                 : searchedEvents
               ).map((event, index) => (
-                <TableRow key={index}>
-                  <TableCell sx={{ fontSize: '0.8em' }}>
+                <StyledTableRow key={index}>
+                  <StyledTableCell
+                    sx={{
+                      fontSize: '0.8em',
+                      '@media (max-width:640px)': {
+                        fontSize: '0.6em',
+                      },
+                    }}
+                  >
                     {event.title}
-                  </TableCell>
-                  <TableCell sx={{ fontSize: '0.8em' }}>
+                  </StyledTableCell>
+                  <StyledTableCell
+                    sx={{
+                      fontSize: '0.8em',
+                      '@media (max-width:640px)': {
+                        fontSize: '0.6em',
+                      },
+                    }}
+                  >
                     {event.extendedProps.phone}
-                  </TableCell>
-                  <TableCell sx={{ fontSize: '0.8em' }}>
+                  </StyledTableCell>
+                  <StyledTableCell
+                    sx={{
+                      fontSize: '0.8em',
+                      '@media (max-width:640px)': {
+                        fontSize: '0.6em',
+                      },
+                    }}
+                  >
                     {formatDate(event.start)}
-                  </TableCell>
-                  <TableCell sx={{ fontSize: '0.8em' }}>
+                  </StyledTableCell>
+                  <StyledTableCell
+                    sx={{
+                      fontSize: '0.8em',
+                      '@media (max-width:640px)': {
+                        fontSize: '0.6em',
+                      },
+                    }}
+                  >
                     {formatDate(event.end)}
-                  </TableCell>
-                  <TableCell sx={{ fontSize: '0.8em' }}>
+                  </StyledTableCell>
+                  <StyledTableCell
+                    sx={{
+                      fontSize: '0.8em',
+                      '@media (max-width:640px)': {
+                        fontSize: '0.6em',
+                      },
+                    }}
+                  >
                     {event.extendedProps.numOfGuests}
-                  </TableCell>
-                </TableRow>
+                  </StyledTableCell>
+                </StyledTableRow>
               ))
             )}
           </TableBody>

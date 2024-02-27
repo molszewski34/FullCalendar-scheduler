@@ -20,7 +20,6 @@ const DeleteRoom = () => {
       ),
     {
       onSuccess: (data) => {
-        // Invalidate the room query and refetch it
         setChossenRoom(data);
         queryClient.invalidateQueries('rooms');
       },
@@ -38,9 +37,7 @@ const DeleteRoom = () => {
   return (
     <div
       style={{
-        marginLeft: '2em',
         paddingLeft: '1em',
-        borderLeft: '1px solid black',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -60,7 +57,7 @@ const DeleteRoom = () => {
       </div>
       <Button
         variant="contained"
-        size="medium"
+        size="large"
         color="error"
         onClick={handleDelete}
         startIcon={

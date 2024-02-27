@@ -43,7 +43,7 @@ const EditEventModal = ({ setEditModalOpen, handleEventChange }) => {
 
       if (foundRoom) {
         setRoomId(foundRoom._id);
-        // setRoomId('z EditEventModal');
+
         setDestinationRoomId(foundRoom._id);
       }
     }
@@ -59,12 +59,12 @@ const EditEventModal = ({ setEditModalOpen, handleEventChange }) => {
       const totalPrice = total * numOfGuests;
       setPrice(totalPrice.toFixed(2));
     }
-  }, []);
+  }, [editModalOpen]);
 
   return (
     <div>
       {editModalOpen && (
-        <div className="modal-edit">
+        <div className="modal">
           <Box
             sx={{
               display: 'flex',
@@ -105,7 +105,7 @@ const EditEventModal = ({ setEditModalOpen, handleEventChange }) => {
               >
                 Do zapłaty: <span>{price}zł </span>
               </div>
-              <div className="modal-edit_btn-wrapper">
+              <div className="modal_btn-wrapper">
                 <Button
                   variant="contained"
                   size="large"

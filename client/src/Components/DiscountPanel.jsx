@@ -130,7 +130,6 @@ const DiscountPanel = ({ onClose, onEventAdded }) => {
       style={{
         height: '600px',
         width: '300px',
-
         overflowY: 'auto',
         borderBottom: `${guestsFee.length >= 7 ? '1px solid #a1a1aa' : ''} `,
         paddingBottom: `${guestsFee.length >= 7 ? '0.8em' : ''} `,
@@ -165,7 +164,6 @@ const DiscountPanel = ({ onClose, onEventAdded }) => {
                   fontSize="large"
                   type="button"
                   onClick={() => decrementValue(index)}
-                  // color="warning"
                   style={
                     !roomSelection || !destinationRoomId
                       ? { color: '#d1d5db' }
@@ -190,8 +188,8 @@ const DiscountPanel = ({ onClose, onEventAdded }) => {
                   variant="contained"
                   style={
                     !roomSelection || !destinationRoomId
-                      ? { backgroundColor: '#d1d5db' }
-                      : { backgroundColor: discountBtn.bgColor }
+                      ? { backgroundColor: '#d1d5db', margin: '0' }
+                      : { backgroundColor: discountBtn.bgColor, margin: '0' }
                   }
                   className="discount-btn"
                   sx={{ my: 1 }}
