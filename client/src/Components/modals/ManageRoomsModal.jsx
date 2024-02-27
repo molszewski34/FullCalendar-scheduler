@@ -10,7 +10,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import './styles/ManageRoomsModal.css';
 import AccordionComponent from '../manageRoomsModalComponents/accordionComponent';
 import RoomInfo from '../manageRoomsModalComponents/roomInfo';
-
 const ManageRoomsModal = () => {
   const {
     rooms,
@@ -55,6 +54,12 @@ const ManageRoomsModal = () => {
               setOpenDeleteRoomPanel(false);
               setOpenEditRoomPanel(false);
             }}
+            sx={{
+              fontSize: '0.8em',
+              '@media (max-width:640px)': {
+                fontSize: '.6em',
+              },
+            }}
           >
             {openAddRoomPanel ? 'Zamknij panel' : 'Dodaj pokój +'}
           </Button>
@@ -69,7 +74,6 @@ const ManageRoomsModal = () => {
           ) : (
             <p style={{ padding: '0.3em', fontSize: '0.9em' }}>Dodaj pokoje</p>
           )}
-          {rooms.length != 0 ? <RoomInfo /> : ''}
           {openAddRoomPanel && <AddRoom />}
           {openEditRoomPanel && <EditRoom />}
           {openDeleteRoomPanel && <DeleteRoom />}
