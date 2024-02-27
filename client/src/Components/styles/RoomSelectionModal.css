@@ -31,8 +31,10 @@
 }
 
 .modal-room-selection_header svg {
+  border: solid 2px #dc2626;
+  border-radius: 3px;
   color: #dc2626;
-  font-size: 1.6em;
+  font-size: 2em;
   cursor: pointer;
   align-self: end;
 }
