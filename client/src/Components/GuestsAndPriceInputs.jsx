@@ -42,7 +42,15 @@ const GuestsAndPriceInputs = () => {
     >
       <div>
         <Box
-          sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            '@media (max-width:640px)': {
+              flexDirection: 'column',
+              gap: '.3em',
+            },
+          }}
           spacing={{ xs: 1, sm: 2 }}
         >
           <TextField
@@ -53,7 +61,16 @@ const GuestsAndPriceInputs = () => {
             value={guestsFee.length || '--'}
             onChange={(e) => setNumOfGuests(e.target.value)}
           />
-          <Box sx={{ display: 'inline-flex' }} spacing={{ xs: 1, sm: 2 }}>
+          <Box
+            sx={{
+              display: 'inline-flex',
+              '@media (max-width:640px)': {
+                justifyContent: 'space-between',
+                width: '100%',
+              },
+            }}
+            spacing={{ xs: 1, sm: 2 }}
+          >
             <RemoveCircleOutlineIcon
               fontSize="large"
               type="button"
