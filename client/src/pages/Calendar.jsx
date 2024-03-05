@@ -6,7 +6,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import AddEventModal from '../Components/modals/AddEventModal';
-import DeleteConfirmationModal from '../Components/modals/DeleteConfirmationModal';
+import DeleteConfirmationModal from '../Components/modals/deleteConfirmationModal';
 import EditEventModal from '../Components/modals/EditEventModal';
 import { EventContext } from '../contexts/event.context';
 import TableBox from '../Components/TableBox';
