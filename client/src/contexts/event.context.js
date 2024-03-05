@@ -1,6 +1,5 @@
 import { useState, createContext } from 'react';
 import React from 'react';
-
 export const EventContext = createContext();
 
 export function EventProvider({ children }) {
@@ -49,37 +48,35 @@ export function EventProvider({ children }) {
   const [chossenRoom, setChossenRoom] = useState('');
   const [destinationRoomId, setDestinationRoomId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [openAddRoomEquipmentModal, setOpenAddRoomEquipmentModal] =
+    useState(false);
+  const [openEditRoomEquipmentModal, setOpenEditRoomEquipmentModal] =
+    useState(false);
+  const [addSelectedEquipment, setAddSelectedEquipment] = useState([]);
+  const [editSelectedEquipment, setEditSelectedEquipment] = useState([]);
+
   const [discountBtns, setDiscountBtns] = useState([
     { name: '50%', value: -50, bgColor: '#009688' },
     { name: '25%', value: -25, bgColor: '#03a9f4' },
     { name: '10%', value: -10, bgColor: '#00bcd4' },
   ]);
 
-  const [roomsList, setRoomList] = useState([
-    {
-      name: 'Sypialnia',
-      numOfGuests: 2,
-      priceOfGuest: 65,
-      color: `linear-gradient(to right, #ED213A, #93291E)`,
-      defNumOfGuests: 2,
-    },
-    {
-      name: '3 łóżka',
-      numOfGuests: 3,
-      priceOfGuest: 65,
-      color: `linear-gradient(to right, #005C97, #363795)`,
-      defNumOfGuests: 3,
-    },
-    {
-      name: '2 łóżka',
-      numOfGuests: 2,
-      priceOfGuest: 65,
-      color: `linear-gradient(to right, #3CA55C, #B5AC49)`,
-      defNumOfGuests: 2,
-    },
+  const [equipmentList, setEquipmentList] = useState([
+    { name: 'Lodówka', icon: 'kitchen' },
+    { name: 'Mikrofalówka', icon: 'microwave' },
+    { name: 'Prysznic', icon: 'shower' },
+    { name: 'Wanna', icon: 'bathtub' },
+    { name: 'Grill', icon: 'outdoor_grill' },
+    { name: 'Telewizor', icon: 'outdoor_grill' },
+    { name: 'Aneks Kuchenny', icon: 'countertops' },
+    { name: 'Dodatkowe łóżko', icon: 'bed' },
+    { name: 'Szafka', icon: 'checkroom' },
+    { name: 'Łazienka', icon: 'bathroom' },
+    { name: 'Plac', icon: 'yard' },
+    { name: 'Wifi', icon: 'wifi' },
+    { name: 'Telefon', icon: 'phone' },
+    { name: 'Obsługa', icon: 'room_service' },
   ]);
-
-  console.log(rooms);
 
   return (
     <EventContext.Provider
@@ -142,8 +139,6 @@ export function EventProvider({ children }) {
         setInitialInputs,
         discountBtns,
         setDiscountBtns,
-        roomsList,
-        setRoomList,
         searchInput,
         setSearchInput,
         searchedEvents,
@@ -176,6 +171,16 @@ export function EventProvider({ children }) {
         setDestinationRoomId,
         isLoading,
         setIsLoading,
+        openAddRoomEquipmentModal,
+        setOpenAddRoomEquipmentModal,
+        openEditRoomEquipmentModal,
+        setOpenEditRoomEquipmentModal,
+        addSelectedEquipment,
+        setAddSelectedEquipment,
+        equipmentList,
+        setEquipmentList,
+        editSelectedEquipment,
+        setEditSelectedEquipment,
       }}
     >
       {children}

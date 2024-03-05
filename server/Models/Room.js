@@ -7,6 +7,12 @@ const RoomSchema = mongoose.Schema({
   isApartment: Boolean,
   roomColor: String,
   roomLocation: String,
+  equipment: [
+    {
+      name: String,
+      icon: String,
+    },
+  ],
   events: [
     {
       start: Date,
