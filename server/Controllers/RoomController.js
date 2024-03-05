@@ -20,13 +20,33 @@ router.get('/get-room/:roomId', async (req, res) => {
 });
 
 router.post('/create-room', async (req, res) => {
-  const room = new Room(req.body);
-
   try {
-    const newRoom = await room.save();
-    res.status(201).json(newRoom);
+    const {
+      roomName,
+      roomNumOfGuests,
+      RoomPriceOfGuest,
+      roomColor,
+      roomLocation,
+      equipment,
+    } = req.body;
+
+    const newRoom = new Room({
+      roomName,
+      roomNumOfGuests,
+      RoomPriceOfGuest,
+      roomColor,
+      roomLocation,
+      equipment,
+    });
+
+    await newRoom.save();
+
+    res
+      .status(201)
+      .json({ message: 'Room created successfully', room: newRoom });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error('Error creating room:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
