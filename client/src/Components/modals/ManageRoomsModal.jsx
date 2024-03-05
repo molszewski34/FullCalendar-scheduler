@@ -3,13 +3,14 @@ import { EventContext } from '../../contexts/event.context';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import { Button, Box } from '@mui/material';
-import AddRoom from '../manageRoomsModalComponents/addRoom';
-import EditRoom from '../manageRoomsModalComponents/editRoom';
+import AddRoom from '../manageRoomsModalComponents/AddRoom/AddRoom';
+import EditRoom from '../manageRoomsModalComponents/EditRoom/EditRoom';
 import DeleteRoom from '../manageRoomsModalComponents/deleteRoom';
 import CloseIcon from '@mui/icons-material/Close';
 import './styles/ManageRoomsModal.css';
 import AccordionComponent from '../manageRoomsModalComponents/accordionComponent';
-import RoomInfo from '../manageRoomsModalComponents/roomInfo';
+import ManageAddRoomsEquipmentModal from '../manageRoomsModalComponents/AddRoom/ManageAddRoomsEquipmentModal';
+import ManageEditRoomsEquipmentModal from '../manageRoomsModalComponents/EditRoom/ManageEditRoomsEquipmentModal';
 const ManageRoomsModal = () => {
   const {
     rooms,
@@ -21,6 +22,8 @@ const ManageRoomsModal = () => {
     setOpenAddRoomPanel,
     openDeleteRoomPanel,
     setOpenDeleteRoomPanel,
+    openAddRoomEquipmentModal,
+    openEditRoomEquipmentModal,
   } = useContext(EventContext);
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_PUBLIC_API_URL,
@@ -35,13 +38,19 @@ const ManageRoomsModal = () => {
     }
   }, [roomsData]);
 
-  console.log(rooms);
-
   return (
     <Box className="manage-rooms-modal-container">
       <CloseIcon
-        style={{ color: '#dc2626', fontSize: '1.6em', cursor: 'pointer' }}
-        onClick={() => setOpenManageRoomsModal(false)}
+        style={{
+          color: '#dc2626',
+          fontSize: '1.6em',
+          cursor: 'pointer',
+          border: '2px solid #dc2626',
+        }}
+        onClick={() => {
+          setOpenManageRoomsModal(false);
+          setOpenDeleteRoomPanel(false);
+        }}
       />
       <div className="manage-rooms-modal-wrapper">
         <Box className="manage-rooms-modal-header">
@@ -77,6 +86,8 @@ const ManageRoomsModal = () => {
           {openAddRoomPanel && <AddRoom />}
           {openEditRoomPanel && <EditRoom />}
           {openDeleteRoomPanel && <DeleteRoom />}
+          {openAddRoomEquipmentModal && <ManageAddRoomsEquipmentModal />}
+          {openEditRoomEquipmentModal && <ManageEditRoomsEquipmentModal />}
         </Box>
       </div>
     </Box>
