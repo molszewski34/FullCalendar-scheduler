@@ -4,23 +4,25 @@ import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { EventContext } from '../../contexts/event.context';
 import { Typography } from '@mui/material';
+import initialEquipmentList from './utils/resetEquimpmentList';
 
 const AccordionComponent = () => {
   const {
     rooms,
     setChossenRoom,
-    chossenRoom,
-    openEditRoomPanel,
     setOpenEditRoomPanel,
     setOpenDeleteRoomPanel,
     setOpenAddRoomPanel,
+    equipmentList,
+    setEquipmentList,
   } = useContext(EventContext);
 
   const sortedRooms = rooms.sort(
     (a, b) => a.roomNumOfGuests - b.roomNumOfGuests
   );
 
-  console.log(chossenRoom);
+  console.log(equipmentList);
+
   return (
     <div
       style={{
@@ -54,6 +56,7 @@ const AccordionComponent = () => {
             setOpenEditRoomPanel(true);
             setOpenAddRoomPanel(false);
             setOpenDeleteRoomPanel(false);
+            setEquipmentList(initialEquipmentList);
           };
 
           const defaultExpanded =
