@@ -4,7 +4,7 @@ const initialEquipmentList = [
   { name: 'Prysznic', icon: 'shower' },
   { name: 'Wanna', icon: 'bathtub' },
   { name: 'Grill', icon: 'outdoor_grill' },
-  { name: 'Telewizor', icon: 'outdoor_grill' },
+  { name: 'Telewizor', icon: 'tv' },
   { name: 'Aneks Kuchenny', icon: 'countertops' },
   { name: 'Dodatkowe łóżko', icon: 'bed' },
   { name: 'Szafka', icon: 'checkroom' },
