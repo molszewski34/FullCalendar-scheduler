@@ -1,0 +1,34 @@
+.form-submit {
+  display: flex;
+  bottom: none;
+  align-self: center;
+  font-size: 1.5em;
+  background-color: #0891b2;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.3em 0.7em;
+}
+
+.price {
+  display: flex;
+  gap: 1em;
+  align-self: end;
+  align-items: center;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.price-per-day {
+  display: flex;
+  gap: 1em;
+  align-self: end;
+  align-items: center;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.price-per-day span {
+  font-size: 1.5em;
+  color: #a855f7;
+}

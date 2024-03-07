@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { EventContext } from '../contexts/event.context';
-
+import './styles/RoomSelection.css';
 const RoomSelection = () => {
   const { setOpenRoomSelectionModal, room } = useContext(EventContext);
 

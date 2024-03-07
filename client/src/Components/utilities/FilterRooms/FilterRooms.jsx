@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { EventContext } from '../../contexts/event.context';
-
+import { EventContext } from '../../../contexts/event.context';
+import './index.css';
 export function FilterRooms() {
   const { setSelectedCategory, rooms } = useContext(EventContext);
 

@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { EventContext } from '../../../contexts/event.context';
 import CloseIcon from '@mui/icons-material/Close';
 import { Typography } from '@mui/material';
-
+import '../styles/index.css';
 const ChossenEquipmentList = () => {
   const {
     chossenRoom,

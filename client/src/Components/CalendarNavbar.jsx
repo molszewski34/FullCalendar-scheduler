@@ -4,7 +4,7 @@ import { Button, TextField, Box, InputAdornment } from '@mui/material';
 import { UserContext } from '../contexts/user.context';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SearchIcon from '@mui/icons-material/Search';
-import { FilterRooms } from './utilities/FilterRooms';
+import { FilterRooms } from './utilities/FilterRooms/FilterRooms';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Menu from '@mui/material/Menu';

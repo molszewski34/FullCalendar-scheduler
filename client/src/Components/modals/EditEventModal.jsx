@@ -10,6 +10,7 @@ import { Button, Box } from '@mui/material';
 import { EventContext } from '../../contexts/event.context';
 import DiscountPanel from '../DiscountPanel';
 import RoomSelectionModal from './RoomSelectionModal';
+import './styles/EditEventModal.css';
 const EditEventModal = ({ setEditModalOpen, handleEventChange }) => {
   const {
     editedEvent,

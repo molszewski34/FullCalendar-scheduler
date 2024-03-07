@@ -6,6 +6,7 @@ import GuestsAndPriceInputs from './GuestsAndPriceInputs';
 import RoomSelection from './RoomSelection';
 import DateTimeInputs from './DateTimeInputs';
 import { Button } from '@mui/material';
+import './styles/Form.css';
 const Form = ({
   title,
   setTitle,

@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { tableCellClasses } from '@mui/material/TableCell';
+import './styles/TableBox.css';
 
 const TableBox = () => {
   const { setSearchInput, searchedEvents, setSearchedEvents, setShowTable } =

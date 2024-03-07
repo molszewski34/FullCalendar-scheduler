@@ -22,6 +22,7 @@ import useHandleDateClick from '../hooks/Calendar/useHandleDateClick';
 import useCalculateTotalPrice from '../hooks/Calendar/useCalculateTotalPrice';
 import useFilteredEvents from '../hooks/Calendar/useFilteredEvents';
 import CircularProgress from '@mui/material/CircularProgress';
+import './styles/Calendar.css';
 const Calendar = () => {
   const {
     modalOpen,
