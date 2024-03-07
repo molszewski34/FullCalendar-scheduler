@@ -1,0 +1,35 @@
+.modal_btn-wrapper {
+  display: flex;
+  justify-content: space-around;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .modal_btn-wrapper {
+    flex-direction: column;
+    gap: 0.5em;
+  }
+}
+
+.price {
+  display: flex;
+  gap: 1em;
+  align-self: end;
+  align-items: center;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.price-per-day {
+  display: flex;
+  gap: 1em;
+  align-self: end;
+  align-items: center;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.price-per-day span {
+  font-size: 1.5em;
+  color: #a855f7;
+}

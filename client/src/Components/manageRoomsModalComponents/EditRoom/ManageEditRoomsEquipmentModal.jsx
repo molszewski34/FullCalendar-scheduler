@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import { EventContext } from '../../../contexts/event.context';
 import initialEquipmentList from '../utils/resetEquimpmentList';
 import CloseIcon from '@mui/icons-material/Close';
-
+import '../styles/index.css';
 const ManageEditRoomsEquipmentModal = () => {
   const {
     setOpenEditRoomEquipmentModal,

@@ -13,6 +13,7 @@ import Header from '../Header';
 
 import RoomSelectionModal from './RoomSelectionModal';
 import DiscountPanel from '../DiscountPanel';
+import './styles/AddEventModal.css';
 
 const AddEventModal = ({ isOpen, onClose, onEventAdded }) => {
   const {

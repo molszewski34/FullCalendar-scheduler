@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Button } from '@mui/material';
 import { EventContext } from '../../../contexts/event.context';
 import CloseIcon from '@mui/icons-material/Close';
+import '../styles/index.css';
 
 const ManageAddRoomsEquipmentModal = () => {
   const {
