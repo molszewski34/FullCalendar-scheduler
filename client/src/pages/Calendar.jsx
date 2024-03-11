@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import 'moment/locale/pl';
 import plLocale from '@fullcalendar/core/locales/pl';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
