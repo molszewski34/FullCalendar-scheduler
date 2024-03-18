@@ -17,7 +17,7 @@ const AddSelectedEquipment = () => {
 
   return (
     <div className="">
-      {addSelectedEquipment !== '' ? (
+      {addSelectedEquipment.length > 0 ? (
         <div className="modal-equipment_btn-wrapper">
           {addSelectedEquipment.map((equipment, index) => (
             <button
