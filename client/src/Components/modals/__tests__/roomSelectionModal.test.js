@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { EventProvider } from '../../../contexts/event.context';
-import RoomSelectionModal from '../roomSelectionModal';
+import RoomSelectionModal from '../RoomSelectionModal';
 
 test('renders buttons correctly with data from context', async () => {
   const rooms = [
