@@ -49,7 +49,7 @@ const AddRoom = () => {
     const formData = {
       ...data,
       roomColor: roomColor,
-      equipment: addSelectedEquipment,
+      equipment: addSelectedEquipment || [],
     };
     mutation.mutate(formData);
   };
