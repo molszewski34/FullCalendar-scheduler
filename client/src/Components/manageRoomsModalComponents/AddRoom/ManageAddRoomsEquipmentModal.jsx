@@ -57,21 +57,25 @@ const ManageAddRoomsEquipmentModal = () => {
       <div className="">
         <h3>Wybrane</h3>
         <div className="modal-equipment_btn-wrapper">
-          {addSelectedEquipment.map((equipment, index) => (
-            <button
-              className="modal-equipment_btn modal-equipment_btn_selected"
-              key={index}
-              onClick={() => handleRemoveEquipment(equipment)}
-            >
-              <span style={{ fontFamily: 'Material Icons' }}>
-                {equipment.icon}
-              </span>
-              {equipment.name}
-              <div className="modal-equipment_btn__remove">
-                <CloseIcon sx={{ fontSize: '15px' }} />
-              </div>
-            </button>
-          ))}
+          {addSelectedEquipment.length > 0 && (
+            <>
+              {addSelectedEquipment.map((equipment, index) => (
+                <button
+                  className="modal-equipment_btn modal-equipment_btn_selected"
+                  key={index}
+                  onClick={() => handleRemoveEquipment(equipment)}
+                >
+                  <span style={{ fontFamily: 'Material Icons' }}>
+                    {equipment.icon}
+                  </span>
+                  {equipment.name}
+                  <div className="modal-equipment_btn__remove">
+                    <CloseIcon sx={{ fontSize: '15px' }} />
+                  </div>
+                </button>
+              ))}
+            </>
+          )}
         </div>
       </div>
       <Button
