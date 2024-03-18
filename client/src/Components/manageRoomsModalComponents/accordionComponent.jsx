@@ -21,8 +21,6 @@ const AccordionComponent = () => {
     (a, b) => a.roomNumOfGuests - b.roomNumOfGuests
   );
 
-  console.log(equipmentList);
-
   return (
     <div
       style={{

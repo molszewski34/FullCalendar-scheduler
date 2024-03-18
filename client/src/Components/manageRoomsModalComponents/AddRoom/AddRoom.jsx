@@ -9,9 +9,9 @@ import ButtonSubmit from './ButtonSubmit';
 import Form from './Form';
 import FormRoomLocation from './FormRoomLocation';
 import FormRoomColor from './FormRoomColor';
-
+import initialEquipmentList from '../utils/resetEquimpmentList';
 const AddRoom = () => {
-  const { addSelectedEquipment, setAddSelectedEquipment } =
+  const { addSelectedEquipment, setAddSelectedEquipment, setEquipmentList } =
     useContext(EventContext);
 
   const queryClient = useQueryClient();
@@ -36,6 +36,7 @@ const AddRoom = () => {
         reset();
         setRoomColor('#cbd5e1');
         setAddSelectedEquipment('');
+        setEquipmentList(initialEquipmentList);
         queryClient.invalidateQueries('rooms');
       },
       onError: (error) => {
