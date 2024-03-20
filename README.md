@@ -1,7 +1,13 @@
-<h1 align='center'>FullCalendar Scheduler</h1>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
+<h1 align='center'>FullCalendar Scheduler</h1>
+<div align='center'>
+
+![Static Badge](https://img.shields.io/badge/6.1.8-white?label=FullCalendar&labelColor=%230F6ECE) ![NPM Version](https://img.shields.io/npm/v/react?logo=react&label=React) ![Static Badge](https://img.shields.io/badge/5.14.14-white?logo=mui&logoColor=white&label=Mui&labelColor=%23007BF7) ![Static Badge](https://img.shields.io/badge/3.39.3-white?logo=reactquery&logoColor=white&label=react-query&labelColor=%23dc2626&color=black) ![Static Badge](https://img.shields.io/badge/27.5.1-white?logo=jest&logoColor=white&label=Jest&labelColor=%23C21325&color=black) ![Static Badge](https://img.shields.io/badge/7.46.0-white?logo=reacthookform&logoColor=white&label=react-hook-form&labelColor=%23EC5990) ![Static Badge](https://img.shields.io/badge/20.10.0-black?logo=nodedotjs&logoColor=white&label=Node&labelColor=%233FC22A) ![Static Badge](https://img.shields.io/badge/4.18.2-a3e635?logo=express&logoColor=white&label=express&labelColor=%23000000&color=%23a3e635) ![Static Badge](https://img.shields.io/badge/7.4.4-white?logo=mongodb&logoColor=white&label=mongodb&labelColor=%2347A248&color=%23a3e635)
+
+</div>
 <p align='center'>
-<b >An easy-to-understand calendar with full room management system and the events taking place in them.</b>
+<b >An easy-to-understand calendar with full management system of rooms and the events taking place in them.</b>
 </p>
 
 ## Table of contents
@@ -12,6 +18,16 @@
 - [Technologies and Tools](#technologies-and-tools)
   - [Client](#client)
   - [Server](#server)
+- [How to use](#how-to-use)
+  - [Events managment](#events-managment)
+    - [Adding Event](#adding-event)
+    - [Editing Event](#editing-event)
+    - [Deleting Event](#deleting-event)
+  - [Rooms Managment](#rooms-managment)
+    - [Add room](#add-room)
+    - [Add equipment to room](#add-equipment-to-room)
+    - [Edit room](#edit-room)
+    - [Deleting room](#deleting-room)
 - [Functionality Description](#functionality-description)
   - [Calendar](#calendar)
   - [Search panel](#search-panel)
@@ -28,6 +44,7 @@
     - [Individual guest price and discounts panel](#individual-guest-price-and-discounts-panel)
     - [Price and total price](#price-and-total-price)
     - [Delete event](#delete-event)
+- [Testing](#testing)
 - [What i learned](#what-i-learned)
 - [Continues integration](#continues-integration)
 
@@ -50,6 +67,72 @@ react 18.2.0, fullcalendar 6.1.8, react-query 3.39.3, react-datetime, react-hook
 ### Server
 
 node 20.10.0, cors 2.8.5, express 4.18.2, mongoose 7.4.4, nodemon 3.0.1, vercel 32.4.1, dotenv: 16.3.1
+
+## How to use
+
+### Events managment
+
+#### Adding Event
+
+1. To add an event, you need to click on a calendar field. The number on the field indicates the day when the event will start.
+
+2. After selecting the field, an event creation panel appears. The event cannot be added if all fields are not filled out.
+
+3. The date selection field accepts two dates: a start date and an end date. The end date cannot precede the start date. **The start date field allows selecting a date other than the one chosen by clicking on calendar.**
+4. Choose a room. The room selection panel opens a list of rooms. The list does not include a feature to check if a particular room is available. Each room has basic information. The equipment list for each room is optional.
+
+**Equipment list icons**
+
+| Name            | Icon                                        |
+| --------------- | ------------------------------------------- |
+| Lodówka         | <i class="material-icons">kitchen</i>       |
+| Mikrofalówka    | <i class="material-icons">microwave</i>     |
+| Prysznic        | <i class="material-icons">shower</i>        |
+| Wanna           | <i class="material-icons">bathtub</i>       |
+| Grill           | <i class="material-icons">outdoor_grill</i> |
+| Telewizor       | <i class="material-icons">tv</i>            |
+| Aneks Kuchenny  | <i class="material-icons">countertops</i>   |
+| Dodatkowe łóżko | <i class="material-icons">bed</i>           |
+| Szafka          | <i class="material-icons">checkroom</i>     |
+| Łazienka        | <i class="material-icons">bathroom</i>      |
+| Plac            | <i class="material-icons">yard</i>          |
+| Wifi            | <i class="material-icons">wifi</i>          |
+| Telefon         | <i class="material-icons">phone</i>         |
+| Obsługa         | <i class="material-icons">room_service</i>  |
+
+5. Choose a price for guests. The price can be adjusted using buttons or entered individually. The initial default value is set in the room management panel.
+6. In case you intend to accommodate fewer or more people, you can adjust it using buttons.
+7. Save
+
+#### Editing Event
+
+To edit an event, **click on the event** you wish to edit and follow the same steps as in the instructions for adding an event.
+
+#### Deleting Event
+
+Deleting an event is done by clicking on event, then pressing the "USUŃ" button, and confirming your choice in the next window.
+
+### Rooms Managment
+
+#### Add room
+
+1. To open the room management panel, click on "Zarządzaj pokojami" in the top left corner.
+2. To start adding a room, press "Dodaj pokój" button.
+3. Fill in the fields.
+4. Chosse the color. Color menu is close by clicking on button again. There is also an option to set any color by copying the hex color code from the browser and pasting it into the color selection window.
+5. Click "Dodaj +"
+
+#### Add equipment to room
+
+To add equipment, click on "Add equipment" and press the buttons corresponding to the equipment status of the room. The selected buttons will be added to the "Selected" field. Buttons in the "Selected" field can be removed by clicking on them. The buttons that appear in the add room panel can be removed in the same way.
+
+#### Edit room
+
+To edit a room, select the room from the list on the left and fill in the fields exactly as you would when adding a room.
+
+#### Deleting room
+
+Deleting an room is done by selecting the room from the list on the left, then pressing the "USUŃ" button, and confirming your choice in the next window.
 
 ## Functionality Description
 
@@ -147,6 +230,10 @@ The "Za dzień" price is calculated upon selecting the room. The final price "Do
 
 The removal of the event is performed by pressing the "USUŃ" button in the edit event modal.
 
+## Testing
+
+Aplication is covered with unit tests of core functionalities.
+
 ## What i learned
 
 To be honest, this project has taught me how to program. Before starting this project, I had zero knowledge of handling APIs, HTTPS, and generally had a poor understanding of how to write functionalities that interact with them. To better illustrate what I've learned, I divided this report into points:
@@ -156,7 +243,7 @@ The primary challenge in building an application that manages a large number of 
 
 Ultimately, I opted to use useContext. The result was that state operations turned out to be trivial, but the downside was the size of the context. The context is enormous, and I'm considering integrating it with one of the existing state management libraries to make this file more readable for other users.
 
-Next were the functions. The application uses many methods for data manipulation, from date format changes, data filtering, slicing to create new ranges based on state values. Some of them were written by AI, but all functions required editing to work properly. Despite using artificial intelligence, none of the functions work as intended, even with a properly executed query. The most challenging functionality was definitely the function responsible for generating guest inputs. The functionality works in relation to the number held in the Room object. The function reads this value and then generates the appropriate number of ranges based on the price per room. Additionally, each of the generated ranges had to have functions to change it depending on whether you wanted to change it by the passed percentage or by entering it manually. Moreover, each change in the range was summed up to the price value calculated from the range and the total price counted from the state value counting the number of days. Furthermore, the states responsible for the operation of this function are spread across several components.
+Next were the functions. The application uses many methods for data manipulation, from date format changes, data filtering, slicing to create new ranges based on state values. Some of them were written by AI, but all functions required editing to work properly. Despite using artificial intelligence, none of the functions worked as intended, even with a properly executed query. The most challenging functionality was definitely the function responsible for generating guest inputs. The functionality works in relation to the number held in the Room object. The function reads this value and then generates the appropriate number of ranges based on the price per room. Additionally, each of the generated ranges had to have functions to change it depending on whether user wanted to change it by the passed percentage or by entering it manually. Moreover, each change in the range was summed up to the price value calculated from the range and the total price counted from the state value counting the number of days. Furthermore, the states responsible for the operation of this function are spread across several components.
 
 This taught me to think comprehensively about functions and their dependencies.
 
