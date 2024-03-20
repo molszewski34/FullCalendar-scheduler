@@ -19,6 +19,8 @@ const CalendarNavbar = () => {
     setSearchInput,
     openManageRoomsModal,
     setOpenManageRoomsModal,
+    overlay,
+    setOverlay,
   } = useContext(EventContext);
 
   const { logOutUser } = useContext(UserContext);
@@ -81,7 +83,10 @@ const CalendarNavbar = () => {
           <Button
             variant="contained"
             startIcon={<ManageAccountsIcon />}
-            onClick={() => setOpenManageRoomsModal(!openManageRoomsModal)}
+            onClick={() => {
+              setOpenManageRoomsModal(true);
+              setOverlay(true);
+            }}
             sx={{
               backgroundColor: '#f1f5f9',
               color: '#000',

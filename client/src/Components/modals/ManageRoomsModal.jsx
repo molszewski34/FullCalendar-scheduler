@@ -24,6 +24,8 @@ const ManageRoomsModal = () => {
     setOpenDeleteRoomPanel,
     openAddRoomEquipmentModal,
     openEditRoomEquipmentModal,
+    overlay,
+    setOverlay,
   } = useContext(EventContext);
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_PUBLIC_API_URL,
@@ -50,6 +52,7 @@ const ManageRoomsModal = () => {
         onClick={() => {
           setOpenManageRoomsModal(false);
           setOpenDeleteRoomPanel(false);
+          setOverlay(false);
         }}
       />
       <div className="manage-rooms-modal-wrapper">
