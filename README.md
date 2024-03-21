@@ -28,6 +28,8 @@
     - [Add equipment to room](#add-equipment-to-room)
     - [Edit room](#edit-room)
     - [Deleting room](#deleting-room)
+  - [Find events](#find-events)
+  - [Filter Events](#filter-events)
 - [Functionality Description](#functionality-description)
   - [Calendar](#calendar)
   - [Search panel](#search-panel)
@@ -83,22 +85,22 @@ node 20.10.0, cors 2.8.5, express 4.18.2, mongoose 7.4.4, nodemon 3.0.1, vercel 
 
 **Equipment list icons**
 
-| Name            | Icon                                        |
-| --------------- | ------------------------------------------- |
-| Lodówka         | <i class="material-icons">kitchen</i>       |
-| Mikrofalówka    | <i class="material-icons">microwave</i>     |
-| Prysznic        | <i class="material-icons">shower</i>        |
-| Wanna           | <i class="material-icons">bathtub</i>       |
-| Grill           | <i class="material-icons">outdoor_grill</i> |
-| Telewizor       | <i class="material-icons">tv</i>            |
-| Aneks Kuchenny  | <i class="material-icons">countertops</i>   |
-| Dodatkowe łóżko | <i class="material-icons">bed</i>           |
-| Szafka          | <i class="material-icons">checkroom</i>     |
-| Łazienka        | <i class="material-icons">bathroom</i>      |
-| Plac            | <i class="material-icons">yard</i>          |
-| Wifi            | <i class="material-icons">wifi</i>          |
-| Telefon         | <i class="material-icons">phone</i>         |
-| Obsługa         | <i class="material-icons">room_service</i>  |
+| Name            | Icon                                      |
+| --------------- | ----------------------------------------- |
+| Lodówka         | ![Imgur](https://i.imgur.com/oSWqPTJ.png) |
+| Mikrofalówka    | ![Imgur](https://i.imgur.com/kJvhbJG.png) |
+| Prysznic        | ![Imgur](https://i.imgur.com/cNyr8lL.png) |
+| Wanna           | ![Imgur](https://i.imgur.com/8i2Mm7X.png) |
+| Grill           | ![Imgur](https://i.imgur.com/i3fD71Z.png) |
+| Telewizor       | ![Imgur](https://i.imgur.com/m4wWiro.png) |
+| Aneks Kuchenny  | ![Imgur](https://i.imgur.com/BP7cWZO.png) |
+| Dodatkowe łóżko | ![Imgur](https://i.imgur.com/dioJGeI.png) |
+| Szafka          | ![Imgur](https://i.imgur.com/1qczms1.png) |
+| Łazienka        | ![Imgur](https://i.imgur.com/oBfsDSE.png) |
+| Plac            | ![Imgur](https://i.imgur.com/JErWeVi.png) |
+| Wifi            | ![Imgur](https://i.imgur.com/kMX4nhE.png) |
+| Telefon         | ![Imgur](https://i.imgur.com/hRe5GBu.png) |
+| Obsługa         | ![Imgur](https://i.imgur.com/vEDuiRH.png) |
 
 5. Choose a price for guests. The price can be adjusted using buttons or entered individually. The initial default value is set in the room management panel.
 6. In case you intend to accommodate fewer or more people, you can adjust it using buttons.
@@ -133,6 +135,18 @@ To edit a room, select the room from the list on the left and fill in the fields
 #### Deleting room
 
 Deleting an room is done by selecting the room from the list on the left, then pressing the "USUŃ" button, and confirming your choice in the next window.
+
+### Find events
+
+Type the word into the window labeled "Szukaj..."
+
+- The search window responds to letters and numbers. When you enter a number, the search engine will find an event by phone number. This is to quickly search whether the calling person has already been added to the calendar.
+
+### Filter Events
+
+Select a room from the dropdown list to find only events for that particular room.
+
+To go back to viewing all events, selec the default value "Pokoje" again.
 
 ## Functionality Description
 
