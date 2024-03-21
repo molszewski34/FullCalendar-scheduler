@@ -3,6 +3,7 @@ import { useContext, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { UserContext } from '../contexts/user.context';
+import LoginContent from '../Components/LoginContent';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -49,60 +50,72 @@ const Login = () => {
   }, []);
 
   return (
-    <form
+    <div
       style={{
         display: 'flex',
         flexDirection: 'column',
-        maxWidth: '300px',
+        alignItems: 'center',
         margin: 'auto',
+        gap: '2em',
+        justifyContent: 'center',
+        height: '100vh',
       }}
-      onSubmit={handleSubmit(onFormSubmit)}
     >
-      <h1>Login</h1>
-      <Controller
-        name="email"
-        control={control}
-        defaultValue=""
-        rules={{ required: 'Email is required' }}
-        render={({ field }) => (
-          <TextField
-            label="Email"
-            type="email"
-            variant="outlined"
-            error={!!errors.email}
-            helperText={errors.email ? errors.email.message : ''}
-            {...field}
-            style={{ marginBottom: '1rem' }}
-          />
-        )}
-      />
-      <Controller
-        name="password"
-        control={control}
-        defaultValue=""
-        rules={{
-          required: 'Password is required',
-          maxLength: {
-            value: 20,
-            message: 'Password should not exceed 20 characters',
-          },
+      <LoginContent />
+
+      <form
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          maxWidth: '300px',
         }}
-        render={({ field }) => (
-          <TextField
-            label="Hasło"
-            type="password"
-            variant="outlined"
-            error={!!errors.password}
-            helperText={errors.password ? errors.password.message : ''}
-            {...field}
-            style={{ marginBottom: '1rem' }}
-          />
-        )}
-      />
-      <Button type="submit" variant="contained" color="primary">
-        Zaloguj
-      </Button>
-    </form>
+        onSubmit={handleSubmit(onFormSubmit)}
+      >
+        <Controller
+          name="email"
+          control={control}
+          defaultValue=""
+          rules={{ required: 'Email is required' }}
+          render={({ field }) => (
+            <TextField
+              label="Email"
+              type="email"
+              variant="outlined"
+              error={!!errors.email}
+              helperText={errors.email ? errors.email.message : ''}
+              {...field}
+              style={{ marginBottom: '1rem' }}
+            />
+          )}
+        />
+        <Controller
+          name="password"
+          control={control}
+          defaultValue=""
+          rules={{
+            required: 'Password is required',
+            maxLength: {
+              value: 20,
+              message: 'Password should not exceed 20 characters',
+            },
+          }}
+          render={({ field }) => (
+            <TextField
+              label="Hasło"
+              type="password"
+              variant="outlined"
+              error={!!errors.password}
+              helperText={errors.password ? errors.password.message : ''}
+              {...field}
+              style={{ marginBottom: '1rem' }}
+            />
+          )}
+        />
+        <Button type="submit" variant="contained" color="primary">
+          Zaloguj
+        </Button>
+      </form>
+    </div>
   );
 };
 
