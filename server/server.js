@@ -12,6 +12,10 @@ app.use(cors());
 
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.send('Hello World');
+});
+
 async function connectToDatabase() {
   try {
     await mongoose.connect(process.env.MONGODB_URI, {
