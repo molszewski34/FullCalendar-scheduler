@@ -26,8 +26,8 @@ const TitleInput = ({
             message: 'Imię nie może mieć więcej niż 20 znaków',
           },
           pattern: {
-            value: /^[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ\s]+$/,
-            message: 'Imię może zawierać tylko litery',
+            value: /^[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ\s-]+$/,
+            message: 'Imię może zawierać tylko litery i myślniki',
           },
         }}
         render={({ field }) => (
