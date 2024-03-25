@@ -2,6 +2,8 @@ import React, { useEffect, useContext } from 'react';
 import DateTime from 'react-datetime';
 import { EventContext } from '../contexts/event.context';
 import './styles/DateTimeInputs.css';
+import 'moment/locale/pl';
+
 const DateTimeInputs = ({}) => {
   const {
     editedEvent,
